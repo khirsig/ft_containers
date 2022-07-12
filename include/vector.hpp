@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/12 16:08:22 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/12 16:17:07 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,8 +132,14 @@ namespace ft {
 					else
 						reserve(capacity() * 2);
 				}
-				this->_size++;
+				++this->_size;
 				this->_allocator.construct(end(), value);
+			}
+
+			void	pop_back()
+			{
+				this->_allocator.destroy(end() - 1);
+				--this->_size;
 			}
 
 		private:
