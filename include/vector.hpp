@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/12 15:52:23 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/12 16:08:22 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,39 @@ namespace ft {
 					this->_allocator.deallocate(this->_content, this->_capacity);
 					this->_capacity = new_cap;
 					this->_content = new_alloc;
+				}
+			}
+
+			void	resize(size_type n, value_type val = value_type())
+			{
+				if (n < size())
+				{
+					pointer	new_alloc = NULL;
+					new_alloc = this->_allocator.allocate(n);
+					for (size_type i = 0; i < n; ++i)
+					{
+						this->_allocator.construct(new_alloc + i, *(this->_content + i));
+						this->_allocator.destroy(this->_content + i);
+					}
+					for (size_type i = n; i < size(); ++i)
+						this->_allocator.destroy(this->_content + i);
+					this->_allocator.deallocate(this->_content, this->_capacity);
+					this->_capacity = n;
+					this->_size = n;
+					this->_content = new_alloc;
+				}
+				else if (n > size() && n < capacity())
+				{
+					for (size_type i = size(); i < n; ++i)
+						*(this->_content + i) = val;
+					this->_size = n;
+				}
+				else if (n > capacity())
+				{
+					reserve(n);
+					for (size_type i = size(); i < n; ++i)
+						*(this->_content + i) = val;
+					this->_size = n;
 				}
 			}
 
