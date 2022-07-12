@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/12 15:26:57 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/12 15:52:23 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <cstddef>
 # include <exception>
 # include <memory>
+# include <stdexcept>
 
 namespace ft {
 	template <typename T, typename Allocator = std::allocator<T> >
@@ -39,15 +40,17 @@ namespace ft {
 				: _content(other._content),
 				  _size(other._size),
 				  _capacity(other._capacity)
-				  _begin(other._begin)
-				  _end(other._end)
 			{ }
 
 			~vector() { }
 
 			// Operators
 			vector		&operator=(const vector &other);
-			value_type	&operator[](unsigned int i);
+
+			value_type	&operator[](unsigned int i)
+			{
+				return (this->_content[i]);
+			}
 
 			// Member functions
 			size_type	size() const
@@ -62,12 +65,12 @@ namespace ft {
 
 			iterator	begin() const
 			{
-				return (this->_begin);
+				return (this->_content);
 			}
 
 			iterator	end() const
 			{
-				return (this->_end);
+				return (this->_content + (this->_size - 1));
 			}
 
 			void	reserve(size_type new_cap)
@@ -75,17 +78,15 @@ namespace ft {
 				if (new_cap > capacity())
 				{
 					pointer	new_alloc = NULL;
-					this->_allocator.allocate(new_cap, new_alloc);
+					new_alloc = this->_allocator.allocate(new_cap);
 					for (size_type i = 0; i < this->_size; ++i)
 					{
-						this->_allocator.construct(new_alloc + i, this->_content[i]);
+						this->_allocator.construct(new_alloc + i, *(this->_content + i));
 						this->_allocator.destroy(this->_content + i);
 					}
 					this->_allocator.deallocate(this->_content, this->_capacity);
 					this->_capacity = new_cap;
 					this->_content = new_alloc;
-					this->_begin = this->_content;
-					this->_end = this->_content + this->capacity;
 				}
 			}
 
@@ -99,8 +100,7 @@ namespace ft {
 						reserve(capacity() * 2);
 				}
 				this->_size++;
-				this->_allocator.construct(this->_content + (this->_size), value);
-				this->_end++;
+				this->_allocator.construct(end(), value);
 			}
 
 		private:
@@ -108,8 +108,6 @@ namespace ft {
 			size_type		_size;
 			size_type		_capacity;
 			allocator_type	_allocator;
-			iterator		_begin;
-			iterator		_end;
 	};
 }
 
