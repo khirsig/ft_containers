@@ -6,39 +6,111 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/12 08:54:13 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/12 15:26:57 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
+# include <iostream>
 # include <cstddef>
 # include <exception>
+# include <memory>
 
 namespace ft {
+	template <typename T, typename Allocator = std::allocator<T> >
+	class vector {
+		public:
+			// Typedefs
+			typedef T											value_type;
+			typedef Allocator									allocator_type;
+			typedef typename allocator_type::reference			reference;
+			typedef typename allocator_type::const_reference	const_reference;
+			typedef typename allocator_type::size_type			size_type;
+			typedef typename allocator_type::pointer			pointer;
+			typedef typename allocator_type::const_pointer		const_pointer;
+			typedef pointer										iterator;
 
-template <typename type> class vector {
-	public:
-		vector();
-		vector(const vector &other);
-		~vector();
+			// Construct/Copy/Destroy
+			vector() : _content(NULL), _size(0), _capacity(0) { }
 
-		vector	&operator=(const vector &other);
-		type	&operator[](int i);
+			vector(const vector<value_type> &other)
+				: _content(other._content),
+				  _size(other._size),
+				  _capacity(other._capacity)
+				  _begin(other._begin)
+				  _end(other._end)
+			{ }
 
-		int		size() const;
-	private:
-		type	*_content;
-		int		_size;
+			~vector() { }
 
-	class NotAllocatedException : public std::exception {
-		virtual const char *what() const throw();
+			// Operators
+			vector		&operator=(const vector &other);
+			value_type	&operator[](unsigned int i);
+
+			// Member functions
+			size_type	size() const
+			{
+				return (this->_size);
+			}
+
+			size_type	capacity() const
+			{
+				return (this->_capacity);
+			}
+
+			iterator	begin() const
+			{
+				return (this->_begin);
+			}
+
+			iterator	end() const
+			{
+				return (this->_end);
+			}
+
+			void	reserve(size_type new_cap)
+			{
+				if (new_cap > capacity())
+				{
+					pointer	new_alloc = NULL;
+					this->_allocator.allocate(new_cap, new_alloc);
+					for (size_type i = 0; i < this->_size; ++i)
+					{
+						this->_allocator.construct(new_alloc + i, this->_content[i]);
+						this->_allocator.destroy(this->_content + i);
+					}
+					this->_allocator.deallocate(this->_content, this->_capacity);
+					this->_capacity = new_cap;
+					this->_content = new_alloc;
+					this->_begin = this->_content;
+					this->_end = this->_content + this->capacity;
+				}
+			}
+
+			void	push_back(const T &value)
+			{
+				if (size() + 1 > capacity())
+				{
+					if (capacity() == 0)
+						reserve(1);
+					else
+						reserve(capacity() * 2);
+				}
+				this->_size++;
+				this->_allocator.construct(this->_content + (this->_size), value);
+				this->_end++;
+			}
+
+		private:
+			pointer			_content;
+			size_type		_size;
+			size_type		_capacity;
+			allocator_type	_allocator;
+			iterator		_begin;
+			iterator		_end;
 	};
-};
-
 }
-
-# include "vector.tpp"
 
 #endif
