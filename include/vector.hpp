@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/13 09:07:57 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/13 09:40:18 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,7 @@ namespace ft {
 				return (_content[i]);
 			}
 
-			// Member functions
-			size_type	size() const
-			{
-				return (_size);
-			}
-
-			size_type	capacity() const
-			{
-				return (_capacity);
-			}
-
+			// Iterators
 			iterator	begin() const
 			{
 				return (_content);
@@ -74,21 +64,15 @@ namespace ft {
 				return (_content + _size);
 			}
 
-			void	reserve(size_type new_cap)
+			// Capacity
+			size_type	size() const
 			{
-				if (new_cap > capacity())
-				{
-					pointer	new_alloc = NULL;
-					new_alloc = _allocator.allocate(new_cap);
-					for (size_type i = 0; i < _size; ++i)
-					{
-						_allocator.construct(new_alloc + i, *(_content + i));
-						_allocator.destroy(_content + i);
-					}
-					_allocator.deallocate(_content, _capacity);
-					_capacity = new_cap;
-					_content = new_alloc;
-				}
+				return (_size);
+			}
+
+			size_type	max_size() const
+			{
+				return (_allocator.max_size());
 			}
 
 			void	resize(size_type n, value_type val = value_type())
@@ -124,6 +108,34 @@ namespace ft {
 				}
 			}
 
+			size_type	capacity() const
+			{
+				return (_capacity);
+			}
+
+			bool	empty() const
+			{
+				return (_size == 0 ? true : false);
+			}
+
+			void	reserve(size_type new_cap)
+			{
+				if (new_cap > capacity())
+				{
+					pointer	new_alloc = NULL;
+					new_alloc = _allocator.allocate(new_cap);
+					for (size_type i = 0; i < _size; ++i)
+					{
+						_allocator.construct(new_alloc + i, *(_content + i));
+						_allocator.destroy(_content + i);
+					}
+					_allocator.deallocate(_content, _capacity);
+					_capacity = new_cap;
+					_content = new_alloc;
+				}
+			}
+
+			// Modifiers
 			void	push_back(const T &value)
 			{
 				if (size() + 1 > capacity())
