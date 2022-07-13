@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/13 12:18:23 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/13 12:22:55 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,32 +47,17 @@ namespace ft {
 			// Operators
 			vector		&operator=(const vector &other);
 
-			value_type	&operator[](unsigned int i)
-			{
-				return (_content[i]);
-			}
+			value_type	&operator[](unsigned int i) { return (_content[i]); }
 
 			// Iterators
-			iterator	begin() const
-			{
-				return (_content);
-			}
+			iterator	begin() const { return (_content); }
 
-			iterator	end() const
-			{
-				return (_content + _size);
-			}
+			iterator	end() const { return (_content + _size); }
 
 			// Capacity
-			size_type	size() const
-			{
-				return (_size);
-			}
+			size_type	size() const { return (_size); }
 
-			size_type	max_size() const
-			{
-				return (_allocator.max_size());
-			}
+			size_type	max_size() const { return (_allocator.max_size()); }
 
 			void	resize(size_type n, value_type val = value_type())
 			{
@@ -107,15 +92,9 @@ namespace ft {
 				}
 			}
 
-			size_type	capacity() const
-			{
-				return (_capacity);
-			}
+			size_type	capacity() const { return (_capacity); }
 
-			bool	empty() const
-			{
-				return (_size == 0 ? true : false);
-			}
+			bool	empty() const { return (_size == 0 ? true : false); }
 
 			void	reserve(size_type new_cap)
 			{
@@ -142,15 +121,9 @@ namespace ft {
 				return (*(_content + n));
 			}
 
-			reference	front()
-			{
-				return (*(_content));
-			}
+			reference	front() { return (*(_content)); }
 
-			reference	back()
-			{
-				return (*(_content + _size));
-			}
+			reference	back() { return (*(_content + _size)); }
 
 			// Modifiers
 			void	assign(iterator first, iterator last)
