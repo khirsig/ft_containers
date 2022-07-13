@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/13 10:17:11 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/13 12:00:00 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,7 @@ namespace ft {
 			vector(const vector<value_type> &other)
 				: _content(other._content),
 				  _size(other._size),
-				  _capacity(other._capacity)
-			{ }
+				  _capacity(other._capacity) { }
 
 			~vector() { }
 
@@ -154,6 +153,22 @@ namespace ft {
 			}
 
 			// Modifiers
+			void	assign(iterator first, iterator last)
+			{
+				size_type newSize = last - first;
+				for (size_type i = 0; i < size(); ++i)
+					_allocator.destroy(_content + i);
+				if (newSize > _capacity)
+				{
+					_allocator.deallocate(_content, _capacity);
+					_content = _allocator.allocate(newSize);
+				}
+				for (size_type i = 0; i < newSize; ++i)
+					_allocator.construct(_content + i, *(first + i));
+				_size = newSize;
+				_capacity = newSize;
+			}
+
 			void	push_back(const T &value)
 			{
 				if (size() + 1 > capacity())

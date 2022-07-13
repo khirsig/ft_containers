@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/13 10:19:25 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/13 12:03:28 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ int	main()
 	std::cout << "Size: " << test.size() << "  Capacity: " << test.capacity() << "\n";
 	test.reserve(5);
 	std::cout << "Size: " << test.size() << "  Capacity: " << test.capacity() << "\n";
-	for (int i = 0; i < 5; ++i)
+	for (std::size_t i = 0; i < test.capacity(); ++i)
 		test.push_back(i + 1);
 	test.resize(10, 42);
 	std::cout << "Size: " << test.size() << "  Capacity: " << test.capacity() << "\n";
 	std::cout << "Print all ints:" << "\n";
-	for (int i = 0; i < 10; ++i)
+	for (std::size_t i = 0; i < test.size(); ++i)
 		std::cout << test[i] << " ";
 	std::cout << "\n";
 	test.pop_back();
@@ -49,6 +49,13 @@ int	main()
 		std::cout << e.what() << "\n";
 	}
 	std::cout << "Front: " << test.front() << "\n" << "Back: " << test.back() << "\n";
+	ft::vector<int>	cpy;
+
+	cpy.assign(test.begin(), test.end());
+	std::cout << "Size: " << cpy.size() << "  Capacity: " << cpy.capacity() << "\n";
+	std::cout << "Print all ints:" << "\n";
+	for (std::size_t i = 0; i < cpy.size(); ++i)
+		std::cout << cpy[i] << " ";
 
 	return (0);
 }

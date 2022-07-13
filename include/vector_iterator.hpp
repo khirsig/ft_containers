@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 08:14:46 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/13 08:48:42 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/13 12:02:11 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,42 @@ namespace ft {
 				return !(*this == other);
 			}
 
+			template<typename U>
+				friend int	operator-(const vector_iterator<U> &pre, const vector_iterator<U> &post);
+			template<typename U>
+				friend vector_iterator<U>	operator+(const vector_iterator<U> &pre, const int &post);
+			template<typename U>
+				friend vector_iterator<U>	operator-(const vector_iterator<U> &pre, const int &post);
 		private:
 			pointer _ptr;
 	};
+
+	template<typename U>
+	int	operator-(const vector_iterator<U> &pre, const vector_iterator<U> &post)
+	{
+		int	result;
+
+		result = pre._ptr - post._ptr;
+		return (result);
+	}
+
+	template<typename U>
+	vector_iterator<U>	operator+(const vector_iterator<U> &pre, const int &post)
+	{
+		U	*result;
+
+		result = pre._ptr + post;
+		return (result);
+	}
+
+	template<typename U>
+	vector_iterator<U>	operator-(const vector_iterator<U> &pre, const int &post)
+	{
+		U	*result;
+
+		result = pre._ptr - post;
+		return (result);
+	}
 }
 
 #endif
