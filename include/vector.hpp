@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/13 12:22:55 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/13 16:01:21 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,8 @@ namespace ft {
 					_allocator.destroy(_content + i);
 				if (n > _capacity)
 				{
-					_allocator.deallocate(_content, _capacity);
+					if (_capacity > 0)
+						_allocator.deallocate(_content, _capacity);
 					_content = _allocator.allocate(n);
 					_capacity = n;
 				}
@@ -174,6 +175,24 @@ namespace ft {
 			{
 				_allocator.destroy(_content + _size - 1);
 				--_size;
+			}
+
+			iterator	insert(iterator position, const value_type &val)
+			{
+				int	savedPos = position - begin();
+				if (_size + 1 >= _capacity)
+					reserve(_capacity * 2);
+				int i = size();
+
+				while (i > savedPos)
+				{
+					_allocator.construct(_content + i, *(_content + i - 1));
+					_allocator.destroy(_content + i - 1);
+					--i;
+				}
+				_allocator.construct(_content + i, val);
+				++_size;
+				return (iterator(_content + i));
 			}
 
 		private:

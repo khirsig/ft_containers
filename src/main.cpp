@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/13 12:03:28 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/13 16:08:54 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,16 @@ int	main()
 	}
 	std::cout << "Front: " << test.front() << "\n" << "Back: " << test.back() << "\n";
 	ft::vector<int>	cpy;
-
 	cpy.assign(test.begin(), test.end());
 	std::cout << "Size: " << cpy.size() << "  Capacity: " << cpy.capacity() << "\n";
-	std::cout << "Print all ints:" << "\n";
+	for (ft::vector<int>::iterator i = cpy.begin(); i != cpy.end(); ++i)
+		std::cout << *i << " ";
+	std::cout << "\n";
+	cpy.insert(cpy.begin() + 2, 23);
 	for (std::size_t i = 0; i < cpy.size(); ++i)
 		std::cout << cpy[i] << " ";
+	std::cout << "\n";
+	std::cout << "Size: " << cpy.size() << "  Capacity: " << cpy.capacity() << "\n";
 
 	return (0);
 }
