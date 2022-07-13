@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/13 12:00:00 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/13 12:18:23 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,18 +155,33 @@ namespace ft {
 			// Modifiers
 			void	assign(iterator first, iterator last)
 			{
-				size_type newSize = last - first;
+				size_type n = last - first;
 				for (size_type i = 0; i < size(); ++i)
 					_allocator.destroy(_content + i);
-				if (newSize > _capacity)
+				if (n > _capacity)
 				{
 					_allocator.deallocate(_content, _capacity);
-					_content = _allocator.allocate(newSize);
+					_content = _allocator.allocate(n);
+					_capacity = n;
 				}
-				for (size_type i = 0; i < newSize; ++i)
+				for (size_type i = 0; i < n; ++i)
 					_allocator.construct(_content + i, *(first + i));
-				_size = newSize;
-				_capacity = newSize;
+				_size = n;
+			}
+
+			void	assign(size_type n, const value_type &val)
+			{
+				for (size_type i = 0; i < size(); ++i)
+					_allocator.destroy(_content + i);
+				if (n > _capacity)
+				{
+					_allocator.deallocate(_content, _capacity);
+					_content = _allocator.allocate(n);
+					_capacity = n;
+				}
+				for (size_type i = 0; i < n; ++i)
+					_allocator.construct(_content + i, val);
+				_size = n;
 			}
 
 			void	push_back(const T &value)
