@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/12 16:17:07 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/13 08:56:14 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <exception>
 # include <memory>
 # include <stdexcept>
+# include "vector_iterator.hpp"
 
 namespace ft {
 	template <typename T, typename Allocator = std::allocator<T> >
@@ -31,7 +32,7 @@ namespace ft {
 			typedef typename allocator_type::size_type			size_type;
 			typedef typename allocator_type::pointer			pointer;
 			typedef typename allocator_type::const_pointer		const_pointer;
-			typedef pointer										iterator;
+			typedef ft::vector_iterator<T>						iterator;
 
 			// Construct/Copy/Destroy
 			vector() : _content(NULL), _size(0), _capacity(0) { }
@@ -49,28 +50,28 @@ namespace ft {
 
 			value_type	&operator[](unsigned int i)
 			{
-				return (this->_content[i]);
+				return (_content[i]);
 			}
 
 			// Member functions
 			size_type	size() const
 			{
-				return (this->_size);
+				return (_size);
 			}
 
 			size_type	capacity() const
 			{
-				return (this->_capacity);
+				return (_capacity);
 			}
 
 			iterator	begin() const
 			{
-				return (this->_content);
+				return (_content);
 			}
 
 			iterator	end() const
 			{
-				return (this->_content + (this->_size - 1));
+				return (_content + (_size - 1));
 			}
 
 			void	reserve(size_type new_cap)
@@ -78,15 +79,15 @@ namespace ft {
 				if (new_cap > capacity())
 				{
 					pointer	new_alloc = NULL;
-					new_alloc = this->_allocator.allocate(new_cap);
-					for (size_type i = 0; i < this->_size; ++i)
+					new_alloc = _allocator.allocate(new_cap);
+					for (size_type i = 0; i < _size; ++i)
 					{
-						this->_allocator.construct(new_alloc + i, *(this->_content + i));
-						this->_allocator.destroy(this->_content + i);
+						_allocator.construct(new_alloc + i, *(_content + i));
+						_allocator.destroy(_content + i);
 					}
-					this->_allocator.deallocate(this->_content, this->_capacity);
-					this->_capacity = new_cap;
-					this->_content = new_alloc;
+					_allocator.deallocate(_content, _capacity);
+					_capacity = new_cap;
+					_content = new_alloc;
 				}
 			}
 
@@ -95,31 +96,31 @@ namespace ft {
 				if (n < size())
 				{
 					pointer	new_alloc = NULL;
-					new_alloc = this->_allocator.allocate(n);
+					new_alloc = _allocator.allocate(n);
 					for (size_type i = 0; i < n; ++i)
 					{
-						this->_allocator.construct(new_alloc + i, *(this->_content + i));
-						this->_allocator.destroy(this->_content + i);
+						_allocator.construct(new_alloc + i, *(_content + i));
+						_allocator.destroy(_content + i);
 					}
 					for (size_type i = n; i < size(); ++i)
-						this->_allocator.destroy(this->_content + i);
-					this->_allocator.deallocate(this->_content, this->_capacity);
-					this->_capacity = n;
-					this->_size = n;
-					this->_content = new_alloc;
+						_allocator.destroy(_content + i);
+					_allocator.deallocate(_content, _capacity);
+					_capacity = n;
+					_size = n;
+					_content = new_alloc;
 				}
 				else if (n > size() && n < capacity())
 				{
 					for (size_type i = size(); i < n; ++i)
-						*(this->_content + i) = val;
-					this->_size = n;
+						*(_content + i) = val;
+					_size = n;
 				}
 				else if (n > capacity())
 				{
 					reserve(n);
 					for (size_type i = size(); i < n; ++i)
-						*(this->_content + i) = val;
-					this->_size = n;
+						*(_content + i) = val;
+					_size = n;
 				}
 			}
 
@@ -132,14 +133,14 @@ namespace ft {
 					else
 						reserve(capacity() * 2);
 				}
-				++this->_size;
-				this->_allocator.construct(end(), value);
+				++_size;
+				_allocator.construct(_content + _size, value);
 			}
 
 			void	pop_back()
 			{
-				this->_allocator.destroy(end() - 1);
-				--this->_size;
+				_allocator.destroy(end() - 1);
+				--_size;
 			}
 
 		private:
