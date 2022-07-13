@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/13 08:56:14 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/13 09:07:57 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ namespace ft {
 
 			iterator	end() const
 			{
-				return (_content + (_size - 1));
+				return (_content + _size);
 			}
 
 			void	reserve(size_type new_cap)
@@ -139,7 +139,7 @@ namespace ft {
 
 			void	pop_back()
 			{
-				_allocator.destroy(end() - 1);
+				_allocator.destroy(_content + _size - 1);
 				--_size;
 			}
 

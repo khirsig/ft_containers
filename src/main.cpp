@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/12 16:27:12 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/13 09:07:28 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 int	main()
 {
 	ft::vector<int> test;
-	std::vector<int> test2;
-	std::vector<int>::iterator test3;
 
 	std::cout << "Size: " << test.size() << "  Capacity: " << test.capacity() << "\n";
 	test.reserve(5);
@@ -30,5 +28,9 @@ int	main()
 	std::cout << "Print all ints:" << "\n";
 	for (int i = 0; i < 10; ++i)
 		std::cout << test[i] << "\n";
+	test.pop_back();
+	test.pop_back();
+	std::cout << "Size: " << test.size() << "  Capacity: " << test.capacity() << "\n";
+
 	return (0);
 }
