@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/13 10:04:36 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/13 10:16:50 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 int	main()
 {
 	ft::vector<int> test;
+	// std::vector<int> test;
 
 	if (test.empty())
 		std::cout << "Vector is empty with size " << test.size() << "\n";
@@ -37,7 +38,9 @@ int	main()
 	if (!test.empty())
 		std::cout << "Vector is not empty with size " << test.size() << "\n";
 	std::cout << "Vector max_size = " << test.max_size() << "\n";
-	std::cout << "at(3) points to: " << test.at(3) << "\n";
+
+	int tmp = test.at(3);
+	std::cout << "at(3) points to: " << tmp << "\n";
 	try {
 		std::cout << "at(42) points to: " << test.at(42) << "\n";
 	}

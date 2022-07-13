@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/13 09:55:06 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/13 10:17:11 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ namespace ft {
 			// Typedefs
 			typedef T											value_type;
 			typedef Allocator									allocator_type;
-			typedef typename allocator_type::reference			reference;
-			typedef typename allocator_type::const_reference	const_reference;
 			typedef typename allocator_type::size_type			size_type;
-			typedef typename allocator_type::pointer			pointer;
-			typedef typename allocator_type::const_pointer		const_pointer;
+			typedef value_type&									reference;
+			typedef const value_type&							const_reference;
+			typedef value_type*									pointer;
+			typedef const value_type*							const_pointer;
 			typedef ft::vector_iterator<T>						iterator;
 
 			// Construct/Copy/Destroy
@@ -143,6 +143,16 @@ namespace ft {
 				return (*(_content + n));
 			}
 
+			reference	front()
+			{
+				return (*(_content));
+			}
+
+			reference	back()
+			{
+				return (*(_content + _size));
+			}
+
 			// Modifiers
 			void	push_back(const T &value)
 			{
@@ -153,8 +163,8 @@ namespace ft {
 					else
 						reserve(capacity() * 2);
 				}
-				++_size;
 				_allocator.construct(_content + _size, value);
+				++_size;
 			}
 
 			void	pop_back()
