@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/13 10:16:50 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/13 10:19:25 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	main()
 	{
 		std::cout << e.what() << "\n";
 	}
+	std::cout << "Front: " << test.front() << "\n" << "Back: " << test.back() << "\n";
 
 	return (0);
 }
