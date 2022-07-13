@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/13 09:40:18 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/13 09:55:06 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,14 @@ namespace ft {
 					_capacity = new_cap;
 					_content = new_alloc;
 				}
+			}
+
+			// Element Access
+			reference	at(size_type n)
+			{
+				if (n > _size)
+					throw std::out_of_range("Error: Element trying to access is out of range.");
+				return (*(_content + n));
 			}
 
 			// Modifiers
