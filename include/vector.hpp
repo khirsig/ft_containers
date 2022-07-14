@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/14 10:37:27 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/14 10:57:44 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,12 +207,7 @@ namespace ft {
 					reserve(new_cap);
 				}
 				int i = size() + n;
-				std::cout << "size() + n = " << size() + n << "\n";
-
-				int j = savedPos + n;
-				std::cout << "savedPos + n = " << savedPos + n << "\n";
-
-				while (i >= j)
+				while (i >= (int)(savedPos + n))
 				{
 					_allocator.construct(_content + i, *(_content + i - n));
 					_allocator.destroy(_content + i - n);
@@ -226,6 +221,37 @@ namespace ft {
 				_size += n;
 				return (iterator(_content + i));
 			}
+
+			// template <class InputIterator>
+			// void	insert(iterator position, InputIterator first, InputIterator last)
+			// {
+			// 	int	savedPos = position - begin();
+			// 	size_type	n = last - first;
+			// 	if (_size + n >= _capacity)
+			// 	{
+			// 		size_type	new_cap = _capacity * 2;
+			// 		while (new_cap < n)
+			// 			new_cap *= 2;
+
+			// 		reserve(new_cap);
+			// 	}
+			// 	int i = size() + n;
+			// 	while (i >= (int)(savedPos + n))
+			// 	{
+			// 		_allocator.construct(_content + i, *(_content + i - n));
+			// 		_allocator.destroy(_content + i - n);
+			// 		--i;
+			// 	}
+			// 	--last;
+			// 	// int j = n;
+			// 	while (i >= savedPos)
+			// 	{
+			// 		_allocator.construct(_content + i, last);
+			// 		--last;
+			// 		--i;
+			// 	}
+			// 	_size += n;
+			// }
 		private:
 			pointer			_content;
 			size_type		_size;
