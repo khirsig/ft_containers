@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/14 14:54:27 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/14 15:28:25 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,22 @@
 #include <vector>
 #include <iostream>
 
+#ifdef TEST
+# define J 1
+# define VEC ft::vector<int>
+#else
+# define J 0
+# define VEC std::vector<int>
+#endif
+
 int	main()
 {
-	// ft::vector<int> test;
-	std::vector<int> test;
+	VEC test;
+
+	if (J)
+		std::cout << "This is my vector.\n\n";
+	else
+		std::cout << "This is the standard vector.\n\n";
 
 	if (test.empty())
 		std::cout << "Vector is empty with size " << test.size() << "\n";
@@ -51,14 +63,12 @@ int	main()
 	std::cout << "Front: " << test.front() << "\n" << "Back: " << test.back() << "\n";
 
 
-	// ft::vector<int>		cpy;
-	std::vector<int>	cpy;
+	VEC	cpy;
 
 	cpy.assign(test.begin(), test.end());
 	std::cout << "Size: " << cpy.size() << "  Capacity: " << cpy.capacity() << "\n";
-	// for (ft::vector<int>::iterator i = cpy.begin(); i != cpy.end(); ++i)
-	// 	std::cout << *i << " ";
-	for (std::vector<int>::iterator i = cpy.begin(); i != cpy.end(); ++i)
+
+	for (VEC::iterator i = cpy.begin(); i != cpy.end(); ++i)
 		std::cout << *i << " ";
 	std::cout << "\n";
 	cpy.insert(cpy.begin() + 2, 23);

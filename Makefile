@@ -6,7 +6,7 @@
 #    By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/08 11:34:34 by khirsig           #+#    #+#              #
-#    Updated: 2022/07/12 08:54:29 by khirsig          ###   ########.fr        #
+#    Updated: 2022/07/14 15:38:57 by khirsig          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,5 +58,11 @@ clean:
 fclean: clean
 	$(RM) -r *.dSYM $(SDIR)/*.dSYM
 	$(RM) $(NAME)
+	$(RM) ft_test
+	$(RM) std_test
 
+test:$(ODIR) $(OBJS)
+	@$(CC) $(CFLAGS) -D TEST=1 -o ft_test $(SDIR)/$(SRCS)
+	@make clean
+	@$(CC) $(CFLAGS) -o std_test $(SDIR)/$(SRCS)
 re: fclean all

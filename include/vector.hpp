@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/14 14:48:55 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/14 15:31:18 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,7 +268,7 @@ namespace ft {
 			iterator erase(iterator first, iterator last)
 			{
 				size_type	savedPos = first - begin();
-				size_type	n = last - first + 1;
+				size_type	n = last - first;
 				for (size_type i = savedPos; i < _size - n; ++i)
 				{
 					_allocator.destroy(_content + i);
