@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/14 10:39:28 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/14 14:54:27 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 
 int	main()
 {
-	ft::vector<int> test;
-	// std::vector<int> test;
+	// ft::vector<int> test;
+	std::vector<int> test;
 
 	if (test.empty())
 		std::cout << "Vector is empty with size " << test.size() << "\n";
@@ -49,10 +49,16 @@ int	main()
 		std::cout << e.what() << "\n";
 	}
 	std::cout << "Front: " << test.front() << "\n" << "Back: " << test.back() << "\n";
-	ft::vector<int>	cpy;
+
+
+	// ft::vector<int>		cpy;
+	std::vector<int>	cpy;
+
 	cpy.assign(test.begin(), test.end());
 	std::cout << "Size: " << cpy.size() << "  Capacity: " << cpy.capacity() << "\n";
-	for (ft::vector<int>::iterator i = cpy.begin(); i != cpy.end(); ++i)
+	// for (ft::vector<int>::iterator i = cpy.begin(); i != cpy.end(); ++i)
+	// 	std::cout << *i << " ";
+	for (std::vector<int>::iterator i = cpy.begin(); i != cpy.end(); ++i)
 		std::cout << *i << " ";
 	std::cout << "\n";
 	cpy.insert(cpy.begin() + 2, 23);
@@ -61,6 +67,16 @@ int	main()
 	std::cout << "\n";
 	std::cout << "Size: " << cpy.size() << "  Capacity: " << cpy.capacity() << "\n";
 	cpy.insert(cpy.begin() + 4, 3, 10);
+	std::cout << "Size: " << cpy.size() << "  Capacity: " << cpy.capacity() << "\n";
+	for (std::size_t i = 0; i < cpy.size(); ++i)
+		std::cout << cpy[i] << " ";
+	std::cout << "\n";
+	cpy.erase(cpy.begin() + 3);
+	std::cout << "Size: " << cpy.size() << "  Capacity: " << cpy.capacity() << "\n";
+	for (std::size_t i = 0; i < cpy.size(); ++i)
+		std::cout << cpy[i] << " ";
+	std::cout << "\n";
+	cpy.erase(cpy.begin() + 2, cpy.begin() + 5);
 	std::cout << "Size: " << cpy.size() << "  Capacity: " << cpy.capacity() << "\n";
 	for (std::size_t i = 0; i < cpy.size(); ++i)
 		std::cout << cpy[i] << " ";

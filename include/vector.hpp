@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/14 10:57:44 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/14 14:48:55 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,6 +252,31 @@ namespace ft {
 			// 	}
 			// 	_size += n;
 			// }
+
+			iterator erase(iterator position)
+			{
+				size_type savedPos = position - begin();
+				for (size_type i = savedPos; i < _size - 1; ++i)
+				{
+					_allocator.destroy(_content + i);
+					_allocator.construct(_content + i, *(_content + i + 1));
+				}
+				--_size;
+				return (_content + savedPos);
+			}
+
+			iterator erase(iterator first, iterator last)
+			{
+				size_type	savedPos = first - begin();
+				size_type	n = last - first + 1;
+				for (size_type i = savedPos; i < _size - n; ++i)
+				{
+					_allocator.destroy(_content + i);
+					_allocator.construct(_content + i, *(_content + i + n));
+				}
+				_size -= n;
+				return (begin() + savedPos);
+			}
 		private:
 			pointer			_content;
 			size_type		_size;
