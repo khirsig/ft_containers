@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/13 16:01:21 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/14 10:37:27 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,37 @@ namespace ft {
 				return (iterator(_content + i));
 			}
 
+			iterator	insert(iterator position, size_type n, const value_type &val)
+			{
+				int	savedPos = position - begin();
+				if (_size + n >= _capacity)
+				{
+					size_type	new_cap = _capacity * 2;
+					while (new_cap < n)
+						new_cap *= 2;
+
+					reserve(new_cap);
+				}
+				int i = size() + n;
+				std::cout << "size() + n = " << size() + n << "\n";
+
+				int j = savedPos + n;
+				std::cout << "savedPos + n = " << savedPos + n << "\n";
+
+				while (i >= j)
+				{
+					_allocator.construct(_content + i, *(_content + i - n));
+					_allocator.destroy(_content + i - n);
+					--i;
+				}
+				while (i >= savedPos)
+				{
+					_allocator.construct(_content + i, val);
+					--i;
+				}
+				_size += n;
+				return (iterator(_content + i));
+			}
 		private:
 			pointer			_content;
 			size_type		_size;
