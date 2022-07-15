@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/14 15:31:18 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/15 12:18:00 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ namespace ft {
 			reference	at(size_type n)
 			{
 				if (n > _size)
-					throw std::out_of_range("Error: Element trying to access is out of range.");
+					throw std::out_of_range("vector");
 				return (*(_content + n));
 			}
 
@@ -276,6 +276,35 @@ namespace ft {
 				}
 				_size -= n;
 				return (begin() + savedPos);
+			}
+
+			void	swap(vector &x)
+			{
+				allocator_type tmp_al = _allocator;
+				pointer	tmp_cnt = _content;
+				size_type tmp_size = _size;
+				size_type tmp_cap = _capacity;
+
+				_allocator = x._allocator;
+				_content = x._content;
+				_size = x._size;
+				_capacity = x._capacity;
+				x._allocator = tmp_al;
+				x._content = tmp_cnt;
+				x._size = tmp_size;
+				x._capacity = tmp_cap;
+			}
+
+			void	clear()
+			{
+				for (size_type i = 0; i < size(); ++i)
+					_allocator.destroy(_content + i);
+				_size = 0;
+			}
+
+			allocator_type	get_allocator() const
+			{
+				return (_allocator);
 			}
 		private:
 			pointer			_content;

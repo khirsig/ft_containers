@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/14 15:28:25 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/15 12:18:22 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,19 @@ int	main()
 	std::cout << "Size: " << cpy.size() << "  Capacity: " << cpy.capacity() << "\n";
 	for (std::size_t i = 0; i < cpy.size(); ++i)
 		std::cout << cpy[i] << " ";
+	std::cout << "\n";
+	cpy.swap(test);
+	std::cout << "Cpy after Swap: ";
+	for (std::size_t i = 0; i < cpy.size(); ++i)
+		std::cout << cpy[i] << " ";
+	std::cout << "Test after Swap: ";
+	for (std::size_t i = 0; i < test.size(); ++i)
+		std::cout << test[i] << " ";
+	std::cout << "\n";
+	test.clear();
+	std::cout << "Test after clear: ";
+	for (std::size_t i = 0; i < test.size(); ++i)
+		std::cout << test[i] << " ";
 	std::cout << "\n";
 
 	return (0);
