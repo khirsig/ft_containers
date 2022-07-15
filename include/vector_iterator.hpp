@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 08:14:46 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/14 08:28:51 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/15 12:50:42 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define VECTOR_ITERATOR_HPP
 
 namespace ft {
-	template<typename T>
+	template <typename T>
 	class vector_iterator {
 		public:
 			typedef T					value_type;
@@ -72,11 +72,45 @@ namespace ft {
 				friend vector_iterator<U>	operator+(const vector_iterator<U> &pre, const int &post);
 			template<typename U>
 				friend vector_iterator<U>	operator-(const vector_iterator<U> &pre, const int &post);
-		private:
+		protected:
 			pointer _ptr;
 	};
 
-	template<typename U>
+	template <typename T>
+	class vector_reverse_iterator : public vector_iterator<T> {
+		public:
+			typedef T					value_type;
+			typedef value_type*			pointer;
+			typedef value_type&			reference;
+
+			vector_reverse_iterator	&operator++()
+			{
+				--this->_ptr;
+				return (*this);
+			}
+
+			vector_reverse_iterator	operator++(int)
+			{
+				pointer	tmp = this->_ptr;
+				--this->_ptr;
+				return vector_reverse_iterator(tmp);
+			}
+
+			vector_reverse_iterator	&operator--()
+			{
+				++this->_ptr;
+				return (*this);
+			}
+
+			vector_reverse_iterator	operator--(int)
+			{
+				pointer	tmp = this->_ptr;
+				++this->_ptr;
+				return vector_reverse_iterator(tmp);
+			}
+	};
+
+	template <typename U>
 	int	operator+(const vector_iterator<U> &pre, const vector_iterator<U> &post)
 	{
 		int	result;
@@ -85,7 +119,7 @@ namespace ft {
 		return (result);
 	}
 
-	template<typename U>
+	template <typename U>
 	int	operator-(const vector_iterator<U> &pre, const vector_iterator<U> &post)
 	{
 		int	result;
@@ -94,7 +128,7 @@ namespace ft {
 		return (result);
 	}
 
-	template<typename U>
+	template <typename U>
 	vector_iterator<U>	operator+(const vector_iterator<U> &pre, const int &post)
 	{
 		U	*result;
@@ -103,7 +137,7 @@ namespace ft {
 		return (result);
 	}
 
-	template<typename U>
+	template <typename U>
 	vector_iterator<U>	operator-(const vector_iterator<U> &pre, const int &post)
 	{
 		U	*result;

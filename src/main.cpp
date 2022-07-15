@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/15 12:18:22 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/15 12:21:36 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ int	main()
 	for (std::size_t i = 0; i < test.size(); ++i)
 		std::cout << test[i] << " ";
 	std::cout << "\n";
+	std::cout << "Size: " << test.size() << "  Capacity: " << test.capacity() << "\n";
 
 	return (0);
 }

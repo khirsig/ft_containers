@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/15 12:18:00 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/15 12:41:06 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ namespace ft {
 			typedef value_type*									pointer;
 			typedef const value_type*							const_pointer;
 			typedef ft::vector_iterator<T>						iterator;
+			typedef ft::vector_reverse_iterator<T>				reverse_iterator;
 
 			// Construct/Copy/Destroy
 			vector() : _content(NULL), _size(0), _capacity(0) { }
@@ -53,6 +54,10 @@ namespace ft {
 			iterator	begin() const { return (_content); }
 
 			iterator	end() const { return (_content + _size); }
+
+			reverse_iterator	rbegin() const { return (_content + _size); }
+
+			reverse_iterator	rend() const { return (_content); }
 
 			// Capacity
 			size_type	size() const { return (_size); }
