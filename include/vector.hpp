@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/15 12:41:06 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/18 08:52:41 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ namespace ft {
 			typedef const value_type*							const_pointer;
 			typedef ft::vector_iterator<T>						iterator;
 			typedef ft::vector_reverse_iterator<T>				reverse_iterator;
+			typedef const iterator								const_iterator;
+			typedef const reverse_iterator						const_reverse_iterator;
 
 			// Construct/Copy/Destroy
 			vector() : _content(NULL), _size(0), _capacity(0) { }
@@ -51,13 +53,21 @@ namespace ft {
 			value_type	&operator[](unsigned int i) { return (_content[i]); }
 
 			// Iterators
-			iterator	begin() const { return (_content); }
+			iterator	begin() { return (_content); }
 
-			iterator	end() const { return (_content + _size); }
+			const_iterator	begin() const { return (_content); }
 
-			reverse_iterator	rbegin() const { return (_content + _size); }
+			iterator	end() { return (_content + _size); }
 
-			reverse_iterator	rend() const { return (_content); }
+			const_iterator	end() const { return (_content + _size); }
+
+			reverse_iterator	rbegin() { return (_content + _size); }
+
+			const_reverse_iterator	rbegin() const { return (_content + _size); }
+
+			reverse_iterator	rend() { return (_content); }
+
+			const_reverse_iterator	rend() const { return (_content); }
 
 			// Capacity
 			size_type	size() const { return (_size); }
