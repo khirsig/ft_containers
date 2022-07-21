@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/15 12:21:36 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/21 11:24:58 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@
 #ifdef TEST
 # define J 1
 # define VEC ft::vector<int>
+# define NS ft
 #else
 # define J 0
 # define VEC std::vector<int>
+# define NS std
 #endif
 
 int	main()
@@ -106,5 +108,9 @@ int	main()
 	std::cout << "\n";
 	std::cout << "Size: " << test.size() << "  Capacity: " << test.capacity() << "\n";
 
+	if (NS::is_integral<char>::value)
+		std::cout << "Char is integral\n";
+	if (NS::is_integral<float>::value)
+		std::cout << "Float is integral\n";
 	return (0);
 }

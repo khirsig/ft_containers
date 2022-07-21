@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Vector.hpp                                         :+:      :+:    :+:   */
+/*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/18 08:52:41 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/21 11:26:39 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 # include <exception>
 # include <memory>
 # include <stdexcept>
-# include "vector_iterator.hpp"
+# include "iterators/vector_iterator.hpp"
+# include "utils/is_integral.hpp"
 
 namespace ft {
 	template <typename T, typename Allocator = std::allocator<T> >

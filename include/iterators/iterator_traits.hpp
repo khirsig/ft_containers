@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 09:22:08 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/18 09:47:44 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/18 09:48:43 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ namespace ft {
 
 	template <class T>
 	class iterator_traits<const T*> {
-		typedef std::ptrdiff_t					difference_type;
+		typedef std::ptrdiff_t				difference_type;
 		typedef T							value_type;
 		typedef const T*					pointer;
 		typedef const T&					reference;
