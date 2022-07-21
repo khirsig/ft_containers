@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/21 11:24:58 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/21 12:31:21 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	main()
 
 	if (NS::is_integral<char>::value)
 		std::cout << "Char is integral\n";
-	if (NS::is_integral<float>::value)
-		std::cout << "Float is integral\n";
+	if (!NS::is_integral<float>::value)
+		std::cout << "Float is not integral\n";
 	return (0);
 }

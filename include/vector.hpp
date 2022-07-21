@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/21 11:26:39 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/21 12:31:13 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdexcept>
 # include "iterators/vector_iterator.hpp"
 # include "utils/is_integral.hpp"
+# include "utils/enable_if.hpp"
 
 namespace ft {
 	template <typename T, typename Allocator = std::allocator<T> >
@@ -238,36 +239,37 @@ namespace ft {
 				return (iterator(_content + i));
 			}
 
-			// template <class InputIterator>
-			// void	insert(iterator position, InputIterator first, InputIterator last)
-			// {
-			// 	int	savedPos = position - begin();
-			// 	size_type	n = last - first;
-			// 	if (_size + n >= _capacity)
-			// 	{
-			// 		size_type	new_cap = _capacity * 2;
-			// 		while (new_cap < n)
-			// 			new_cap *= 2;
+			template <class InputIterator>
+			void	insert(iterator position, InputIterator first, InputIterator last,
+				typename enable_if<!ft::is_integral<InputIterator>::value>::type)
+			{
+				int	savedPos = position - begin();
+				size_type	n = last - first;
+				if (_size + n >= _capacity)
+				{
+					size_type	new_cap = _capacity * 2;
+					while (new_cap < n)
+						new_cap *= 2;
 
-			// 		reserve(new_cap);
-			// 	}
-			// 	int i = size() + n;
-			// 	while (i >= (int)(savedPos + n))
-			// 	{
-			// 		_allocator.construct(_content + i, *(_content + i - n));
-			// 		_allocator.destroy(_content + i - n);
-			// 		--i;
-			// 	}
-			// 	--last;
-			// 	// int j = n;
-			// 	while (i >= savedPos)
-			// 	{
-			// 		_allocator.construct(_content + i, last);
-			// 		--last;
-			// 		--i;
-			// 	}
-			// 	_size += n;
-			// }
+					reserve(new_cap);
+				}
+				int i = size() + n;
+				while (i >= (int)(savedPos + n))
+				{
+					_allocator.construct(_content + i, *(_content + i - n));
+					_allocator.destroy(_content + i - n);
+					--i;
+				}
+				--last;
+				// int j = n;
+				while (i >= savedPos)
+				{
+					_allocator.construct(_content + i, last);
+					--last;
+					--i;
+				}
+				_size += n;
+			}
 
 			iterator erase(iterator position)
 			{
