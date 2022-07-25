@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/25 09:11:42 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/25 09:31:00 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@
 # include <exception>
 # include <memory>
 # include <stdexcept>
+# include <utility>
 # include "iterators/vector_iterator.hpp"
 # include "utils/is_integral.hpp"
 # include "utils/enable_if.hpp"
 # include "utils/equal.hpp"
+# include "utils/make_pair.hpp"
 # include "utils/lexicographical_compare.hpp"
 
 namespace ft {

@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/25 09:11:09 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/25 09:31:24 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,5 +116,7 @@ int	main()
 		std::cout << "Cpy and Test are equal.\n";
 	if (NS::lexicographical_compare(test.begin(), test.end(), cpy.begin(), cpy.end()))
 		std::cout << "Lexicographical_compare is true.\n";
+
+	ft::pair<std::string,VEC> tar;
 	return (0);
 }
