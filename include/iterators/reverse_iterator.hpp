@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 14:27:15 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/26 15:20:33 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/26 16:09:00 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ namespace ft {
 
 			iterator_type	base() const { return (_current); }
 
-			reference	operator*() const { return (*_current); }
+			reference	operator*() const { iterator_type tmp = _current; return *(--tmp); }
 
 			reverse_iterator	&operator++() { return (_current--); }
 
@@ -50,13 +50,13 @@ namespace ft {
 
 			reverse_iterator	operator--(int) { return (++_current); }
 
-			reverse_iterator	operator+(difference_type n) const { return(_current - n); }
+			reverse_iterator	operator+(difference_type n) const { return reverse_iterator(_current - n); }
 
-			reverse_iterator	operator-(difference_type n) const { return(_current + n); }
+			reverse_iterator	operator-(difference_type n) const { return reverse_iterator(_current + n); }
 
-			reverse_iterator	&operator+=(difference_type n) { return(_current -= n); }
+			reverse_iterator	&operator+=(difference_type n) { _current -= n; return (*this); }
 
-			reverse_iterator	&operator-=(difference_type n) { return(_current += n); }
+			reverse_iterator	&operator-=(difference_type n) { _current += n; return (*this); }
 
 			pointer	operator->() const { return (_current); }
 
@@ -66,38 +66,38 @@ namespace ft {
 			iterator_type	_current;
 	};
 
-	template <class Iterator>
-	bool	operator==(const reverse_iterator<Iterator> &lhs, const reverse_iterator<Iterator> &rhs)
+	template <class Iterator1, class Iterator2>
+	bool	operator==(const reverse_iterator<Iterator1> &lhs, const reverse_iterator<Iterator2> &rhs)
 	{
 		return (lhs == rhs);
 	}
 
-	template <class Iterator>
-	bool	operator!=(const reverse_iterator<Iterator> &lhs, const reverse_iterator<Iterator> &rhs)
+	template <class Iterator1, class Iterator2>
+	bool	operator!=(const reverse_iterator<Iterator1> &lhs, const reverse_iterator<Iterator2> &rhs)
 	{
 		return !(lhs == rhs);
 	}
 
-	template <class Iterator>
-	bool	operator<(const reverse_iterator<Iterator> &lhs, const reverse_iterator<Iterator> &rhs)
+	template <class Iterator1, class Iterator2>
+	bool	operator<(const reverse_iterator<Iterator1> &lhs, const reverse_iterator<Iterator2> &rhs)
 	{
 		return (lhs < rhs);
 	}
 
-	template <class Iterator>
-	bool	operator<=(const reverse_iterator<Iterator> &lhs, const reverse_iterator<Iterator> &rhs)
+	template <class Iterator1, class Iterator2>
+	bool	operator<=(const reverse_iterator<Iterator1> &lhs, const reverse_iterator<Iterator2> &rhs)
 	{
 		return (lhs <= rhs);
 	}
 
-	template <class Iterator>
-	bool	operator>(const reverse_iterator<Iterator> &lhs, const reverse_iterator<Iterator> &rhs)
+	template <class Iterator1, class Iterator2>
+	bool	operator>(const reverse_iterator<Iterator1> &lhs, const reverse_iterator<Iterator2> &rhs)
 	{
 		return (lhs > rhs);
 	}
 
-	template <class Iterator>
-	bool	operator>=(const reverse_iterator<Iterator> &lhs, const reverse_iterator<Iterator> &rhs)
+	template <class Iterator1, class Iterator2>
+	bool	operator>=(const reverse_iterator<Iterator1> &lhs, const reverse_iterator<Iterator2> &rhs)
 	{
 		return (lhs >= rhs);
 	}
@@ -106,13 +106,13 @@ namespace ft {
 	reverse_iterator<Iterator>	operator+(typename reverse_iterator<Iterator>::difference_type n,
 		const reverse_iterator<Iterator> &rev_it)
 	{
-		return (rev_it + n);
+		return reverse_iterator<Iterator>(rev_it + n);
 	}
 	template <class Iterator>
 	reverse_iterator<Iterator>	operator-(typename reverse_iterator<Iterator>::difference_type n,
 		const reverse_iterator<Iterator> &rev_it)
 	{
-		return (rev_it - n);
+		return reverse_iterator<Iterator>(rev_it - n);
 	}
 }
 

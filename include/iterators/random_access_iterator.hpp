@@ -69,13 +69,13 @@ namespace ft {
 
 			reference	operator*() { return (*_ptr); }
 
-			random_access_iterator	&operator+=(int offset) { _ptr += offset; return (*this); }
+			random_access_iterator	&operator+=(difference_type offset) { _ptr += offset; return (*this); }
 
-			random_access_iterator	&operator-=(int offset) { _ptr -= offset; return (*this); }
+			random_access_iterator	&operator-=(difference_type offset) { _ptr -= offset; return (*this); }
 
-			random_access_iterator	operator+(int offset) { return (_ptr + offset); }
+			random_access_iterator	operator+(difference_type offset) const { return (_ptr + offset); }
 
-			random_access_iterator	operator-(int offset) { return (_ptr - offset); }
+			random_access_iterator	operator-(difference_type offset) const { return (_ptr - offset); }
 
 			template <class U, class V>
 				friend random_access_iterator	operator-(const random_access_iterator<V> &pre, const random_access_iterator<V> &post);

@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/26 15:42:42 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/26 15:59:33 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,13 +112,13 @@ namespace ft {
 
 			const_iterator	end() const { return (_content + _size); }
 
-			reverse_iterator	rbegin() { return (_content + _size); }
+			reverse_iterator	rbegin() { return reverse_iterator(_content + _size); }
 
-			const_reverse_iterator	rbegin() const { return (_content + _size); }
+			const_reverse_iterator	rbegin() const { return const_reverse_iterator(_content + _size); }
 
-			reverse_iterator	rend() { return (_content); }
+			reverse_iterator	rend() { return reverse_iterator(_content); }
 
-			const_reverse_iterator	rend() const { return (_content); }
+			const_reverse_iterator	rend() const { return const_reverse_iterator(_content); }
 
 			// Capacity
 			size_type	size() const { return (_size); }
