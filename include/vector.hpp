@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/26 11:22:02 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/26 15:42:42 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 # include <memory>
 # include <stdexcept>
 # include <utility>
-# include "iterators/vector_iterator.hpp"
+# include "iterators/random_access_iterator.hpp"
+# include "iterators/reverse_iterator.hpp"
 # include "utils/is_integral.hpp"
 # include "utils/enable_if.hpp"
 # include "utils/equal.hpp"
@@ -31,18 +32,18 @@ namespace ft {
 	class vector {
 		public:
 			// Typedefs
-			typedef T														value_type;
-			typedef Allocator												allocator_type;
-			typedef typename allocator_type::size_type						size_type;
-			typedef value_type&												reference;
-			typedef const value_type&										const_reference;
-			typedef value_type*												pointer;
-			typedef const value_type*										const_pointer;
-			typedef typename vector_iterator<value_type>::difference_type	difference_type;
-			typedef vector_iterator<value_type>								iterator;
-			typedef vector_reverse_iterator<value_type>						reverse_iterator;
-			typedef vector_iterator<const value_type>						const_iterator;
-			typedef vector_reverse_iterator<const value_type>				const_reverse_iterator;
+			typedef T																value_type;
+			typedef Allocator														allocator_type;
+			typedef typename allocator_type::size_type								size_type;
+			typedef value_type&														reference;
+			typedef const value_type&												const_reference;
+			typedef value_type*														pointer;
+			typedef const value_type*												const_pointer;
+			typedef typename random_access_iterator<value_type>::difference_type	difference_type;
+			typedef random_access_iterator<value_type>								iterator;
+			typedef random_access_iterator<const value_type>						const_iterator;
+			typedef reverse_iterator<const_iterator>								const_reverse_iterator;
+			typedef reverse_iterator<iterator>										reverse_iterator;
 
 			// Construct/Copy/Destroy
 			explicit vector(const allocator_type &alloc = allocator_type()) : _content(NULL), _size(0), _capacity(0)
@@ -387,6 +388,42 @@ namespace ft {
 			size_type		_capacity;
 			allocator_type	_allocator;
 	};
+
+	template <typename T, typename Allocator>
+	bool	operator==(const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs)
+	{
+		return (lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+	}
+
+	template <typename T, typename Allocator>
+	bool	operator!=(const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs)
+	{
+		return !(lhs == rhs);
+	}
+
+	template <typename T, typename Allocator>
+	bool	operator<=(const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs)
+	{
+		return !(lhs > rhs);
+	}
+
+	template <typename T, typename Allocator>
+	bool	operator>=(const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs)
+	{
+		return !(lhs < rhs);
+	}
+
+	template <typename T, typename Allocator>
+	bool	operator<(const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs)
+	{
+		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	}
+
+	template <typename T, typename Allocator>
+	bool	operator>(const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs)
+	{
+		return (rhs < lhs);
+	}
 }
 
 #endif
