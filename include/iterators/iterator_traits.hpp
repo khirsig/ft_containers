@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 09:22:08 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/18 09:48:43 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/26 09:01:50 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ namespace ft {
 
 	template <class Iterator>
 	class iterator_traits {
-		typedef Iterator::difference_type	difference_type;
-		typedef Iterator::value_type		value_type;
-		typedef Iterator::pointer			pointer;
-		typedef Iterator::reference			reference;
-		typedef Iterator::iterator_category	iterator_category;
+		typedef typename Iterator::difference_type		difference_type;
+		typedef typename Iterator::value_type			value_type;
+		typedef typename Iterator::pointer				pointer;
+		typedef typename Iterator::reference			reference;
+		typedef typename Iterator::iterator_category	iterator_category;
 	};
 
 	template <class T>

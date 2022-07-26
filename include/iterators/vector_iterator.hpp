@@ -6,20 +6,24 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 08:14:46 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/15 12:50:42 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/26 09:41:25 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_ITERATOR_HPP
 # define VECTOR_ITERATOR_HPP
 
+# include "iterator.hpp"
+
 namespace ft {
 	template <typename T>
 	class vector_iterator {
 		public:
-			typedef T					value_type;
-			typedef value_type*			pointer;
-			typedef value_type&			reference;
+			typedef typename iterator<random_access_iterator_tag, T>::value_type		value_type;
+			typedef typename iterator<random_access_iterator_tag, T>::pointer			pointer;
+			typedef typename iterator<random_access_iterator_tag, T>::reference			reference;
+			typedef typename iterator<random_access_iterator_tag, T>::difference_type	difference_type;
+			typedef typename iterator<random_access_iterator_tag, T>::iterator_category	iterator_category;
 
 			vector_iterator(T *ptr)
 				: _ptr(ptr) { }
@@ -50,6 +54,11 @@ namespace ft {
 				pointer	tmp = _ptr;
 				--_ptr;
 				return vector_iterator(tmp);
+			}
+
+    		operator	vector_iterator<const T>() const
+			{
+				return (vector_iterator<const T>(this->_ptr));
 			}
 
 			reference	operator[](int index) { return *(_ptr + index); }
@@ -144,6 +153,15 @@ namespace ft {
 
 		result = pre._ptr - post;
 		return (result);
+	}
+
+	template <class InputIt>
+	typename vector_iterator<InputIt>::difference_type	distance(InputIt first, InputIt last)
+	{
+		typename vector_iterator<InputIt>::difference_type	dist = 0;
+		while (first != last)
+			++first, ++dist;
+		return	dist;
 	}
 }
 

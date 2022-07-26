@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 10:40:31 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/21 11:25:04 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/25 14:01:01 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ namespace ft {
 	template <> struct is_integral<char32_t> : public true_type { };
 	template <> struct is_integral<short> : public true_type { };
 	template <> struct is_integral<unsigned short> : public true_type { };
+	template <> struct is_integral<int> : public true_type { };
+	template <> struct is_integral<unsigned int> : public true_type { };
 	template <> struct is_integral<long> : public true_type { };
 	template <> struct is_integral<unsigned long> : public true_type { };
 	template <> struct is_integral<long long> : public true_type { };
