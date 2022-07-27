@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 14:27:15 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/27 13:41:41 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/27 13:49:23 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,20 +120,20 @@ namespace ft {
 			return (lhs.base() >= rhs.base());
 		}
 
-	template <class Iterator1, class Iterator2>
-		reverse_iterator<Iterator1>	operator+(
-			const reverse_iterator<Iterator1> &lhs,
-			const reverse_iterator<Iterator2> &rhs)
+	template <class Iterator>
+		reverse_iterator<Iterator>	operator+(
+			typename reverse_iterator<Iterator>::difference_type n,
+			const reverse_iterator<Iterator> &rev_it)
 		{
-			return reverse_iterator<Iterator1>(lhs.base() + distance(lhs.base(), rhs.base()));
+			return reverse_iterator<Iterator>(rev_it.base() + n);
 		}
 
 	template <class Iterator1, class Iterator2>
-		typename reverse_iterator<Iterator1>::difference	operator-(
+		typename reverse_iterator<Iterator1>::difference_type	operator-(
 			const reverse_iterator<Iterator1> &lhs,
 			const reverse_iterator<Iterator2> &rhs)
 		{
-			return typename reverse_iterator<Iterator1>::diference(distance(lhs.base(), rhs.base()));
+			return typename reverse_iterator<Iterator1>::difference_type(lhs.base() - rhs.base());
 		}
 }
 
