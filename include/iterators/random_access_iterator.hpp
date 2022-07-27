@@ -85,22 +85,22 @@ namespace ft {
 	};
 
 	template <class U, class V>
-	bool	operator==(const random_access_iterator<U> &pre, const random_access_iterator<V> &post) { return (pre.base() == post.base()); }
+		bool	operator==(const random_access_iterator<U> &pre, const random_access_iterator<V> &post) { return (pre.base() == post.base()); }
 
 	template <class U, class V>
-	bool	operator!=(const random_access_iterator<U> &pre, const random_access_iterator<V> &post) { return !(pre.base() == post.base()); }
+		bool	operator!=(const random_access_iterator<U> &pre, const random_access_iterator<V> &post) { return !(pre.base() == post.base()); }
 
 	template <class U, class V>
-	bool	operator<=(const random_access_iterator<U> &pre, const random_access_iterator<V> &post) { return (pre.base() <= post.base()); }
+		bool	operator<=(const random_access_iterator<U> &pre, const random_access_iterator<V> &post) { return (pre.base() <= post.base()); }
 
 	template <class U, class V>
-	bool	operator>=(const random_access_iterator<U> &pre, const random_access_iterator<V> &post) { return (pre.base() >= post.base()); }
+		bool	operator>=(const random_access_iterator<U> &pre, const random_access_iterator<V> &post) { return (pre.base() >= post.base()); }
 
 	template <class U, class V>
-	bool	operator<(const random_access_iterator<U> &pre, const random_access_iterator<V> &post) { return (pre.base() < post.base()); }
+		bool	operator<(const random_access_iterator<U> &pre, const random_access_iterator<V> &post) { return (pre.base() < post.base()); }
 
 	template <class U, class V>
-	bool	operator>(const random_access_iterator<U> &pre, const random_access_iterator<V> &post) { return (pre.base() > post.base()); }
+		bool	operator>(const random_access_iterator<U> &pre, const random_access_iterator<V> &post) { return (pre.base() > post.base()); }
 
 	template <class U>
 	random_access_iterator<U>	operator+(const typename random_access_iterator<U>::difference_type &pre, const random_access_iterator<U> &post)
@@ -109,25 +109,25 @@ namespace ft {
 	}
 
 	template <class U>
-	typename random_access_iterator<U>::difference_type	operator-(const random_access_iterator<U> &pre, const random_access_iterator<U> &post)
-	{
-		return typename random_access_iterator<U>::difference_type(pre.base() - post.base());
-	}
+		typename random_access_iterator<U>::difference_type	operator-(const random_access_iterator<U> &pre, const random_access_iterator<U> &post)
+		{
+			return typename random_access_iterator<U>::difference_type(pre.base() - post.base());
+		}
 
 	template <class U, class V>
-	typename random_access_iterator<U>::difference_type	operator-(const random_access_iterator<U> &pre, const random_access_iterator<V> &post)
-	{
-		return typename random_access_iterator<U>::difference_type(pre.base() - post.base());
-	}
+		typename random_access_iterator<U>::difference_type	operator-(const random_access_iterator<U> &pre, const random_access_iterator<V> &post)
+		{
+			return typename random_access_iterator<U>::difference_type(pre.base() - post.base());
+		}
 
 	template <class InputIt>
-	typename random_access_iterator<InputIt>::difference_type	distance(InputIt first, InputIt last)
-	{
-		typename random_access_iterator<InputIt>::difference_type	dist = 0;
-		while (first != last)
-			++first, ++dist;
-		return	dist;
-	}
+		typename random_access_iterator<InputIt>::difference_type	distance(InputIt first, InputIt last)
+		{
+			typename random_access_iterator<InputIt>::difference_type	dist = 0;
+			while (first != last)
+				++first, ++dist;
+			return	dist;
+		}
 }
 
 #endif

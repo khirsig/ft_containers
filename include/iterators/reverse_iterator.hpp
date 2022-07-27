@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 14:27:15 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/27 15:20:29 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/27 15:49:10 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,37 +87,37 @@ namespace ft {
 	template <class Iterator1, class Iterator2>
 		bool	operator==(const reverse_iterator<Iterator1> &lhs, const reverse_iterator<Iterator2> &rhs)
 		{
-			return (lhs.base() == rhs.base());
+			return (rhs.base() == lhs.base());
 		}
 
 	template <class Iterator1, class Iterator2>
 		bool	operator!=(const reverse_iterator<Iterator1> &lhs, const reverse_iterator<Iterator2> &rhs)
 		{
-			return !(lhs.base() == rhs.base());
+			return (rhs.base() != lhs.base());
 		}
 
 	template <class Iterator1, class Iterator2>
 		bool	operator<(const reverse_iterator<Iterator1> &lhs, const reverse_iterator<Iterator2> &rhs)
 		{
-			return (lhs.base() < rhs.base());
+			return (rhs.base() < lhs.base());
 		}
 
 	template <class Iterator1, class Iterator2>
 		bool	operator<=(const reverse_iterator<Iterator1> &lhs, const reverse_iterator<Iterator2> &rhs)
 		{
-			return (lhs.base() <= rhs.base());
+			return (rhs.base() <= lhs.base());
 		}
 
 	template <class Iterator1, class Iterator2>
 		bool	operator>(const reverse_iterator<Iterator1> &lhs, const reverse_iterator<Iterator2> &rhs)
 		{
-			return (lhs.base() > rhs.base());
+			return (rhs.base() > lhs.base());
 		}
 
 	template <class Iterator1, class Iterator2>
 		bool	operator>=(const reverse_iterator<Iterator1> &lhs, const reverse_iterator<Iterator2> &rhs)
 		{
-			return (lhs.base() >= rhs.base());
+			return (rhs.base() >= lhs.base());
 		}
 
 	template <class Iterator>
