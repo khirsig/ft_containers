@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 14:27:15 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/27 14:36:05 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/27 15:20:29 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ namespace ft {
 
 				reverse_iterator	&operator-=(difference_type n) { _current += n; return (*this); }
 
-				pointer	operator->() const { return (_current.base()); }
+				pointer	operator->() const { return pointer(&(operator*())); }
 
 				reference	operator[](difference_type n) const { return *(operator+(n)); }
 
