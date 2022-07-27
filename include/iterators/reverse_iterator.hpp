@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 14:27:15 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/27 12:04:58 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/27 12:11:13 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ namespace ft {
 
 			iterator_type	base() const { return (_current); }
 
-			reference	operator*() const { iterator_type tmp = _current; return *tmp; }
+			reference	operator*() const { iterator_type tmp = _current; return *(--tmp); }
 
 			reverse_iterator	&operator++()
 			{

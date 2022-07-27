@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/27 10:27:21 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/27 12:25:56 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,19 +129,12 @@ namespace ft {
 			{
 				if (n < size())
 				{
-					pointer	new_alloc = NULL;
-					new_alloc = _allocator.allocate(n);
-					for (size_type i = 0; i < n; ++i)
+					for (size_type i = n; i < _size; ++i)
 					{
-						_allocator.construct(new_alloc + i, *(_content + i));
 						_allocator.destroy(_content + i);
+						_allocator.construct(_content + i, val);
 					}
-					for (size_type i = n; i < size(); ++i)
-						_allocator.destroy(_content + i);
-					_allocator.deallocate(_content, _capacity);
-					_capacity = n;
 					_size = n;
-					_content = new_alloc;
 				}
 				else if (n > size() && n < capacity())
 				{
@@ -151,7 +144,10 @@ namespace ft {
 				}
 				else if (n > capacity())
 				{
-					reserve(n);
+					size_type	new_cap = _capacity * 2;
+					if (new_cap < n)
+						new_cap = n;
+					reserve(new_cap);
 					for (size_type i = size(); i < n; ++i)
 						*(_content + i) = val;
 					_size = n;
