@@ -105,19 +105,19 @@ namespace ft {
 	template <class U>
 	random_access_iterator<U>	operator+(const typename random_access_iterator<U>::difference_type &pre, const random_access_iterator<U> &post)
 	{
-		return (post.base() + pre);
+		return random_access_iterator<U>(post.base() + pre);
 	}
 
 	template <class U>
 	typename random_access_iterator<U>::difference_type	operator-(const random_access_iterator<U> &pre, const random_access_iterator<U> &post)
 	{
-		return (pre.base() - post.base());
+		return typename random_access_iterator<U>::difference_type(pre.base() - post.base());
 	}
 
 	template <class U, class V>
 	typename random_access_iterator<U>::difference_type	operator-(const random_access_iterator<U> &pre, const random_access_iterator<V> &post)
 	{
-		return (pre.base() - post.base());
+		return typename random_access_iterator<U>::difference_type(pre.base() - post.base());
 	}
 
 	template <class InputIt>
