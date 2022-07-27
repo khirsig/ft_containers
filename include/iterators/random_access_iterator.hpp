@@ -30,7 +30,7 @@ namespace ft {
 
 			~random_access_iterator() { }
 
-			pointer	base() const { return(_ptr); }
+			pointer	base() const { return (_ptr); }
 
 			random_access_iterator	&operator++()
 			{
@@ -63,7 +63,7 @@ namespace ft {
 				return (random_access_iterator<const T>(this->_ptr));
 			}
 
-			reference	operator[](int index) { return *(_ptr + index); }
+			reference	operator[](difference_type n) const { return *(operator+(n)); }
 
 			pointer	operator->() { return (_ptr); }
 

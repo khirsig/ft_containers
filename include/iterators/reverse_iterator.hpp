@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 14:27:15 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/27 13:49:23 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/27 14:36:05 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ namespace ft {
 
 				pointer	operator->() const { return (_current.base()); }
 
-				reference	operator[](difference_type n) { return *(_current + n); }
+				reference	operator[](difference_type n) const { return *(operator+(n)); }
 
 			private:
 				iterator_type	_current;
@@ -125,7 +125,7 @@ namespace ft {
 			typename reverse_iterator<Iterator>::difference_type n,
 			const reverse_iterator<Iterator> &rev_it)
 		{
-			return reverse_iterator<Iterator>(rev_it.base() + n);
+			return reverse_iterator<Iterator>(rev_it + n);
 		}
 
 	template <class Iterator1, class Iterator2>
@@ -133,7 +133,7 @@ namespace ft {
 			const reverse_iterator<Iterator1> &lhs,
 			const reverse_iterator<Iterator2> &rhs)
 		{
-			return typename reverse_iterator<Iterator1>::difference_type(lhs.base() - rhs.base());
+			return typename reverse_iterator<Iterator1>::difference_type(rhs.base() - lhs.base());
 		}
 }
 
