@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 10:58:18 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/28 13:09:32 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/28 13:28:38 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ namespace ft {
 	template <class T>
 		class binary_search_tree {
 			public:
-				binary_search_tree(node<T> *root = NULL)
-					: _root(root) { }
+				binary_search_tree(node<T> *n = NULL)
+					: _root(n) { }
 
-				node<T>	*root() const
+				void	print()
 				{
-					return (_root);
+					print(_root);
 				}
 
 				void	print(const node<T> *n)
@@ -59,14 +59,11 @@ namespace ft {
 					if (n != NULL)
 					{
 						std::cout << prefix;
-
 						if (isLeft)
 							std::cout << "├──";
 						else
 							std::cout << "└──";
-
 						std::cout << n->key << "\n";
-
 						if (isLeft)
 						{
 							print(n->left, prefix + "│   ", true);
@@ -128,10 +125,22 @@ namespace ft {
 					}
 				}
 
-				void insert(binary_search_tree &tree, node<T> *input)
+				void	transplant(node<T> *n, node<T> *u)
+				{
+					if (n->parent == NULL)
+						_root = u;
+					else if (n == n->parent->left)
+						n->parent->left = u;
+					else
+						n->parent->right = u;
+					if (u != NULL)
+						u->parent = n->parent;
+				}
+
+				void	insert(node<T> *input)
 				{
 					node<T> *n = NULL;
-					node<T> *r = tree._root;
+					node<T> *r = _root;
 					while (r != NULL)
 					{
 						n = r;
@@ -142,11 +151,32 @@ namespace ft {
 					}
 					input->parent = n;
 					if (n == NULL)
-						tree._root = input;
+						_root = input;
 					else if (input->key < n->key)
 						n->left = input;
 					else
 						n->right = input;
+				}
+
+				void	destroy(node<T> *target)
+				{
+					if (target->left == NULL)
+						transplant(target, target->right);
+					else if (target->right == NULL)
+						transplant(target, target->left);
+					else
+					{
+						node<T> *n = min(target->right);
+						if (n->parent != target)
+						{
+							transplant(n, n->right);
+							n->right = target->right;
+							n->right->parent = n;
+						}
+						transplant(target, n);
+						n->left = target->left;
+						n->left->parent = n;
+					}
 				}
 
 			private:

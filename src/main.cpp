@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/28 13:11:39 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/28 13:28:48 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ int	main()
 	for (int i = 0; i < 20; ++i)
 	{
 		ft::node<int> *tmp = new ft::node<int>(rand() % 1000);
-		tree.insert(tree, tmp);
+		tree.insert(tmp);
 	}
-	tree.print(tree.root());
+	tree.print();
 	return (0);
 }
