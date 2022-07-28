@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 08:43:51 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/28 08:59:36 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/28 09:09:15 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,55 @@ namespace ft {
 					_c.pop_back();
 				}
 
+				template <class U, class Cntr>
+					friend bool operator==(const stack<U, Cntr> &lhs, const stack<U, Cntr> &rhs);
+				template <class U, class Cntr>
+					friend bool operator!=(const stack<U, Cntr> &lhs, const stack<U, Cntr> &rhs);
+				template <class U, class Cntr>
+					friend bool operator<(const stack<U, Cntr> &lhs, const stack<U, Cntr> &rhs);
+				template <class U, class Cntr>
+					friend bool operator<=(const stack<U, Cntr> &lhs, const stack<U, Cntr> &rhs);
+				template <class U, class Cntr>
+					friend bool operator>(const stack<U, Cntr> &lhs, const stack<U, Cntr> &rhs);
+				template <class U, class Cntr>
+					friend bool operator>=(const stack<U, Cntr> &lhs, const stack<U, Cntr> &rhs);
+
 			private:
 				container_type	_c;
 		};
+
+		template <class U, class Cntr>
+			bool operator==(const stack<U, Cntr> &lhs, const stack<U, Cntr> &rhs)
+			{
+				return (lhs._c == rhs._c);
+			}
+
+		template <class U, class Cntr>
+			bool operator!=(const stack<U, Cntr> &lhs, const stack<U, Cntr> &rhs)
+			{
+				return (lhs._c != rhs._c);
+			}
+
+		template <class U, class Cntr>
+			bool operator<(const stack<U, Cntr> &lhs, const stack<U, Cntr> &rhs)
+			{
+				return (lhs._c < rhs._c);
+			}
+		template <class U, class Cntr>
+			bool operator<=(const stack<U, Cntr> &lhs, const stack<U, Cntr> &rhs)
+			{
+				return (lhs._c <= rhs._c);
+			}
+		template <class U, class Cntr>
+			bool operator>(const stack<U, Cntr> &lhs, const stack<U, Cntr> &rhs)
+			{
+				return (lhs._c > rhs._c);
+			}
+		template <class U, class Cntr>
+			bool operator>=(const stack<U, Cntr> &lhs, const stack<U, Cntr> &rhs)
+			{
+				return (lhs._c >= rhs._c);
+			}
 }
 
 
