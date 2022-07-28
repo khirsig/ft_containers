@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/28 12:18:49 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/28 13:11:39 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,18 @@
 #include "../include/trees/binary_search_tree.hpp"
 #include <vector>
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 int	main()
 {
-
-	ft::binary_search_tree<int> test;
+	srand(time(NULL));
+	ft::binary_search_tree<int> tree;
+	for (int i = 0; i < 20; ++i)
+	{
+		ft::node<int> *tmp = new ft::node<int>(rand() % 1000);
+		tree.insert(tree, tmp);
+	}
+	tree.print(tree.root());
 	return (0);
 }

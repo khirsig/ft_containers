@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 10:58:18 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/28 12:37:43 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/28 13:09:32 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define BINARY_SEARCH_TREE_HPP
 
 #include <iostream>
+#include <string>
 
 #define BLACK false
 #define RED true
@@ -23,31 +24,59 @@ namespace ft {
 
 	template <class T>
 		struct node {
-			node(T key, node *prnt = NULL, node *lft = NULL, node *rgt = NULL, color col = BLACK)
-				: key(key),
-				  parent(prnt),
-				  left(lft),
-				  right(rgt),
-				  color(col) { }
+			node(T _key, node *_parent = NULL, node *_left = NULL, node *_right = NULL, color _col = BLACK)
+				: key(_key),
+				  parent(_parent),
+				  left(_left),
+				  right(_right),
+				  color(_col) { }
 
 			T		key;
+			node	*parent;
 			node	*left;
 			node	*right;
-			node	*parent;
 			color	color;
 		};
 
 	template <class T>
 		class binary_search_tree {
 			public:
+				binary_search_tree(node<T> *root = NULL)
+					: _root(root) { }
 
-				void	inorder_walk(node<T> *n)
+				node<T>	*root() const
+				{
+					return (_root);
+				}
+
+				void	print(const node<T> *n)
+				{
+					print(n, "", false);
+				}
+
+				void	print(const node<T> *n, const std::string &prefix, bool isLeft)
 				{
 					if (n != NULL)
 					{
-						inorder_walk(n->left);
+						std::cout << prefix;
+
+						if (isLeft)
+							std::cout << "├──";
+						else
+							std::cout << "└──";
+
 						std::cout << n->key << "\n";
-						inorder_walk(n->right);
+
+						if (isLeft)
+						{
+							print(n->left, prefix + "│   ", true);
+							print(n->right, prefix + "│   ", false);
+						}
+						else
+						{
+							print(n->left, prefix + "    ", true);
+							print(n->right, prefix + "    ", false);
+						}
 					}
 				}
 
@@ -99,7 +128,7 @@ namespace ft {
 					}
 				}
 
-				node<T> insert(binary_search_tree &tree, node<T> *input)
+				void insert(binary_search_tree &tree, node<T> *input)
 				{
 					node<T> *n = NULL;
 					node<T> *r = tree._root;
