@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 10:58:18 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/28 11:10:50 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/07/28 11:29:50 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,44 @@ namespace ft {
 			bool	color = BLACK;
 		};
 
-	template <
+	template <class T>
+		class binary_search_tree {
+			public:
 
+				void	inorder_tree_walk(node *n)
+				{
+					if (n != NULL)
+					{
+						inorder_tree_walk(n->left);
+						std::cout << n->value << "\n";
+						inorder_tree_walk(n->right);
+					}
+				}
+
+				node<T>	*tree_search(node *n, T key)
+				{
+					if (n == NULL || n->value == key)
+						return (n);
+					if (key < n->value)
+						return (tree_search(n->left, key));
+					else
+						return (tree_search(n->right, key));
+				}
+
+				node<T> *iterative_tree_search(node *n, T key)
+				{
+					while (n != NULL && key != n->value)
+					{
+						if (key < n->value)
+							n = n->left;
+						else
+							n = n->right;
+					}
+					return (n);
+				}
+			private:
+				node<T>	*_node;
+		}
 }
 
 #endif
