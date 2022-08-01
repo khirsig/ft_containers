@@ -6,14 +6,14 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 08:53:03 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/26 15:30:09 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/01 09:35:55 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ITERATOR_HPP
 # define ITERATOR_HPP
 
-# include "iterator_traits.hpp"
+# include "type_traits.hpp"
 
 namespace ft {
 	template <class Category,

@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/28 16:19:15 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/01 14:38:53 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,22 @@
 
 int	main()
 {
-	srand(time(NULL));
-	ft::red_black_tree<int> tree;
-	for (int i = 0; i < 50; ++i)
-	{
-		int j = rand() % 1000;
-		ft::node<int> *tmp = new ft::node<int>(j);
-		tree.insert(tmp);
-	}
-	tree.print();
+	ft::vector<int> t;
+
+	t.push_back(5);
+	t.push_back(5);
+	t.push_back(5);
+	t.push_back(5);
+
+	ft::vector<int> t2(t);
+	// srand(time(NULL));
+	// ft::red_black_tree<int> tree;
+	// for (int i = 0; i < 50; ++i)
+	// {
+	// 	int j = rand() % 1000;
+	// 	ft::node<int> *tmp = new ft::node<int>(j);
+	// 	tree.insert(tmp);
+	// }
+	// tree.print();
 	return (0);
 }
