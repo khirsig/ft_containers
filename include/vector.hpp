@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/01 15:02:56 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/02 16:08:22 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,29 +144,17 @@ namespace ft {
 
 			void	resize(size_type n, value_type val = value_type())
 			{
-				if (n < size())
+				if (_size < n)
 				{
-					for (size_type i = n; i < _size; ++i)
-					{
-						_allocator.destroy(_content + i);
+					reserve(n);
+					for (size_type i = _size; i < _capacity; ++i)
 						_allocator.construct(_content + i, val);
-					}
 					_size = n;
 				}
-				else if (n > size() && n < capacity())
+				else if (_size > n)
 				{
-					for (size_type i = size(); i < n; ++i)
-						*(_content + i) = val;
-					_size = n;
-				}
-				else if (n > capacity())
-				{
-					size_type	new_cap = _capacity * 2;
-					if (new_cap < n)
-						new_cap = n;
-					reserve(new_cap);
-					for (size_type i = size(); i < n; ++i)
-						*(_content + i) = val;
+					for (size_type i = n; i < _size ; ++i)
+						_allocator.destroy(_content + i);
 					_size = n;
 				}
 			}
@@ -221,20 +209,9 @@ namespace ft {
 			void	assign(InputIterator first, InputIterator last,
 					typename enable_if<!ft::is_integral<InputIterator>::value, bool>::type = 0)
 			{
-				size_type n = (size_type)ft::distance(first, last);
-				for (size_type i = 0; i < size(); ++i)
-					_allocator.destroy(_content + i);
-				if (n > _capacity)
-				{
-					if (_capacity > 0)
-						_allocator.deallocate(_content, _capacity);
-					_content = _allocator.allocate(n);
-					_capacity = n;
-				}
-
+				clear();
 				for (size_type i = 0; first != last; ++first, ++i)
-					_allocator.construct(_content + i, *first);
-				_size = n;
+					push_back(*first);
 			}
 
 			void	assign(size_type n, const value_type &val)
@@ -274,38 +251,21 @@ namespace ft {
 
 			iterator	insert(iterator position, const value_type &val)
 			{
+				difference_type offset = position - begin();
 				insert(position, 1, val);
-				return (_content + (position - begin()));
+				return (_content + offset);
 			}
 
 			void	insert(iterator position, size_type n, const value_type &val)
 			{
-				int	savedPos = position - begin();
-				if (_size + n >= _capacity)
+				if (n > 0)
 				{
-					size_type	new_cap = _capacity;
-					if (new_cap == 0)
-						new_cap = 1;
-					if (new_cap < n + _size)
-						new_cap *= 2;
-					if (new_cap < n + _size)
-						new_cap = n + _size;
-
-					reserve(new_cap);
+					const difference_type offset = position - begin();
+					const size_type old_size = size();
+					resize(old_size + n);
+					std::copy_backward(begin() + offset, begin() + old_size, begin() + old_size + n);
+					std::fill_n(begin() + offset, n, val);
 				}
-				int i = size() + n;
-				while (i >= (int)(savedPos + n))
-				{
-					_allocator.construct(_content + i, *(_content + i - n));
-					_allocator.destroy(_content + i - n);
-					--i;
-				}
-				while (i >= savedPos)
-				{
-					_allocator.construct(_content + i, val);
-					--i;
-				}
-				_size += n;
 			}
 
 			template <class InputIterator>
@@ -346,10 +306,11 @@ namespace ft {
 			iterator erase(iterator position)
 			{
 				size_type savedPos = position - begin();
-				for (size_type i = savedPos; i < _size - 1; ++i)
+				for (size_type i = savedPos; i < _size; ++i)
 				{
 					_allocator.destroy(_content + i);
-					_allocator.construct(_content + i, *(_content + i + 1));
+					if (i != _size - 1)
+						_allocator.construct(_content + i, *(_content + i + 1));
 				}
 				--_size;
 				return (_content + savedPos);
@@ -357,15 +318,13 @@ namespace ft {
 
 			iterator erase(iterator first, iterator last)
 			{
-				size_type	savedPos = first - begin();
-				size_type	n = last - first;
-				for (size_type i = savedPos; i < _size - n; ++i)
+				if (first != last)
 				{
-					_allocator.destroy(_content + i);
-					_allocator.construct(_content + i, *(_content + i + n));
+					iterator ptr = std::copy(last, end(), first);
+					while (end() != ptr)
+						pop_back();
 				}
-				_size -= n;
-				return (begin() + savedPos);
+				return (first);
 			}
 
 			void	swap(vector &x)
@@ -404,16 +363,16 @@ namespace ft {
 	};
 
 	template <typename T, typename Allocator>
-	bool	operator==(const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs)
-	{
-		return (lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
-	}
+		bool	operator==(const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs)
+		{
+			return (lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+		}
 
 	template <typename T, typename Allocator>
-	bool	operator!=(const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs)
-	{
-		return !(lhs == rhs);
-	}
+		bool	operator!=(const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs)
+		{
+			return !(lhs == rhs);
+		}
 
 	template <typename T, typename Allocator>
 		bool	operator<=(const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs)
