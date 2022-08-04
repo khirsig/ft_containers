@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/04 10:42:44 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/04 13:43:00 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,15 @@ namespace ft {
 			}
 
 			template <class InputIterator>
-			vector(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(),
-				typename enable_if<!ft::is_integral<InputIterator>::value, bool>::type = 0)
-			{
-				_content = NULL;
-				_allocator = alloc;
-				_capacity = 0;
-				_size = 0;
-				assign(first, last);
-			}
+				vector(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(),
+					typename enable_if<!ft::is_integral<InputIterator>::value, bool>::type = 0)
+				{
+					_content = NULL;
+					_allocator = alloc;
+					_capacity = 0;
+					_size = 0;
+					assign(first, last);
+				}
 
 			vector(const vector &other)
 				: _content(NULL),
@@ -82,7 +82,14 @@ namespace ft {
 				  _capacity(0),
 				  _allocator()
 			{
-				*this = other;
+				size_type n = other.size();
+				if (n > 0)
+				{
+					_vallocate(n);
+					for (size_type i = 0; i < n; ++i)
+						push_back(other[i]);
+					_size = n;
+				}
 			}
 
 			~vector()
@@ -100,7 +107,7 @@ namespace ft {
 			{
 				if (this != &other)
 				{
-					size_type n = other.size();
+					size_type n = other.capacity();
 					clear();
 					if (n > _capacity)
 					{
@@ -109,9 +116,9 @@ namespace ft {
 						_content = _allocator.allocate(n);
 						_capacity = n;
 					}
-					for (size_type i = 0; i < n; ++i)
+					for (size_type i = 0; i < other.size(); ++i)
 						_allocator.construct(_content + i, other[i]);
-					_size = n;
+					_size = other.size();
 				}
 				return (*this);
 			}
@@ -140,7 +147,7 @@ namespace ft {
 			// Capacity
 			size_type	size() const { return (_size); }
 
-			size_type	max_size() const { return (_allocator.max_size()); }
+			size_type	max_size() const { return (std::min<size_type>(_allocator.max_size(), std::numeric_limits<difference_type>::max())); }
 
 			void	resize(size_type n, value_type val = value_type())
 			{
@@ -162,21 +169,15 @@ namespace ft {
 
 			bool	empty() const { return (_size == 0 ? true : false); }
 
-			void	reserve(size_type new_cap)
+			void	reserve(size_type n)
 			{
-				if (new_cap > capacity())
+				if (n > _capacity)
 				{
-					pointer	new_alloc = NULL;
-					new_alloc = _allocator.allocate(new_cap);
+					vector	tmp(_allocator);
+					tmp._vallocate(n);
 					for (size_type i = 0; i < _size; ++i)
-					{
-						_allocator.construct(new_alloc + i, *(_content + i));
-						_allocator.destroy(_content + i);
-					}
-					if (_capacity > 0)
-						_allocator.deallocate(_content, _capacity);
-					_capacity = new_cap;
-					_content = new_alloc;
+						tmp.push_back(*(_content + i));
+					swap(tmp);
 				}
 			}
 
@@ -208,9 +209,7 @@ namespace ft {
 			void	assign(InputIterator first, InputIterator last,
 					typename enable_if<!ft::is_integral<InputIterator>::value, bool>::type = 0)
 			{
-				clear();
-				for (size_type i = 0; first != last; ++first, ++i)
-					push_back(*first);
+				_assign_range(first, last, ft::iterator_category(first));
 			}
 
 			void	assign(size_type n, const value_type &val)
@@ -231,13 +230,8 @@ namespace ft {
 
 			void	push_back(const T &value)
 			{
-				if (size() + 1 > capacity())
-				{
-					if (capacity() == 0)
-						reserve(1);
-					else
-						reserve(capacity() * 2);
-				}
+				if (size() + 1 > _capacity)
+					reserve(_recommend_size(_capacity + 1));
 				_allocator.construct(_content + _size, value);
 				++_size;
 			}
@@ -332,6 +326,50 @@ namespace ft {
 			size_type		_capacity;
 			allocator_type	_allocator;
 
+			inline void _vallocate(size_type n)
+			{
+				if (n > max_size())
+					throw std::length_error("vector");
+				_content = _allocator.allocate(n);
+				_capacity = n;
+			}
+
+			inline void _vdeallocate()
+			{
+				if (_content != NULL)
+				{
+					clear();
+					_allocator.deallocate(_content, _capacity);
+					_capacity = 0;
+				}
+			}
+
+			template <typename InputIterator>
+				inline void	_assign_range(InputIterator first, InputIterator last, std::input_iterator_tag)
+				{
+					clear();
+					for (; first != last; ++first)
+						push_back(*first);
+				}
+
+			template <typename ForwardIterator>
+				inline void _assign_range(ForwardIterator first, ForwardIterator last, std::forward_iterator_tag)
+			{
+				clear();
+				const size_type n = static_cast<size_type>(ft::distance(first, last));
+				if (n > 0)
+				{
+					if (n > _capacity)
+					{
+						_vdeallocate();
+						_vallocate(n);
+					}
+					for (size_type i = 0; first != last; ++first, ++i)
+						_allocator.construct(_content + i, *first);
+					_size = n;
+				}
+			}
+
 			template <typename InputIterator>
 				void	_insert_range(iterator position, InputIterator first, InputIterator last, std::input_iterator_tag)
 				{
@@ -360,6 +398,16 @@ namespace ft {
 						std::copy(first, last, _content + offset);
 					}
 				}
+
+			size_type	_recommend_size(size_type new_size) const
+			{
+				const size_type ms = max_size();
+				if (new_size > ms)
+					throw std::length_error("vector");
+				if (_capacity >= ms / 2)
+					return (ms);
+				return (std::max(2 * _capacity, new_size));
+			}
 
 	};
 
