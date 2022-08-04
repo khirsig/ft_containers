@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/02 16:08:22 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/04 10:42:44 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,14 +149,13 @@ namespace ft {
 					reserve(n);
 					for (size_type i = _size; i < _capacity; ++i)
 						_allocator.construct(_content + i, val);
-					_size = n;
 				}
 				else if (_size > n)
 				{
 					for (size_type i = n; i < _size ; ++i)
 						_allocator.destroy(_content + i);
-					_size = n;
 				}
+				_size = n;
 			}
 
 			size_type	capacity() const { return (_capacity); }
@@ -272,35 +271,7 @@ namespace ft {
 			void	insert(iterator position, InputIterator first, InputIterator last,
 				typename enable_if<!ft::is_integral<InputIterator>::value, bool>::type = 0)
 			{
-				int	savedPos = position - begin();
-				size_type	n = (size_type)ft::distance(first, last);
-				if (_size + n >= _capacity)
-				{
-					size_type new_cap = _capacity;
-					if (new_cap == 0)
-						new_cap = 1;
-					if (new_cap < n + _size)
-						new_cap *= 2;
-					if (new_cap < n + _size)
-						new_cap = n + _size;
-
-					reserve(new_cap);
-				}
-				int i = size() + n;
-				while (i >= (int)(savedPos + n))
-				{
-					_allocator.construct(_content + i, *(_content + i - n));
-					_allocator.destroy(_content + i - n);
-					--i;
-				}
-				--last;
-				while (i >= savedPos)
-				{
-					_allocator.construct(_content + i, *last);
-					--last;
-					--i;
-				}
-				_size += n;
+				_insert_range(position, first, last, ft::iterator_category(first));
 			}
 
 			iterator erase(iterator position)
@@ -360,6 +331,36 @@ namespace ft {
 			size_type		_size;
 			size_type		_capacity;
 			allocator_type	_allocator;
+
+			template <typename InputIterator>
+				void	_insert_range(iterator position, InputIterator first, InputIterator last, std::input_iterator_tag)
+				{
+					if (position == end())
+					{
+						for (; first != last; ++first)
+							push_back(*first);
+					}
+					else if (first != last)
+					{
+						vector tmp(first, last);
+						insert(position, tmp.begin(), tmp.end());
+					}
+				}
+
+			template <typename ForwardIterator>
+				void	_insert_range(iterator position, ForwardIterator first, ForwardIterator last, std::forward_iterator_tag)
+				{
+					size_type n = static_cast<size_type>(ft::distance(first, last));
+					if (n > 0)
+					{
+						const difference_type offset = position - begin();
+						const size_type old_size = size();
+						resize(old_size + n);
+						std::copy_backward(_content + offset, _content + old_size, _content + old_size + n);
+						std::copy(first, last, _content + offset);
+					}
+				}
+
 	};
 
 	template <typename T, typename Allocator>

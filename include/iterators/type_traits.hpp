@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 09:22:08 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/02 08:55:54 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/04 10:44:42 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,12 @@ namespace ft {
 			typedef const T&						reference;
 			typedef random_access_iterator_tag		iterator_category;
 	};
+
+	template <class Iterator>
+		typename ft::iterator_traits<Iterator>::iterator_category	iterator_category(const Iterator &)
+		{
+			return (typename ft::iterator_traits<Iterator>::iterator_category());
+		}
 }
 
 #endif
