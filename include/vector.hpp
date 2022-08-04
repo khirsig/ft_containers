@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/04 13:43:00 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/04 15:19:51 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,22 +103,12 @@ namespace ft {
 			}
 
 			// Operators
-			vector		&operator=(const vector &other)
+			vector	&operator=(const vector &other)
 			{
 				if (this != &other)
 				{
-					size_type n = other.capacity();
-					clear();
-					if (n > _capacity)
-					{
-						if (_capacity > 0)
-							_allocator.deallocate(_content, _capacity);
-						_content = _allocator.allocate(n);
-						_capacity = n;
-					}
-					for (size_type i = 0; i < other.size(); ++i)
-						_allocator.construct(_content + i, other[i]);
-					_size = other.size();
+					_allocator = other.get_allocator();
+					assign(other.begin(), other.end());
 				}
 				return (*this);
 			}
@@ -156,13 +146,14 @@ namespace ft {
 					reserve(n);
 					for (size_type i = _size; i < _capacity; ++i)
 						_allocator.construct(_content + i, val);
+					_size = n;
 				}
 				else if (_size > n)
 				{
 					for (size_type i = n; i < _size ; ++i)
 						_allocator.destroy(_content + i);
+					_size = n;
 				}
-				_size = n;
 			}
 
 			size_type	capacity() const { return (_capacity); }
@@ -175,8 +166,7 @@ namespace ft {
 				{
 					vector	tmp(_allocator);
 					tmp._vallocate(n);
-					for (size_type i = 0; i < _size; ++i)
-						tmp.push_back(*(_content + i));
+					tmp.assign(begin(), end());
 					swap(tmp);
 				}
 			}
@@ -255,9 +245,11 @@ namespace ft {
 				{
 					const difference_type offset = position - begin();
 					const size_type old_size = size();
+					if (old_size + n > _capacity)
+						reserve(_recommend_size(old_size + n));
 					resize(old_size + n);
 					std::copy_backward(begin() + offset, begin() + old_size, begin() + old_size + n);
-					std::fill_n(begin() + offset, n, val);
+					std::fill_n(_content + offset, n, val);
 				}
 			}
 
