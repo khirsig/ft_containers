@@ -6,7 +6,7 @@
 #    By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/08 11:34:34 by khirsig           #+#    #+#              #
-#    Updated: 2022/07/28 12:55:15 by khirsig          ###   ########.fr        #
+#    Updated: 2022/08/05 13:47:55 by khirsig          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@
 NAME			:= ft_containers
 
 CC				:= g++
-CFLAGS			:= -std=c++98 -Wall -Werror -Wextra -fsanitize=address
+CFLAGS			:= -std=c++98 -Wall -Werror -Wextra -style=Google
 
 SRCS			:= main.cpp									\
 
