@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/05 10:14:24 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/05 10:43:19 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,8 @@ namespace ft {
 			{
 				if (_size < n)
 				{
-					reserve(n);
+					if (n > _capacity)
+						reserve(_recommend_size(n));
 					for (; _size < n; ++_size)
 						_allocator.construct(_content + _size, val);
 				}
@@ -242,7 +243,8 @@ namespace ft {
 				{
 					const difference_type offset = position - begin();
 					const size_type old_size = _size;
-					reserve(_recommend_size(old_size + n));
+					if (old_size + n > _capacity)
+						reserve(_recommend_size(old_size + n));
 					resize(old_size + n);
 					std::copy_backward(begin() + offset, begin() + old_size, begin() + old_size + n);
 					std::fill_n(_content + offset, n, val);
@@ -399,7 +401,8 @@ namespace ft {
 					{
 						const difference_type offset = position - begin();
 						const size_type old_size = size();
-						reserve(_recommend_size(old_size + n));
+						if (old_size + n > _capacity)
+							reserve(_recommend_size(old_size + n));
 						resize(old_size + n);
 						std::copy_backward(_content + offset, _content + old_size, _content + old_size + n);
 						std::copy(first, last, _content + offset);
