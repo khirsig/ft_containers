@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/28 16:18:47 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/05 11:24:14 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,28 @@ namespace ft {
 						}
 					}
 					_root->color = BLACK;
+				}
+
+				void	transplant(node<T> *target, node<T> *input)
+				{
+					if (target.parent == _null)
+						_root = input;
+					else if (target == target.parent.left)
+						target.parent.left = input;
+					else
+						target.parent.right = input;
+					input.parent = target.parent;
+				}
+
+				void	destroy(node<T> *input)
+				{
+					node<T> *y = input;
+					color yCol = y->color;
+					if (input->left == _null)
+					{
+						node<T> *x = input->right;
+
+					}
 				}
 			private:
 				node<T>	*_root;
