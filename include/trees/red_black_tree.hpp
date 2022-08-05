@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/05 11:24:14 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/05 11:43:34 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ namespace ft {
 				{
 					if (_root == NULL)
 						_root = &_null;
+					_left_most = _root;
+					_right_most = _root;
 				}
 
 				void	print()
@@ -65,6 +67,30 @@ namespace ft {
 							print(n->right, prefix + "    ", false);
 						}
 					}
+				}
+
+				node<T> *min()
+				{
+					return (_left_most);
+				}
+
+				node<T> *min(node<T> *n)
+				{
+					while (n->left != NULL)
+						n = n->left;
+					return (n);
+				}
+
+				node<T>	*max()
+				{
+					return (_right_most);
+				}
+
+				node<T> *max(node<T> *n)
+				{
+					while (n->right != NULL)
+						n = n->right;
+					return (n);
 				}
 
 				void	left_rotate(node<T> *x)
@@ -124,6 +150,10 @@ namespace ft {
 					input->right = &_null;
 					input->color = RED;
 					insert_fixup(input);
+					if (input->parent == _left_most && _left_most->left == input)
+						_left_most = input;
+					if (input->parent == _right_most && _right_most->right == input)
+						_right_most = input;
 				}
 
 				void	insert_fixup(node<T> *input)
@@ -192,16 +222,28 @@ namespace ft {
 				void	destroy(node<T> *input)
 				{
 					node<T> *y = input;
+					node<T> *x;
 					color yCol = y->color;
 					if (input->left == _null)
 					{
-						node<T> *x = input->right;
-
+						x = input->right;
+						transplant(input, input->right);
+					}
+					else if (input->right == _null)
+					{
+						x = input->left;
+						transplant(input, input->left);
+					}
+					else
+					{
+						y = minimum
 					}
 				}
 			private:
 				node<T>	*_root;
 				node<T>	_null;
+				node<T>	*left_most;
+				node<T>	*right_most;
 		};
 }
 
