@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/04 15:19:51 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/05 10:14:24 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,15 +144,13 @@ namespace ft {
 				if (_size < n)
 				{
 					reserve(n);
-					for (size_type i = _size; i < _capacity; ++i)
-						_allocator.construct(_content + i, val);
-					_size = n;
+					for (; _size < n; ++_size)
+						_allocator.construct(_content + _size, val);
 				}
 				else if (_size > n)
 				{
-					for (size_type i = n; i < _size ; ++i)
-						_allocator.destroy(_content + i);
-					_size = n;
+					for (; _size > n ; --_size)
+						_allocator.destroy(_content + (_size - 1));
 				}
 			}
 
@@ -164,9 +162,9 @@ namespace ft {
 			{
 				if (n > _capacity)
 				{
-					vector	tmp(_allocator);
+					vector	tmp;
 					tmp._vallocate(n);
-					tmp.assign(begin(), end());
+					tmp._construct_from_end(begin(), end(), ft::iterator_category(begin()));
 					swap(tmp);
 				}
 			}
@@ -204,7 +202,7 @@ namespace ft {
 
 			void	assign(size_type n, const value_type &val)
 			{
-				for (size_type i = 0; i < size(); ++i)
+				for (size_type i = 0; i < _size; ++i)
 					_allocator.destroy(_content + i);
 				if (n > _capacity)
 				{
@@ -220,10 +218,9 @@ namespace ft {
 
 			void	push_back(const T &value)
 			{
-				if (size() + 1 > _capacity)
-					reserve(_recommend_size(_capacity + 1));
-				_allocator.construct(_content + _size, value);
-				++_size;
+				if (_size + 1 > _capacity)
+					reserve(_recommend_size(_size + 1));
+				_construct_from_end(1, value);
 			}
 
 			void	pop_back()
@@ -244,9 +241,8 @@ namespace ft {
 				if (n > 0)
 				{
 					const difference_type offset = position - begin();
-					const size_type old_size = size();
-					if (old_size + n > _capacity)
-						reserve(_recommend_size(old_size + n));
+					const size_type old_size = _size;
+					reserve(_recommend_size(old_size + n));
 					resize(old_size + n);
 					std::copy_backward(begin() + offset, begin() + old_size, begin() + old_size + n);
 					std::fill_n(_content + offset, n, val);
@@ -318,6 +314,24 @@ namespace ft {
 			size_type		_capacity;
 			allocator_type	_allocator;
 
+			inline void	_construct(pointer ptr, const_reference val)
+			{
+				_allocator.construct(ptr, val);
+			}
+
+			inline void	_construct_from_end(size_type n, const_reference val = value_type())
+			{
+				for (size_type i = 0; i < n; ++i, ++_size)
+					_construct(_content + _size, val);
+			}
+
+			template <typename ForwardIterator>
+				inline void _construct_from_end(ForwardIterator first, ForwardIterator last, ft::forward_iterator_tag)
+				{
+					for (; first != last; ++first, ++_size)
+						_construct(_content + _size, *first);
+				}
+
 			inline void _vallocate(size_type n)
 			{
 				if (n > max_size())
@@ -385,6 +399,7 @@ namespace ft {
 					{
 						const difference_type offset = position - begin();
 						const size_type old_size = size();
+						reserve(_recommend_size(old_size + n));
 						resize(old_size + n);
 						std::copy_backward(_content + offset, _content + old_size, _content + old_size + n);
 						std::copy(first, last, _content + offset);
@@ -398,7 +413,7 @@ namespace ft {
 					throw std::length_error("vector");
 				if (_capacity >= ms / 2)
 					return (ms);
-				return (std::max(2 * _capacity, new_size));
+				return (std::max(_capacity * 2, new_size));
 			}
 
 	};
