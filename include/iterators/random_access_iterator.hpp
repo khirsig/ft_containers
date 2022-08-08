@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   random_access_iterator.hpp                                :+:      :+:    :+:   */
+/*   random_access_iterator.hpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
+/*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 08:14:46 by khirsig           #+#    #+#             */
-/*   Updated: 2022/07/26 13:54:47 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/08 14:44:21 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ namespace ft {
 template <typename T>
 class random_access_iterator {
    public:
-    typedef typename iterator<random_access_iterator_tag, T>::value_type value_type;
-    typedef typename iterator<random_access_iterator_tag, T>::pointer pointer;
-    typedef typename iterator<random_access_iterator_tag, T>::reference reference;
-    typedef typename iterator<random_access_iterator_tag, T>::difference_type difference_type;
+    typedef typename iterator<random_access_iterator_tag, T>::value_type        value_type;
+    typedef typename iterator<random_access_iterator_tag, T>::pointer           pointer;
+    typedef typename iterator<random_access_iterator_tag, T>::reference         reference;
+    typedef typename iterator<random_access_iterator_tag, T>::difference_type   difference_type;
     typedef typename iterator<random_access_iterator_tag, T>::iterator_category iterator_category;
 
     random_access_iterator(T *ptr = NULL) : _ptr(ptr) {}

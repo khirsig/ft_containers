@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   stack.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
+/*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 08:43:51 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/05 15:01:39 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/08 14:45:17 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ namespace ft {
 template <class T, class Container = ft::vector<T> >
 class stack {
    public:
-    typedef Container container_type;
-    typedef typename Container::value_type value_type;
-    typedef typename Container::size_type size_type;
-    typedef typename Container::reference reference;
+    typedef Container                           container_type;
+    typedef typename Container::value_type      value_type;
+    typedef typename Container::size_type       size_type;
+    typedef typename Container::reference       reference;
     typedef typename Container::const_reference const_reference;
 
     explicit stack(const container_type &ctnr = container_type()) { _c = ctnr; }

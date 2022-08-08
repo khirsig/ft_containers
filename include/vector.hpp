@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/08 11:02:03 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/08 14:45:43 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,18 @@ template <typename T, typename Allocator = std::allocator<T> >
 class vector {
    public:
     // Typedefs
-    typedef T value_type;
-    typedef Allocator allocator_type;
-    typedef typename allocator_type::size_type size_type;
-    typedef value_type &reference;
-    typedef const value_type &const_reference;
-    typedef value_type *pointer;
-    typedef const value_type *const_pointer;
+    typedef T                                                                value_type;
+    typedef Allocator                                                        allocator_type;
+    typedef typename allocator_type::size_type                               size_type;
+    typedef value_type                                                      &reference;
+    typedef const value_type                                                &const_reference;
+    typedef value_type                                                      *pointer;
+    typedef const value_type                                                *const_pointer;
     typedef typename ft::random_access_iterator<value_type>::difference_type difference_type;
-    typedef ft::random_access_iterator<value_type> iterator;
-    typedef ft::random_access_iterator<const value_type> const_iterator;
-    typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
-    typedef ft::reverse_iterator<iterator> reverse_iterator;
+    typedef ft::random_access_iterator<value_type>                           iterator;
+    typedef ft::random_access_iterator<const value_type>                     const_iterator;
+    typedef ft::reverse_iterator<const_iterator>                             const_reverse_iterator;
+    typedef ft::reverse_iterator<iterator>                                   reverse_iterator;
 
     // Construct/Copy/Destroy
     explicit vector(const allocator_type &alloc = allocator_type())
@@ -207,7 +207,7 @@ class vector {
     void insert(iterator position, size_type n, const value_type &val) {
         if (n > 0) {
             const difference_type offset = position - begin();
-            const size_type old_size = _size;
+            const size_type       old_size = _size;
             if (old_size + n > _capacity) reserve(_recommend_size(old_size + n));
             resize(old_size + n);
             std::copy_backward(begin() + offset, begin() + old_size, begin() + old_size + n);
@@ -241,9 +241,9 @@ class vector {
 
     void swap(vector &x) {
         allocator_type tmp_al = _allocator;
-        pointer tmp_cnt = _content;
-        size_type tmp_size = _size;
-        size_type tmp_cap = _capacity;
+        pointer        tmp_cnt = _content;
+        size_type      tmp_size = _size;
+        size_type      tmp_cap = _capacity;
 
         _allocator = x._allocator;
         _content = x._content;
@@ -263,9 +263,9 @@ class vector {
     allocator_type get_allocator() const { return (_allocator); }
 
    private:
-    pointer _content;
-    size_type _size;
-    size_type _capacity;
+    pointer        _content;
+    size_type      _size;
+    size_type      _capacity;
     allocator_type _allocator;
 
     inline void _construct(pointer ptr, const_reference val) { _allocator.construct(ptr, val); }
@@ -333,7 +333,7 @@ class vector {
         size_type n = static_cast<size_type>(ft::distance(first, last));
         if (n > 0) {
             const difference_type offset = position - begin();
-            const size_type old_size = size();
+            const size_type       old_size = size();
             if (old_size + n > _capacity) reserve(_recommend_size(old_size + n));
             resize(old_size + n);
             std::copy_backward(_content + offset, _content + old_size, _content + old_size + n);

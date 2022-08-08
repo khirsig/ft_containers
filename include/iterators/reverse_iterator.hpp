@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reverse_iterator.hpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
+/*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 14:27:15 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/05 15:09:41 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/08 14:44:38 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ namespace ft {
 template <class Iterator>
 class reverse_iterator {
    public:
-    typedef Iterator iterator_type;
-    typedef typename iterator_traits<Iterator>::value_type value_type;
+    typedef Iterator                                              iterator_type;
+    typedef typename iterator_traits<Iterator>::value_type        value_type;
     typedef typename iterator_traits<Iterator>::iterator_category iterator_category;
-    typedef typename iterator_traits<Iterator>::difference_type difference_type;
-    typedef typename iterator_traits<Iterator>::pointer pointer;
-    typedef typename iterator_traits<Iterator>::reference reference;
+    typedef typename iterator_traits<Iterator>::difference_type   difference_type;
+    typedef typename iterator_traits<Iterator>::pointer           pointer;
+    typedef typename iterator_traits<Iterator>::reference         reference;
 
     reverse_iterator() : _current() {}
 
@@ -118,7 +118,7 @@ bool operator>=(const reverse_iterator<Iterator1> &lhs, const reverse_iterator<I
 
 template <class Iterator>
 reverse_iterator<Iterator> operator+(typename reverse_iterator<Iterator>::difference_type n,
-                                     const reverse_iterator<Iterator> &rev_it) {
+                                     const reverse_iterator<Iterator>                    &rev_it) {
     return reverse_iterator<Iterator>(rev_it + n);
 }
 
