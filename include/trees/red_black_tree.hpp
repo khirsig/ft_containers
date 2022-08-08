@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/08 11:06:25 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/08 13:47:51 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,26 +176,89 @@ class red_black_tree {
         input->parent = target->parent;
     }
 
-    // void	destroy(node<T> *input)
-    // {
-    // 	node<T> *y = input;
-    // 	node<T> *x;
-    // 	color yCol = y->color;
-    // 	if (input->left == _null)
-    // 	{
-    // 		x = input->right;
-    // 		transplant(input, input->right);
-    // 	}
-    // 	else if (input->right == _null)
-    // 	{
-    // 		x = input->left;
-    // 		transplant(input, input->left);
-    // 	}
-    // 	else
-    // 	{
-    // 		y = minimum
-    // 	}
-    // }
+    void destroy(node<T> *input) {
+        node<T> *y = input;
+        node<T> *x;
+        color y_original_color = y->color;
+        if (input->left == _null) {
+            x = input->right;
+            transplant(input, input->right);
+        } else if (input->right == _null) {
+            x = input->left;
+            transplant(input, input->left);
+        } else {
+            y = min();
+            y_original_color = y->color;
+            x = y->right;
+            if (y->parent == input)
+                x->parent = y;
+            else {
+                transplant(y, y->right);
+                y->right = input->right;
+                y->right->parent = y;
+            }
+            transplant(input, y);
+            y->left = input->left;
+            y->left->parent = y;
+            y->color = input->color;
+        }
+        if (y_original_color == BLACK) destroy_fixup(x);
+    }
+
+    void destroy_fixup(node<T> *x) {
+        while (x != _root && x->color == BLACK) {
+            if (x == x->parent->left) {
+                node<T> *w = x->parent->right;
+                if (w->color == RED) {
+                    w->color = BLACK;
+                    x->parent->color = RED;
+                    left_rotate(x->parent);
+                    w = x->parent->right;
+                }
+                if (w->left->color == BLACK && w->right->color == BLACK) {
+                    w->color = RED;
+                    x = x->parent;
+                } else {
+                    if (w->right->color == BLACK) {
+                        w->left->color = BLACK;
+                        w->color = RED;
+                        right_rotate(w);
+                        w = x->parent->right;
+                    }
+                    w->color = x->parent->color;
+                    x->parent->color = BLACK;
+                    w->right->color = BLACK;
+                    left_rotate(x->parent);
+                    x = _root;
+                }
+            } else {
+                node<T> *w = x->parent->left;
+                if (w->color == RED) {
+                    w->color = BLACK;
+                    x->parent->color = RED;
+                    right_rotate(x->parent);
+                    w = x->parent->left;
+                }
+                if (w->right->color == BLACK && w->left->color == BLACK) {
+                    w->color = RED;
+                    x = x->parent;
+                } else {
+                    if (w->left->color == BLACK) {
+                        w->right->color = BLACK;
+                        w->color = RED;
+                        left_rotate(w);
+                        w = x->parent->left;
+                    }
+                    w->color = x->parent->color;
+                    x->parent->color = BLACK;
+                    w->left->color = BLACK;
+                    right_rotate(x->parent);
+                    x = _root;
+                }
+            }
+        }
+    }
+
    private:
     node<T> *_root;
     node<T> _null;
