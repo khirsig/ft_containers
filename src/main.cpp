@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
+/*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/05 15:08:34 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/08 11:01:20 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <unistd.h>
 
 #include <cstdlib>
 #include <ctime>
@@ -23,10 +25,14 @@ int main() {
     srand(time(NULL));
     ft::red_black_tree<int> tree;
     for (int i = 0; i < 50; ++i) {
+        system("clear");
         int j = rand() % 1000;
         ft::node<int> *tmp = new ft::node<int>(j);
         tree.insert(tmp);
+        tree.print();
+        usleep(50000);
     }
+    system("clear");
     tree.print();
     return (0);
 }

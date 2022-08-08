@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+         #
+#    By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/08 11:34:34 by khirsig           #+#    #+#              #
-#    Updated: 2022/08/05 13:47:55 by khirsig          ###   ########.fr        #
+#    Updated: 2022/08/08 09:20:05 by khirsig          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@
 NAME			:= ft_containers
 
 CC				:= g++
-CFLAGS			:= -std=c++98 -Wall -Werror -Wextra -style=Google
+CFLAGS			:= -std=c++98 -Wall -Werror -Wextra
 
 SRCS			:= main.cpp									\
 

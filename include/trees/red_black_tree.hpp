@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   red_black_tree.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
+/*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/05 14:54:16 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/08 11:06:25 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,15 @@ namespace ft {
 template <class T>
 class red_black_tree {
    public:
-    red_black_tree(node<T> *n = NULL)
-        : _root(n),
-          _null(node<T>(0, NULL, NULL, NULL, BLACK)) {
-        if (_root == NULL)
-            _root = &_null;
+    red_black_tree(node<T> *n = NULL) : _root(n), _null(node<T>(0, NULL, NULL, NULL, BLACK)) {
+        if (_root == NULL) _root = &_null;
         _left_most = _root;
         _right_most = _root;
     }
 
-    void print() {
-        print(_root);
-    }
+    void print() { print(_root); }
 
-    void print(const node<T> *n) {
-        print(n, "", false);
-    }
+    void print(const node<T> *n) { print(n, "", false); }
 
     void print(const node<T> *n, const std::string &prefix, bool isLeft) {
         if (n != NULL) {
@@ -65,31 +58,24 @@ class red_black_tree {
         }
     }
 
-    node<T> *min() {
-        return (_left_most);
-    }
+    node<T> *min() { return (_left_most); }
 
     node<T> *min(node<T> *n) {
-        while (n->left != NULL)
-            n = n->left;
+        while (n->left != NULL) n = n->left;
         return (n);
     }
 
-    node<T> *max() {
-        return (_right_most);
-    }
+    node<T> *max() { return (_right_most); }
 
     node<T> *max(node<T> *n) {
-        while (n->right != NULL)
-            n = n->right;
+        while (n->right != NULL) n = n->right;
         return (n);
     }
 
     void left_rotate(node<T> *x) {
         node<T> *y = x->right;
         x->right = y->left;
-        if (y->left != &_null)
-            y->left->parent = x;
+        if (y->left != &_null) y->left->parent = x;
         y->parent = x->parent;
         if (x->parent == &_null)
             _root = y;
@@ -104,8 +90,7 @@ class red_black_tree {
     void right_rotate(node<T> *x) {
         node<T> *y = x->left;
         x->left = y->right;
-        if (y->right != &_null)
-            y->right->parent = x;
+        if (y->right != &_null) y->right->parent = x;
         y->parent = x->parent;
         if (x->parent == &_null)
             _root = y;
@@ -137,10 +122,8 @@ class red_black_tree {
         input->left = &_null;
         input->right = &_null;
         input->color = RED;
-        if (input->parent == _left_most && _left_most->left == input && input != &_null)
-            _left_most = input;
-        if (input->parent == _right_most && _right_most->right == input && input != &_null)
-            _right_most = input;
+        if (_left_most->left == input || input == _root) _left_most = input;
+        if (_right_most->right == input || input == _root) _right_most = input;
         insert_fixup(input);
     }
 

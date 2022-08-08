@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   type_traits.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
+/*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 09:22:08 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/05 15:09:45 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/08 09:03:02 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 namespace ft {
 
 /*
-It was not possible to create my own iterator tags, as they would only work
+It was not possible to use my own iterator tags, as they would only work
 with the ft::iterators and not with the std::iterators.
 
 struct input_iterator_tag { };
