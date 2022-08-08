@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/08 13:59:25 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/08 14:14:22 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,46 +124,7 @@ class red_black_tree {
         input->color = RED;
         if (_left_most->left == input || input == _root) _left_most = input;
         if (_right_most->right == input || input == _root) _right_most = input;
-        insert_fixup(input);
-    }
-
-    void insert_fixup(node<T> *input) {
-        while (input->parent->color == RED) {
-            if (input->parent == input->parent->parent->left) {
-                node<T> *n = input->parent->parent->right;
-                if (n->color == RED) {
-                    input->parent->color = BLACK;
-                    n->color = BLACK;
-                    input->parent->parent->color = RED;
-                    input = input->parent->parent;
-                } else {
-                    if (input == input->parent->right) {
-                        input = input->parent;
-                        left_rotate(input);
-                    }
-                    input->parent->color = BLACK;
-                    input->parent->parent->color = RED;
-                    right_rotate(input->parent->parent);
-                }
-            } else {
-                node<T> *n = input->parent->parent->left;
-                if (n->color == RED) {
-                    input->parent->color = BLACK;
-                    n->color = BLACK;
-                    input->parent->parent->color = RED;
-                    input = input->parent->parent;
-                } else {
-                    if (input == input->parent->left) {
-                        input = input->parent;
-                        right_rotate(input);
-                    }
-                    input->parent->color = BLACK;
-                    input->parent->parent->color = RED;
-                    left_rotate(input->parent->parent);
-                }
-            }
-        }
-        _root->color = BLACK;
+        _insert_fixup(input);
     }
 
     void transplant(node<T> *target, node<T> *input) {
@@ -202,10 +163,18 @@ class red_black_tree {
             y->left->parent = y;
             y->color = input->color;
         }
-        if (y_original_color == BLACK) destroy_fixup(x);
+        if (y_original_color == BLACK) _destroy_fixup(x);
     }
 
-    void destroy_fixup(node<T> *x) {
+
+
+   private:
+    node<T> *_root;
+    node<T> _null;
+    node<T> *_left_most;
+    node<T> *_right_most;
+
+    void _destroy_fixup(node<T> *x) {
         while (x != _root && x->color == BLACK) {
             if (x == x->parent->left) {
                 node<T> *w = x->parent->right;
@@ -260,11 +229,44 @@ class red_black_tree {
         x->color = BLACK;
     }
 
-   private:
-    node<T> *_root;
-    node<T> _null;
-    node<T> *_left_most;
-    node<T> *_right_most;
+    void _insert_fixup(node<T> *input) {
+        while (input->parent->color == RED) {
+            if (input->parent == input->parent->parent->left) {
+                node<T> *n = input->parent->parent->right;
+                if (n->color == RED) {
+                    input->parent->color = BLACK;
+                    n->color = BLACK;
+                    input->parent->parent->color = RED;
+                    input = input->parent->parent;
+                } else {
+                    if (input == input->parent->right) {
+                        input = input->parent;
+                        left_rotate(input);
+                    }
+                    input->parent->color = BLACK;
+                    input->parent->parent->color = RED;
+                    right_rotate(input->parent->parent);
+                }
+            } else {
+                node<T> *n = input->parent->parent->left;
+                if (n->color == RED) {
+                    input->parent->color = BLACK;
+                    n->color = BLACK;
+                    input->parent->parent->color = RED;
+                    input = input->parent->parent;
+                } else {
+                    if (input == input->parent->left) {
+                        input = input->parent;
+                        right_rotate(input);
+                    }
+                    input->parent->color = BLACK;
+                    input->parent->parent->color = RED;
+                    left_rotate(input->parent->parent);
+                }
+            }
+        }
+        _root->color = BLACK;
+    }
 };
 }  // namespace ft
 
