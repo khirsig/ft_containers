@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/08 13:47:51 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/08 13:59:25 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ class red_black_tree {
     }
 
     void transplant(node<T> *target, node<T> *input) {
-        if (target->parent == _null)
+        if (target->parent == &_null)
             _root = input;
         else if (target == target->parent->left)
             target->parent->left = input;
@@ -180,10 +180,10 @@ class red_black_tree {
         node<T> *y = input;
         node<T> *x;
         color y_original_color = y->color;
-        if (input->left == _null) {
+        if (input->left == &_null) {
             x = input->right;
             transplant(input, input->right);
-        } else if (input->right == _null) {
+        } else if (input->right == &_null) {
             x = input->left;
             transplant(input, input->left);
         } else {
@@ -257,6 +257,7 @@ class red_black_tree {
                 }
             }
         }
+        x->color = BLACK;
     }
 
    private:
