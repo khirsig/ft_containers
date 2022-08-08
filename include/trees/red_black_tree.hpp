@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/08 14:14:22 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/08 15:51:24 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,7 @@ class red_black_tree {
 
     node<T> *min() { return (_left_most); }
 
-    node<T> *min(node<T> *n) {
-        while (n->left != NULL) n = n->left;
-        return (n);
-    }
-
     node<T> *max() { return (_right_most); }
-
-    node<T> *max(node<T> *n) {
-        while (n->right != NULL) n = n->right;
-        return (n);
-    }
 
     void left_rotate(node<T> *x) {
         node<T> *y = x->right;
@@ -140,7 +130,7 @@ class red_black_tree {
     void destroy(node<T> *input) {
         node<T> *y = input;
         node<T> *x;
-        color y_original_color = y->color;
+        color    y_original_color = y->color;
         if (input->left == &_null) {
             x = input->right;
             transplant(input, input->right);
@@ -166,11 +156,9 @@ class red_black_tree {
         if (y_original_color == BLACK) _destroy_fixup(x);
     }
 
-
-
    private:
     node<T> *_root;
-    node<T> _null;
+    node<T>  _null;
     node<T> *_left_most;
     node<T> *_right_most;
 
@@ -268,6 +256,18 @@ class red_black_tree {
         _root->color = BLACK;
     }
 };
+
+template <class T>
+node<T> *min(node<T> *n) {
+    while (n->left != NULL) n = n->left;
+    return (n);
+}
+template <class T>
+node<T> *max(node<T> *n) {
+    while (n->right != NULL) n = n->right;
+    return (n);
+}
+
 }  // namespace ft
 
 #endif

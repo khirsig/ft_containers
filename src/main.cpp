@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/08 14:56:09 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/08 16:00:30 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ int main() {
         tree.print();
         sleep(2);
     }
-    for (int i = 0; i < 3; ++i) {
-        system("clear");
-        tree.destroy(save[i]);
-        tree.print();
-        sleep(2);
-    }
+    // for (int i = 0; i < 3; ++i) {
+    //     system("clear");
+    //     tree.destroy(save[i]);
+    //     tree.print();
+    //     sleep(2);
+    // }
 
     return (0);
 }
