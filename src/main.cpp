@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/09 09:24:19 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/09 10:02:29 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,21 @@ int main() {
     for (int i = 1; i < 15; ++i) {
         // system("clear");
         ft::node<int> *tmp = new ft::node<int>(i);
-        if (i == 4) save[0] = tmp;
-        if (i == 7) save[1] = tmp;
-        if (i == 11) save[2] = tmp;
+        if (i == 4)
+            save[0] = tmp;
+        if (i == 7)
+            save[1] = tmp;
+        if (i == 11)
+            save[2] = tmp;
         tree.insert(tmp);
         // tree.print();
         // sleep(2);
     }
     ft::red_black_tree<int>::iterator it(tree.min());
+    std::cout << *it << "\n";
+    ++it;
+    std::cout << *it << "\n";
+    ++it;
     std::cout << *it << "\n";
     ++it;
     std::cout << *it << "\n";

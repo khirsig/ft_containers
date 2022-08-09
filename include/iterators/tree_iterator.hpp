@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 14:24:57 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/09 09:20:16 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/09 10:06:40 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ namespace ft {
 template <class T>
 struct node;
 template <class T>
-node<T>* red_black_tree_min(node<T>* n);
+node<T>* tree_min(node<T>* x);
 template <class T>
-node<T>* red_black_tree_max(node<T>* n);
+node<T>* tree_max(node<T>* x);
 
 template <class T, class Val>
 class tree_iterator {
@@ -42,20 +42,12 @@ class tree_iterator {
     pointer base() const { return (_ptr->key); }
 
     tree_iterator& operator++() {
-        const_reference bigger_node_key =
-            std::max(ft::red_black_tree_max(_ptr->right)->key, _ptr->parent->key);
-        if (bigger_node_key == _ptr->right->key)
-            _ptr = _ptr->right;
-        else
-            _ptr = _ptr->parent;
+        _ptr = _tree_next_iter(_ptr);
         return (*this);
     }
 
     tree_iterator& operator--() {
-        if (std::min(ft::red_black_tree_min(_ptr->left), _ptr->parent->key) == _ptr->left->key)
-            _ptr = _ptr->left;
-        else
-            _ptr = _ptr->parent;
+        _ptr = _tree_prev_iter(_ptr);
         return (*this);
     }
 
@@ -65,6 +57,27 @@ class tree_iterator {
 
    private:
     node_ptr _ptr;
+
+    bool _tree_is_left_child(node_ptr x) { return (x == x->parent->left); }
+
+    node_ptr _tree_next_iter(node_ptr x) {
+        if (!x->right->is_leaf)
+            return (tree_min(x->right));
+        while (!_tree_is_left_child(x))
+            x = x->parent;
+
+        return (x->parent);
+    }
+
+    node_ptr _tree_prev_iter(node_ptr x) {
+        if (!x->left->is_leaf)
+            return (tree_max(x->left));
+        node_ptr xx = static_cast<node_ptr>(x);
+        while (_tree_is_left_child(xx))
+            xx = xx->parent;
+
+        return (xx->parent);
+    }
 };
 }  // namespace ft
 

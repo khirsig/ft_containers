@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/09 09:22:19 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/09 10:04:40 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@ class red_black_tree {
     typedef ft::tree_iterator<node<value_type> *, T> iterator;
     typedef typename iterator::difference_type       difference_type;
 
-    red_black_tree(node<T> *n = NULL) : _root(n), _null(node<T>(0, NULL, NULL, NULL, BLACK)) {
-        if (_root == NULL) _root = &_null;
+    red_black_tree(node<T> *n = NULL) : _root(n), _null(node<T>(0, NULL, NULL, NULL, BLACK, true)) {
+        if (_root == NULL)
+            _root = &_null;
         _left_most = _root;
         _right_most = _root;
     }
@@ -72,7 +73,8 @@ class red_black_tree {
     void left_rotate(node<T> *x) {
         node<T> *y = x->right;
         x->right = y->left;
-        if (y->left != &_null) y->left->parent = x;
+        if (y->left != &_null)
+            y->left->parent = x;
         y->parent = x->parent;
         if (x->parent == &_null)
             _root = y;
@@ -87,7 +89,8 @@ class red_black_tree {
     void right_rotate(node<T> *x) {
         node<T> *y = x->left;
         x->left = y->right;
-        if (y->right != &_null) y->right->parent = x;
+        if (y->right != &_null)
+            y->right->parent = x;
         y->parent = x->parent;
         if (x->parent == &_null)
             _root = y;
@@ -119,8 +122,10 @@ class red_black_tree {
         input->left = &_null;
         input->right = &_null;
         input->color = RED;
-        if (_left_most->left == input || input == _root) _left_most = input;
-        if (_right_most->right == input || input == _root) _right_most = input;
+        if (_left_most->left == input || input == _root)
+            _left_most = input;
+        if (_right_most->right == input || input == _root)
+            _right_most = input;
         _insert_fixup(input);
     }
 
@@ -160,7 +165,8 @@ class red_black_tree {
             y->left->parent = y;
             y->color = input->color;
         }
-        if (y_original_color == BLACK) _destroy_fixup(x);
+        if (y_original_color == BLACK)
+            _destroy_fixup(x);
     }
 
    private:
@@ -265,14 +271,16 @@ class red_black_tree {
 };
 
 template <class T>
-node<T> *red_black_tree_min(node<T> *n) {
-    while (n->left != NULL) n = n->left;
-    return (n);
+node<T> *tree_min(node<T> *x) {
+    while (!x->left->is_leaf)
+        x = x->left;
+    return (x);
 }
 template <class T>
-node<T> *red_black_tree_max(node<T> *n) {
-    while (n->right != NULL) n = n->right;
-    return (n);
+node<T> *tree_max(node<T> *x) {
+    while (!x->right->is_leaf)
+        x = x->right;
+    return (x);
 }
 
 }  // namespace ft

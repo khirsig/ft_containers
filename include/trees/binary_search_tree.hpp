@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 10:58:18 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/09 08:55:59 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/09 09:59:51 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,16 @@ template <class T>
 struct node {
     typedef T value_type;
 
-    node(T _key, node *_parent = NULL, node *_left = NULL, node *_right = NULL, color _col = BLACK)
-        : key(_key), parent(_parent), left(_left), right(_right), color(_col) {}
+    node(T _key, node *_parent = NULL, node *_left = NULL, node *_right = NULL, color _col = BLACK,
+         bool _is_leaf = false)
+        : key(_key), parent(_parent), left(_left), right(_right), color(_col), is_leaf(_is_leaf) {}
 
     T     key;
     node *parent;
     node *left;
     node *right;
     color color;
+    bool  is_leaf;
 };
 
 template <class T>
@@ -64,7 +66,8 @@ class binary_search_tree {
     }
 
     node<T> *search(node<T> *n, T key) {
-        if (n == NULL || n->key == key) return (n);
+        if (n == NULL || n->key == key)
+            return (n);
         if (key < n->key)
             return (search(n->left, key));
         else
@@ -82,17 +85,20 @@ class binary_search_tree {
     }
 
     node<T> *min(node<T> *n) {
-        while (n->left != NULL) n = n->left;
+        while (n->left != NULL)
+            n = n->left;
         return (n);
     }
 
     node<T> *max(node<T> *n) {
-        while (n->right != NULL) n = n->right;
+        while (n->right != NULL)
+            n = n->right;
         return (n);
     }
 
     node<T> successor(node<T> *n) {
-        if (n->right != NULL) return (min(n->right));
+        if (n->right != NULL)
+            return (min(n->right));
         node<T> *p = n->parent;
         while (p != NULL && n == p->right) {
             n = p;
@@ -107,7 +113,8 @@ class binary_search_tree {
             n->parent->left = u;
         else
             n->parent->right = u;
-        if (u != NULL) u->parent = n->parent;
+        if (u != NULL)
+            u->parent = n->parent;
     }
 
     void insert(node<T> *input) {
