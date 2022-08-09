@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   binary_search_tree.hpp                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khirsig <khirsig@student.42.fr>            +#+  +:+       +#+        */
+/*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 10:58:18 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/05 15:08:45 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/09 08:55:59 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,12 @@ typedef bool color;
 
 template <class T>
 struct node {
+    typedef T value_type;
+
     node(T _key, node *_parent = NULL, node *_left = NULL, node *_right = NULL, color _col = BLACK)
         : key(_key), parent(_parent), left(_left), right(_right), color(_col) {}
 
-    T key;
+    T     key;
     node *parent;
     node *left;
     node *right;

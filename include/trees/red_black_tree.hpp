@@ -6,19 +6,26 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/08 15:51:24 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/09 09:22:19 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RED_BLACK_TREE_HPP
 #define RED_BLACK_TREE_HPP
 
+#include "../iterators/tree_iterator.hpp"
 #include "binary_search_tree.hpp"
 
 namespace ft {
 template <class T>
 class red_black_tree {
    public:
+    typedef T                                        value_type;
+    typedef value_type                              &reference;
+    typedef value_type                              *pointer;
+    typedef ft::tree_iterator<node<value_type> *, T> iterator;
+    typedef typename iterator::difference_type       difference_type;
+
     red_black_tree(node<T> *n = NULL) : _root(n), _null(node<T>(0, NULL, NULL, NULL, BLACK)) {
         if (_root == NULL) _root = &_null;
         _left_most = _root;
@@ -27,9 +34,9 @@ class red_black_tree {
 
     void print() { print(_root); }
 
-    void print(const node<T> *n) { print(n, "", false); }
+    void print(const node<value_type> *n) { print(n, "", false); }
 
-    void print(const node<T> *n, const std::string &prefix, bool isLeft) {
+    void print(const node<value_type> *n, const std::string &prefix, bool isLeft) {
         if (n != NULL) {
             std::cout << prefix;
             if (isLeft)
@@ -58,9 +65,9 @@ class red_black_tree {
         }
     }
 
-    node<T> *min() { return (_left_most); }
+    iterator min() { return (_left_most); }
 
-    node<T> *max() { return (_right_most); }
+    iterator max() { return (_right_most); }
 
     void left_rotate(node<T> *x) {
         node<T> *y = x->right;
@@ -258,12 +265,12 @@ class red_black_tree {
 };
 
 template <class T>
-node<T> *min(node<T> *n) {
+node<T> *red_black_tree_min(node<T> *n) {
     while (n->left != NULL) n = n->left;
     return (n);
 }
 template <class T>
-node<T> *max(node<T> *n) {
+node<T> *red_black_tree_max(node<T> *n) {
     while (n->right != NULL) n = n->right;
     return (n);
 }
