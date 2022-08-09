@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/09 10:04:40 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/09 11:26:47 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,27 @@
 #define RED_BLACK_TREE_HPP
 
 #include "../iterators/tree_iterator.hpp"
+#include "algorithm"
 #include "binary_search_tree.hpp"
 
 namespace ft {
-template <class T>
+template <class T, class Compare = std::less<T>, class Allocator = std::allocator<ft::node<T> > >
 class red_black_tree {
    public:
     typedef T                                        value_type;
+    typedef Allocator                                allocator_type;
     typedef value_type                              &reference;
     typedef value_type                              *pointer;
-    typedef ft::tree_iterator<node<value_type> *, T> iterator;
-    typedef typename iterator::difference_type       difference_type;
+    typedef ft::node<value_type>                     node;
+    typedef node                                    *node_pointer;
+    typedef node                                    &node_reference;
+    typedef ft::tree_iterator<node_pointer, T>       iterator;
+    typedef ft::tree_iterator<node_pointer, T>       const_iterator;
+    typedef typename allocator_type::difference_type difference_type;
+    typedef typename allocator_type::size_type       size_type;
 
-    red_black_tree(node<T> *n = NULL) : _root(n), _null(node<T>(0, NULL, NULL, NULL, BLACK, true)) {
+    red_black_tree(node_pointer n = NULL)
+        : _root(n), _null(node(0, NULL, NULL, NULL, BLACK, true)) {
         if (_root == NULL)
             _root = &_null;
         _left_most = _root;
@@ -35,9 +43,9 @@ class red_black_tree {
 
     void print() { print(_root); }
 
-    void print(const node<value_type> *n) { print(n, "", false); }
+    void print(const node_pointer n) { print(n, "", false); }
 
-    void print(const node<value_type> *n, const std::string &prefix, bool isLeft) {
+    void print(const node_pointer n, const std::string &prefix, bool isLeft) {
         if (n != NULL) {
             std::cout << prefix;
             if (isLeft)
@@ -66,12 +74,16 @@ class red_black_tree {
         }
     }
 
-    iterator min() { return (_left_most); }
+    iterator begin() { return (_left_most); }
 
-    iterator max() { return (_right_most); }
+    const_iterator begin() const { return (_left_most); }
 
-    void left_rotate(node<T> *x) {
-        node<T> *y = x->right;
+    iterator end() { return (_right_most); }
+
+    const_iterator end() const { return (_right_most); }
+
+    void left_rotate(node_pointer x) {
+        node_pointer y = x->right;
         x->right = y->left;
         if (y->left != &_null)
             y->left->parent = x;
@@ -86,8 +98,8 @@ class red_black_tree {
         x->parent = y;
     }
 
-    void right_rotate(node<T> *x) {
-        node<T> *y = x->left;
+    void right_rotate(node_pointer x) {
+        node_pointer y = x->left;
         x->left = y->right;
         if (y->right != &_null)
             y->right->parent = x;
@@ -102,9 +114,10 @@ class red_black_tree {
         x->parent = y;
     }
 
-    void insert(node<T> *input) {
-        node<T> *n = &_null;
-        node<T> *r = _root;
+    void insert(value_type &val) {
+        node_pointer input = _create_node(val);
+        node_pointer n = &_null;
+        node_pointer r = _root;
         while (r != &_null) {
             n = r;
             if (input->key < r->key)
@@ -129,7 +142,7 @@ class red_black_tree {
         _insert_fixup(input);
     }
 
-    void transplant(node<T> *target, node<T> *input) {
+    void transplant(node_pointer target, node_pointer input) {
         if (target->parent == &_null)
             _root = input;
         else if (target == target->parent->left)
@@ -139,10 +152,10 @@ class red_black_tree {
         input->parent = target->parent;
     }
 
-    void destroy(node<T> *input) {
-        node<T> *y = input;
-        node<T> *x;
-        color    y_original_color = y->color;
+    void destroy(node_pointer input) {
+        node_pointer y = input;
+        node_pointer x;
+        color        y_original_color = y->color;
         if (input->left == &_null) {
             x = input->right;
             transplant(input, input->right);
@@ -150,7 +163,7 @@ class red_black_tree {
             x = input->left;
             transplant(input, input->left);
         } else {
-            y = min();
+            y = begin();
             y_original_color = y->color;
             x = y->right;
             if (y->parent == input)
@@ -167,18 +180,32 @@ class red_black_tree {
         }
         if (y_original_color == BLACK)
             _destroy_fixup(x);
+        _destroy_node(input);
     }
 
    private:
-    node<T> *_root;
-    node<T>  _null;
-    node<T> *_left_most;
-    node<T> *_right_most;
+    node_pointer   _root;
+    node           _null;
+    node_pointer   _left_most;
+    node_pointer   _right_most;
+    allocator_type _alloc;
 
-    void _destroy_fixup(node<T> *x) {
+    node_pointer _create_node(value_type &val) {
+        node_pointer n = _alloc.allocate(1);
+        _alloc.construct(n, node(val, NULL, NULL, NULL));
+
+        return (n);
+    }
+
+    void _destroy_node(node_pointer n) {
+        _alloc.destroy(n);
+        _alloc.deallocate(n, 1);
+    }
+
+    void _destroy_fixup(node_pointer x) {
         while (x != _root && x->color == BLACK) {
             if (x == x->parent->left) {
-                node<T> *w = x->parent->right;
+                node_pointer w = x->parent->right;
                 if (w->color == RED) {
                     w->color = BLACK;
                     x->parent->color = RED;
@@ -202,7 +229,7 @@ class red_black_tree {
                     x = _root;
                 }
             } else {
-                node<T> *w = x->parent->left;
+                node_pointer w = x->parent->left;
                 if (w->color == RED) {
                     w->color = BLACK;
                     x->parent->color = RED;
@@ -230,10 +257,10 @@ class red_black_tree {
         x->color = BLACK;
     }
 
-    void _insert_fixup(node<T> *input) {
+    void _insert_fixup(node_pointer input) {
         while (input->parent->color == RED) {
             if (input->parent == input->parent->parent->left) {
-                node<T> *n = input->parent->parent->right;
+                node_pointer n = input->parent->parent->right;
                 if (n->color == RED) {
                     input->parent->color = BLACK;
                     n->color = BLACK;
@@ -249,7 +276,7 @@ class red_black_tree {
                     right_rotate(input->parent->parent);
                 }
             } else {
-                node<T> *n = input->parent->parent->left;
+                node_pointer n = input->parent->parent->left;
                 if (n->color == RED) {
                     input->parent->color = BLACK;
                     n->color = BLACK;
