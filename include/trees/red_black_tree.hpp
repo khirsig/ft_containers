@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/09 13:51:09 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/09 14:08:25 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,14 @@ class red_black_tree {
             _root = _null;
         _left_most = _root;
         _right_most = _root;
+    }
+
+    red_black_tree(const red_black_tree &other)
+        : _null(new node(0, NULL, NULL, NULL, BLACK, true)) {
+        _root = _null;
+        _left_most = _root;
+        _right_most = _root;
+        _clone_tree(other);
     }
 
     ~red_black_tree() {
@@ -237,6 +245,11 @@ class red_black_tree {
     void _destroy_node(node_pointer n) {
         _alloc.destroy(n);
         _alloc.deallocate(n, 1);
+    }
+
+    void _clone_tree(const red_black_tree &other) {
+        for (iterator it = other.begin(); it != other.end(); ++it)
+            insert(*it);
     }
 
     void _destroy_fixup(node_pointer x) {
