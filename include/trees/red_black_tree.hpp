@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/09 13:45:24 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/09 13:51:09 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ class red_black_tree {
         _right_most = _root;
     }
 
-    ~red_black_tree() {}
+    ~red_black_tree() {
+        clear();
+        delete (_null);
+    }
 
     void print() { print(_root); }
 

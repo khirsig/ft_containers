@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/09 13:44:59 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/09 13:51:52 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 #include "../include/trees/red_black_tree.hpp"
 
 template <class T>
-void print_two_trees(ft::red_black_tree<T> tree1, ft::red_black_tree<T> tree2) {
-    ft::red_black_tree<int>::iterator it1 = tree1.begin(), it2 = tree2.begin();
+void print_two_trees(ft::red_black_tree<T> &tree1, ft::red_black_tree<T> &tree2) {
+    typename ft::red_black_tree<T>::iterator it1 = tree1.begin(), it2 = tree2.begin();
     while (it1 != tree1.end() && it2 != tree2.end()) {
         if (it1 != tree1.end()) {
             std::cout << *it1 << " ";
@@ -59,7 +59,7 @@ int main() {
         tree2.insert(i);
     print_two_trees(tree1, tree2);
     tree1.swap(tree2);
-    std::cout << "After Swapping:\n\n";
+    std::cout << "\nAfter Swapping:\n\n";
     print_two_trees(tree1, tree2);
 
     return (0);
