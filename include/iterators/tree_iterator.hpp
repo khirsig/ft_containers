@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 14:24:57 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/09 10:34:11 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/09 10:40:40 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,15 @@ class tree_iterator {
 
     ~tree_iterator() {}
 
-    pointer base() const { return (_ptr->key); }
-
     tree_iterator& operator++() {
         _ptr = _tree_next_iter(_ptr);
         return (*this);
+    }
+
+    tree_iterator operator++(int) {
+        tree_iterator tmp(*this);
+        ++(*this);
+        return (tmp);
     }
 
     tree_iterator& operator--() {
@@ -51,9 +55,15 @@ class tree_iterator {
         return (*this);
     }
 
-    node_ptr operator->() { return (_ptr); }
+    tree_iterator operator--(int) {
+        tree_iterator tmp(*this);
+        --(*this);
+        return (tmp);
+    }
 
-    reference operator*() { return (_ptr->key); }
+    node_ptr operator->() const { return (_ptr); }
+
+    reference operator*() const { return (_ptr->key); }
 
     template <class U, class V>
     friend bool operator==(const tree_iterator<U, V>& x, const tree_iterator<U, V>& y);
