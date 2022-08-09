@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 14:24:57 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/09 10:40:40 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/09 13:13:07 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,15 @@ class tree_iterator {
     tree_iterator(node_ptr ptr = NULL) : _ptr(ptr) {}
 
     ~tree_iterator() {}
+
+    node_ptr base() const { return (_ptr); }
+
+    tree_iterator& operator=(const tree_iterator& other) {
+        if (*this != other) {
+            _ptr = other._ptr;
+        }
+        return (*this);
+    }
 
     tree_iterator& operator++() {
         _ptr = _tree_next_iter(_ptr);

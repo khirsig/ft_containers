@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/09 11:26:47 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/09 13:31:14 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,14 @@ class red_black_tree {
     typedef typename allocator_type::size_type       size_type;
 
     red_black_tree(node_pointer n = NULL)
-        : _root(n), _null(node(0, NULL, NULL, NULL, BLACK, true)) {
+        : _root(n), _null(new node(0, NULL, NULL, NULL, BLACK, true)) {
         if (_root == NULL)
-            _root = &_null;
+            _root = _null;
         _left_most = _root;
         _right_most = _root;
     }
+
+    ~red_black_tree() { delete (_null); }
 
     void print() { print(_root); }
 
@@ -60,7 +62,7 @@ class red_black_tree {
                 std::cout << "\033[31m";
             else
                 std::cout << "\033[30m";
-            if (n != &_null)
+            if (n != _null)
                 std::cout << n->key << "\033[37m\n";
             else
                 std::cout << "null\033[37m\n";
@@ -85,10 +87,10 @@ class red_black_tree {
     void left_rotate(node_pointer x) {
         node_pointer y = x->right;
         x->right = y->left;
-        if (y->left != &_null)
+        if (y->left != _null)
             y->left->parent = x;
         y->parent = x->parent;
-        if (x->parent == &_null)
+        if (x->parent == _null)
             _root = y;
         else if (x == x->parent->left)
             x->parent->left = y;
@@ -101,10 +103,10 @@ class red_black_tree {
     void right_rotate(node_pointer x) {
         node_pointer y = x->left;
         x->left = y->right;
-        if (y->right != &_null)
+        if (y->right != _null)
             y->right->parent = x;
         y->parent = x->parent;
-        if (x->parent == &_null)
+        if (x->parent == _null)
             _root = y;
         else if (x == x->parent->right)
             x->parent->right = y;
@@ -116,9 +118,9 @@ class red_black_tree {
 
     void insert(value_type &val) {
         node_pointer input = _create_node(val);
-        node_pointer n = &_null;
+        node_pointer n = _null;
         node_pointer r = _root;
-        while (r != &_null) {
+        while (r != _null) {
             n = r;
             if (input->key < r->key)
                 r = r->left;
@@ -126,14 +128,14 @@ class red_black_tree {
                 r = r->right;
         }
         input->parent = n;
-        if (n == &_null)
+        if (n == _null)
             _root = input;
         else if (input->key < n->key)
             n->left = input;
         else
             n->right = input;
-        input->left = &_null;
-        input->right = &_null;
+        input->left = _null;
+        input->right = _null;
         input->color = RED;
         if (_left_most->left == input || input == _root)
             _left_most = input;
@@ -143,7 +145,7 @@ class red_black_tree {
     }
 
     void transplant(node_pointer target, node_pointer input) {
-        if (target->parent == &_null)
+        if (target->parent == _null)
             _root = input;
         else if (target == target->parent->left)
             target->parent->left = input;
@@ -156,10 +158,10 @@ class red_black_tree {
         node_pointer y = input;
         node_pointer x;
         color        y_original_color = y->color;
-        if (input->left == &_null) {
+        if (input->left == _null) {
             x = input->right;
             transplant(input, input->right);
-        } else if (input->right == &_null) {
+        } else if (input->right == _null) {
             x = input->left;
             transplant(input, input->left);
         } else {
@@ -183,9 +185,20 @@ class red_black_tree {
         _destroy_node(input);
     }
 
+    void clear() {
+        iterator it = begin();
+        while (it.base() != end().base()) {
+            _destroy_node(it++.base());
+        }
+        _destroy_node(end().base());
+        _left_most = _null;
+        _right_most = _null;
+        _root = _null;
+    };
+
    private:
     node_pointer   _root;
-    node           _null;
+    node_pointer   _null;
     node_pointer   _left_most;
     node_pointer   _right_most;
     allocator_type _alloc;
