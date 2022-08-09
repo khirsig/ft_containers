@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/09 13:31:14 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/09 13:45:24 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ class red_black_tree {
         _right_most = _root;
     }
 
-    ~red_black_tree() { delete (_null); }
+    ~red_black_tree() {}
 
     void print() { print(_root); }
 
@@ -195,6 +195,27 @@ class red_black_tree {
         _right_most = _null;
         _root = _null;
     };
+
+    void swap(red_black_tree &other) {
+        if (this != &other) {
+            node_pointer   tmp_root = other._root;
+            node_pointer   tmp_null = other._null;
+            node_pointer   tmp_left_most = other._left_most;
+            node_pointer   tmp_right_most = other._right_most;
+            allocator_type tmp_alloc = other._alloc;
+
+            other._root = _root;
+            other._null = _null;
+            other._left_most = _left_most;
+            other._right_most = _right_most;
+            other._alloc = _alloc;
+            _root = tmp_root;
+            _null = tmp_null;
+            _left_most = tmp_left_most;
+            _right_most = tmp_right_most;
+            _alloc = tmp_alloc;
+        }
+    }
 
    private:
     node_pointer   _root;
