@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/09 14:08:25 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/09 15:37:47 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define RED_BLACK_TREE_HPP
 
 #include "../iterators/tree_iterator.hpp"
+#include "../utils/pair.hpp"
 #include "algorithm"
 #include "binary_search_tree.hpp"
 
@@ -32,9 +33,11 @@ class red_black_tree {
     typedef ft::tree_iterator<node_pointer, T>       const_iterator;
     typedef typename allocator_type::difference_type difference_type;
     typedef typename allocator_type::size_type       size_type;
+    typedef Compare                                  compare_type;
 
-    red_black_tree(node_pointer n = NULL)
-        : _root(n), _null(new node(0, NULL, NULL, NULL, BLACK, true)) {
+    red_black_tree(allocator_type alloc = allocator_type(), node_pointer n = NULL)
+        : _root(n), _null(new node(ft::make_pair(0, 0), NULL, NULL, NULL, BLACK, true)) {
+        _alloc = alloc;
         if (_root == NULL)
             _root = _null;
         _left_most = _root;
@@ -95,6 +98,31 @@ class red_black_tree {
 
     const_iterator end() const { return (_right_most); }
 
+    bool empty() const { return (_root == _null ? true : false); }
+
+    size_type size() const { return (_size); }
+
+    size_type max_size() const { return (_alloc.max_size()); }
+
+    node_pointer search(node_pointer n, T key) {
+        if (n == _null || n->key == key)
+            return (n);
+        if (key < n->key)
+            return (search(n->left, key));
+        else
+            return (search(n->right, key));
+    }
+
+    node_pointer iterative_search(node_pointer n, T key) {
+        while (n != _null && key != n->key) {
+            if (key < n->key)
+                n = n->left;
+            else
+                n = n->right;
+        }
+        return (n);
+    }
+
     void left_rotate(node_pointer x) {
         node_pointer y = x->right;
         x->right = y->left;
@@ -127,7 +155,12 @@ class red_black_tree {
         x->parent = y;
     }
 
-    void insert(value_type &val) {
+    ft::pair<iterator, bool> insert(value_type &val) {
+        if (_root->key == val)
+            return (ft::make_pair(_root, false));
+        node_pointer needle = search(_root, val);
+        if (needle != _root)
+            return (ft::make_pair(needle, false));
         node_pointer input = _create_node(val);
         node_pointer n = _null;
         node_pointer r = _root;
@@ -153,6 +186,7 @@ class red_black_tree {
         if (_right_most->right == input || input == _root)
             _right_most = input;
         _insert_fixup(input);
+        return (ft::make_pair(input, true));
     }
 
     void transplant(node_pointer target, node_pointer input) {
@@ -234,10 +268,12 @@ class red_black_tree {
     node_pointer   _left_most;
     node_pointer   _right_most;
     allocator_type _alloc;
+    size_type      _size;
 
     node_pointer _create_node(value_type &val) {
         node_pointer n = _alloc.allocate(1);
         _alloc.construct(n, node(val, NULL, NULL, NULL));
+        _size++;
 
         return (n);
     }
@@ -245,6 +281,7 @@ class red_black_tree {
     void _destroy_node(node_pointer n) {
         _alloc.destroy(n);
         _alloc.deallocate(n, 1);
+        _size--;
     }
 
     void _clone_tree(const red_black_tree &other) {
