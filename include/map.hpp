@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:11:24 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/09 15:30:02 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/10 17:24:40 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ class map {
     ft::pair<iterator, bool> insert(const value_type &val) { return (_tree.insert(val)); }
 
    private:
-    ft::red_black_tree<ft::pair<key_type, mapped_type> > _tree;
+    ft::red_black_tree<value_type, Compare> _tree;
 };
 }  // namespace ft
 

@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 10:58:18 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/09 09:59:51 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/10 08:58:00 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,9 @@
 #include <iostream>
 #include <string>
 
-#define BLACK false
-#define RED true
+#include "./node.hpp"
 
 namespace ft {
-typedef bool color;
-
-template <class T>
-struct node {
-    typedef T value_type;
-
-    node(T _key, node *_parent = NULL, node *_left = NULL, node *_right = NULL, color _col = BLACK,
-         bool _is_leaf = false)
-        : key(_key), parent(_parent), left(_left), right(_right), color(_col), is_leaf(_is_leaf) {}
-
-    T     key;
-    node *parent;
-    node *left;
-    node *right;
-    color color;
-    bool  is_leaf;
-};
 
 template <class T>
 class binary_search_tree {
