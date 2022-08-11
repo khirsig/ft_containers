@@ -6,18 +6,20 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/11 15:52:51 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/11 22:23:10 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RED_BLACK_TREE_HPP
 #define RED_BLACK_TREE_HPP
 
+#include <algorithm>
+#include <functional>
+#include <iostream>
+
 #include "../iterators/tree_iterator.hpp"
 #include "../utils/pair.hpp"
 #include "./node.hpp"
-#include "algorithm"
-#include "functional"
 
 namespace ft {
 
@@ -108,7 +110,7 @@ class red_black_tree {
 
     size_type size() const { return (_size); }
 
-    size_type max_size() const { return (_alloc_value.max_size()); }
+    size_type max_size() const { return (std::numeric_limits<difference_type>::max()); }
 
     node_pointer search(node_pointer n, value_type key) {
         if (n == _null || _is_equal(*n->key, key))
@@ -200,8 +202,9 @@ class red_black_tree {
         input->color = RED;
         if (_left_most->left == input || input == _root)
             _left_most = input;
-        if (_right_most->right == input || input == _root)
+        if (_right_most->right == input || input == _root) {
             _right_most = input;
+        }
         _insert_fixup(input);
         return (ft::make_pair<iterator, bool>(iterator(input), true));
     }
@@ -213,6 +216,12 @@ class red_black_tree {
         (void)position;
         return (insert(val)).first;
         // }
+    }
+
+    template <class InputIterator>
+    void insert(InputIterator first, InputIterator last) {
+        for (; first != last; ++first)
+            insert(*first);
     }
 
     void transplant(node_pointer target, node_pointer input) {
