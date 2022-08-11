@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 14:24:57 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/09 13:13:07 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/11 11:06:58 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ class tree_iterator {
     typedef const value_type&              const_reference;
     typedef value_type*                    pointer;
 
-    tree_iterator(node_ptr ptr = NULL) : _ptr(ptr) {}
+    tree_iterator(const node_ptr& ptr = NULL) : _ptr(ptr) {}
+
+    tree_iterator(const tree_iterator& other) : _ptr(other._ptr) {}
 
     ~tree_iterator() {}
 

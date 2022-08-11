@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/11 07:44:06 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/11 11:31:30 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,32 +21,33 @@
 #include "../include/map.hpp"
 #include "../include/utils/pair.hpp"
 
-template <class T>
-void print_two_trees(ft::red_black_tree<T> &tree1, ft::red_black_tree<T> &tree2) {
-    typename ft::red_black_tree<T>::iterator it1 = tree1.begin(), it2 = tree2.begin();
-    while (it1 != tree1.end() && it2 != tree2.end()) {
-        if (it1 != tree1.end()) {
-            std::cout << (*it1).first << " ";
+template <class T, class U>
+void compare_two_maps(ft::map<T, U> &map1, ft::map<T, U> &map2) {
+    typename ft::map<T, U>::iterator it1 = map1.begin(), it2 = map2.begin();
+    while (it1 != map1.end() && it2 != map2.end()) {
+        if (it1 != map1.end()) {
+            std::cout << (*it1).second << " ";
             ++it1;
         }
-        if (it2 != tree2.end()) {
-            std::cout << (*it2).first << "\n";
+        if (it2 != map2.end()) {
+            std::cout << (*it2).second << "\n";
             ++it2;
         }
     }
-    std::cout << (*it1).first << " " << (*it2).first << "\n";
+    std::cout << (*it1).second << " " << (*it2).second << "\n";
 }
 
 int main() {
-    // ft::red_black_tree<ft::pair<int, int> > tree1, tree2;
+    // typedef ft::red_black_tree<ft::pair<const int, int> > rbtree;
+    // rbtree                                                tree1, tree2;
 
     // for (int i = 1; i < 15; ++i) {
-    //     ft::pair<int, int> tmp = ft::make_pair(i, i);
-    //     tree1.insert(tmp);
+    //     tree1.insert(ft::make_pair<const int, int>(i, i));
     // }
     // for (int i = 15; i < 30; ++i) {
-    //     ft::pair<int, int> tmp = ft::make_pair(i, i);
-    //     tree2.insert(tmp);
+    //     ft::pair<const int, int>         tmp = ft::make_pair(i, i);
+    //     ft::pair<rbtree::iterator, bool> pr = tree2.insert(tmp);
+    //     std::cout << pr.first->key.first << "\n";
     // }
 
     // print_two_trees(tree1, tree2);
@@ -55,11 +56,19 @@ int main() {
     // print_two_trees(tree1, tree2);
 
     // tree1.print();
-    ft::map<int, int> test;
-    // const int          i = 5;
-    // int                j = 5;
-    // ft::pair<int, int> tmp = ft::make_pair(i, j);
-    // test.insert(tmp);
 
+    ft::map<int, int> map1, map2;
+
+    for (int i = 1; i < 15; ++i) {
+        map1.insert(ft::make_pair<const int, int>(i, i));
+    }
+    for (int i = 15; i < 30; ++i) {
+        map2.insert(ft::make_pair<const int, int>(i, i));
+    }
+    std::cout << "Before Swapping:\n\n";
+    compare_two_maps(map1, map2);
+    map1.swap(map2);
+    std::cout << "\nAfter Swapping:\n\n";
+    compare_two_maps(map1, map2);
     return (0);
 }

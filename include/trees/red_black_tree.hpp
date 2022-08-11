@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/10 17:29:23 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/11 11:14:17 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,25 +20,30 @@
 #include "functional"
 
 namespace ft {
+
 template <class T, class Compare = std::less<typename T::first_type>,
-          class Allocator = std::allocator<ft::node<T> > >
+          class Alloc = std::allocator<ft::node<T> > >
 class red_black_tree {
    public:
-    typedef T                                        value_type;
-    typedef Allocator                                allocator_type;
-    typedef value_type                              &reference;
-    typedef value_type                              *pointer;
-    typedef ft::node<value_type>                     node;
-    typedef node                                    *node_pointer;
-    typedef node                                    &node_reference;
-    typedef ft::tree_iterator<node_pointer, T>       iterator;
-    typedef ft::tree_iterator<node_pointer, T>       const_iterator;
-    typedef typename allocator_type::difference_type difference_type;
-    typedef typename allocator_type::size_type       size_type;
-    typedef Compare                                  compare_type;
+    typedef T                                                        value_type;
+    typedef Compare                                                  compare_type;
+    typedef Alloc                                                    allocator_type;
+    typedef typename allocator_type::reference                       reference;
+    typedef typename allocator_type::const_reference                 const_reference;
+    typedef typename allocator_type::pointer                         pointer;
+    typedef typename allocator_type::const_pointer                   const_pointer;
+    typedef ft::node<value_type>                                     node;
+    typedef node                                                    *node_pointer;
+    typedef node                                                    &node_reference;
+    typedef ft::tree_iterator<node_pointer, typename T::second_type> iterator;
+    typedef ft::tree_iterator<node_pointer, typename T::second_type> const_iterator;
+    typedef typename allocator_type::difference_type                 difference_type;
+    typedef typename allocator_type::size_type                       size_type;
 
     red_black_tree(allocator_type alloc = allocator_type(), node_pointer n = NULL)
-        : _root(n), _null(new node(value_type(0, 0), NULL, NULL, NULL, BLACK, true)) {
+        : _root(n),
+          _null(new node(value_type(typename T::first_type(), typename T::second_type()), NULL,
+                         NULL, NULL, BLACK, true)) {
         _alloc = alloc;
         if (_root == NULL)
             _root = _null;
@@ -157,12 +162,13 @@ class red_black_tree {
         x->parent = y;
     }
 
-    ft::pair<iterator, bool> insert(reference val) {
+    ft::pair<iterator, bool> insert(const value_type &val) {
         if (_is_equal(_root->key, val))
-            return (ft::make_pair(iterator(_root), false));
+            return (ft::make_pair<iterator, bool>(iterator(_root), false));
         node_pointer needle = iterative_search(_root, val);
         if (needle != _root && needle != _null)
-            return (ft::make_pair(iterator(needle), false));
+            return (ft::make_pair<iterator, bool>(iterator(needle), false));
+
         node_pointer input = _create_node(val);
         node_pointer n = _null;
         node_pointer r = _root;
@@ -188,7 +194,7 @@ class red_black_tree {
         if (_right_most->right == input || input == _root)
             _right_most = input;
         _insert_fixup(input);
-        return (ft::make_pair(iterator(input), true));
+        return (ft::make_pair<iterator, bool>(iterator(input), true));
     }
 
     void transplant(node_pointer target, node_pointer input) {
@@ -272,7 +278,7 @@ class red_black_tree {
     allocator_type _alloc;
     size_type      _size;
 
-    node_pointer _create_node(reference val) {
+    node_pointer _create_node(const value_type &val) {
         node_pointer n = _alloc.allocate(1);
         _alloc.construct(n, node(val, NULL, NULL, NULL));
         _size++;
@@ -291,16 +297,16 @@ class red_black_tree {
             insert(*it);
     }
 
-    bool _is_equal(const value_type val1, const value_type val2,
+    bool _is_equal(const value_type &val1, const value_type &val2,
                    compare_type comp = compare_type()) {
         return (!comp(val1.first, val2.first) && !comp(val2.first, val1.first));
     }
 
-    bool _is_unequal(const value_type val1, const value_type val2) {
+    bool _is_unequal(const value_type &val1, const value_type &val2) {
         return !(_is_equal(val1, val2));
     }
 
-    bool _is_less(const value_type val1, const value_type val2,
+    bool _is_less(const value_type &val1, const value_type &val2,
                   compare_type comp = compare_type()) {
         return (comp(val1.first, val2.first));
     }
