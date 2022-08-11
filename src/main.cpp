@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/10 17:45:37 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/11 07:44:06 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,11 @@ int main() {
     // print_two_trees(tree1, tree2);
 
     // tree1.print();
-    ft::map<int, int>  test;
-    const int          i = 5;
-    int                j = 5;
-    ft::pair<int, int> tmp = ft::make_pair(i, j);
-    std::pair          test.insert(tmp);
+    ft::map<int, int> test;
+    // const int          i = 5;
+    // int                j = 5;
+    // ft::pair<int, int> tmp = ft::make_pair(i, j);
+    // test.insert(tmp);
 
     return (0);
 }
