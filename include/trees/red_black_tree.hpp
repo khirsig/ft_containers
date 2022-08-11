@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/11 15:10:29 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/11 15:52:51 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,15 @@ class red_black_tree {
     typedef typename allocator_type_value::size_type       size_type;
 
     red_black_tree(const key_compare &comp, const allocator_type_value &alloc_value)
-        : _root(NULL), _alloc_value(alloc_value), _comp(comp) {
+        : _root(NULL), _alloc_value(alloc_value), _comp(comp), _size(0) {
         _create_null();
         _root = _null;
         _left_most = _root;
         _right_most = _root;
     }
 
-    red_black_tree(const red_black_tree &other) {
+    red_black_tree(const red_black_tree &other) : _size(other.size()) {
         _create_null();
-
         _root = _null;
         _left_most = _root;
         _right_most = _root;
@@ -130,6 +129,16 @@ class red_black_tree {
         return (n);
     }
 
+    node_pointer successor(node_pointer n) {
+        if (n->right != _null)
+            return (min(n->right));
+        node_pointer *p = n->parent;
+        while (p != NULL && n == p->right) {
+            n = p;
+            p = p->parent;
+        }
+    }
+
     void left_rotate(node_pointer x) {
         node_pointer y = x->right;
         x->right = y->left;
@@ -195,6 +204,15 @@ class red_black_tree {
             _right_most = input;
         _insert_fixup(input);
         return (ft::make_pair<iterator, bool>(iterator(input), true));
+    }
+
+    iterator insert(iterator position, const value_type &val) {
+        // if (_is_less(*position, val) && _is_less(successor(*position))) {
+        //     transplant(*position, _create_node(val));
+        // } else {
+        (void)position;
+        return (insert(val)).first;
+        // }
     }
 
     void transplant(node_pointer target, node_pointer input) {

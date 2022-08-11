@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/11 15:10:46 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/11 15:19:50 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,17 @@ void compare_two_maps(ft::map<T, U> &map1, ft::map<T, U> &map2) {
     std::cout << "End: " << (*map1.end()).second << "  " << (*map2.end()).second << "\n\n";
     while (it1 != map1.end() && it2 != map2.end()) {
         if (it1 != map1.end()) {
-            std::cout << (*it1).second;
+            std::cout << it1->second;
             ++it1;
         }
         std::cout << " ";
         if (it2 != map2.end()) {
-            std::cout << (*it2).second;
+            std::cout << it2->second;
             ++it2;
         }
         std::cout << "\n";
     }
-    std::cout << (*it1).second << " " << (*it2).second << "\n";
+    std::cout << it1->second << " " << it2->second << "\n";
 }
 
 int main() {
