@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:11:24 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/12 14:52:23 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/12 15:47:07 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ class map {
 
     size_type max_size() const { return (_tree.max_size()); }
 
+    mapped_type &operator[](const key_type &k) { return _tree[k]; }
+
     mapped_type &at(const key_type &k) { return _tree.at(k); }
 
     const mapped_type &at(const key_type &k) const { return _tree.at(k); }
@@ -95,6 +97,10 @@ class map {
     void clear() { _tree.clear(); }
 
     void swap(map &x) { _tree.swap(x._tree); }
+
+    iterator find(const key_type &k) { return _tree.find(k); }
+
+    const_iterator find(const key_type &k) const { return _tree.find(k); }
 
    private:
     ft::red_black_tree<key_type, mapped_type, key_compare, allocator_type> _tree;

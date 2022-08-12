@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/12 15:05:36 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/12 15:47:01 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ class red_black_tree {
     size_type size() const { return (_size); }
 
     size_type max_size() const { return _alloc_node.max_size(); }
+
+    mapped_type &operator[](const key_type &k) { return at(k); }
 
     mapped_type &at(const key_type &k) {
         node_pointer needle = iterative_search(_root, k);
@@ -324,13 +326,13 @@ class red_black_tree {
                 ++i;
             }
         }
-
         return i;
     }
 
     void erase(iterator first, iterator last) {
-        for (; first != last; ++first)
+        for (; first != last; ++first) {
             erase(first.base());
+        }
     }
 
     void clear() {
@@ -370,6 +372,26 @@ class red_black_tree {
             _alloc_node = tmp_alloc_node;
             _size = tmp_size;
         }
+    }
+
+    iterator find(const key_type &k) {
+        node_pointer n = iterative_search(_root, k);
+        if (n == _root && _is_equal((*_root->key).first, k))
+            return iterator(_root);
+        else if (n == _root)
+            return end();
+        else
+            return iterator(n);
+    }
+
+    const_iterator find(const key_type &k) const {
+        node_pointer n = iterative_search(_root, k);
+        if (n == _root && _is_equal((*_root->key).first, k))
+            return const_iterator(_root);
+        else if (n == _root)
+            return const_iterator(end());
+        else
+            return const_iterator(n);
     }
 
    private:
