@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 08:56:34 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/11 14:31:27 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/12 09:06:56 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ struct node {
     typedef value_type *pointer;
 
     node(pointer _key, node *_parent = NULL, node *_left = NULL, node *_right = NULL,
-         color _col = BLACK, bool _is_leaf = false)
-        : key(_key), parent(_parent), left(_left), right(_right), color(_col), is_leaf(_is_leaf) {}
+         color _col = BLACK, bool _is_leaf = false, bool _is_end = false)
+        : key(_key), parent(_parent), left(_left), right(_right), color(_col), is_leaf(_is_leaf), is_end(_is_end) {}
 
     pointer key;
     node   *parent;
@@ -34,6 +34,7 @@ struct node {
     node   *right;
     color   color;
     bool    is_leaf;
+    bool    is_end;
 };
 }  // namespace ft
 

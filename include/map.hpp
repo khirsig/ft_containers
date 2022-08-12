@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:11:24 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/11 15:33:42 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/12 10:57:16 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,7 @@ class map {
     map(InputIterator first, InputIterator last, const key_compare &comp = key_compare(),
         const allocator_type &alloc = allocator_type())
         : _tree(comp, alloc) {
-        for (; first != last++; first)
-            _tree.insert(*first);
+        _tree.insert(first, last);
     }
 
     map(const map &x) : _tree(x._tree) {}
@@ -77,6 +76,13 @@ class map {
     iterator insert(iterator position, const value_type &val) {
         return (_tree.insert(position, val));
     }
+
+    template <class InputIterator>
+    void insert(InputIterator first, InputIterator last) {
+        _tree.insert(first, last);
+    }
+
+    void erase(iterator position) { _tree.erase(position.base()); }
 
     void swap(map &x) { _tree.swap(x._tree); }
 

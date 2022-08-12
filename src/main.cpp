@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/11 15:19:50 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/12 10:49:39 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
-// #include <map>
+#include <map>
 #include <vector>
 
 #include "../include/iterators/tree_iterator.hpp"
@@ -25,8 +25,8 @@
 template <class T, class U>
 void compare_two_maps(ft::map<T, U> &map1, ft::map<T, U> &map2) {
     typename ft::map<T, U>::iterator it1 = map1.begin(), it2 = map2.begin();
-    std::cout << "Begin: " << (*map1.begin()).second << "  " << (*map2.begin()).second << "\n";
-    std::cout << "End: " << (*map1.end()).second << "  " << (*map2.end()).second << "\n\n";
+    // std::cout << "Begin: " << (*map1.begin()).second << "  " << (*map2.begin()).second << "\n";
+    // std::cout << "End: " << (*map1.end()).second << "  " << (*map2.end()).second << "\n\n";
     while (it1 != map1.end() && it2 != map2.end()) {
         if (it1 != map1.end()) {
             std::cout << it1->second;
@@ -39,7 +39,6 @@ void compare_two_maps(ft::map<T, U> &map1, ft::map<T, U> &map2) {
         }
         std::cout << "\n";
     }
-    std::cout << it1->second << " " << it2->second << "\n";
 }
 
 int main() {
@@ -56,6 +55,8 @@ int main() {
     std::cout << "Before Swapping:\n\n";
     compare_two_maps(map1, map2);
     map1.swap(map2);
+    map2.erase(map2.begin());
+    map2.erase(map2.begin());
     std::cout << "\nAfter Swapping:\n\n";
     compare_two_maps(map1, map2);
 
