@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:11:24 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/12 11:15:43 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/12 14:52:23 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,10 @@ class map {
 
     size_type max_size() const { return (_tree.max_size()); }
 
+    mapped_type &at(const key_type &k) { return _tree.at(k); }
+
+    const mapped_type &at(const key_type &k) const { return _tree.at(k); }
+
     ft::pair<iterator, bool> insert(const value_type &val) { return (_tree.insert(val)); }
 
     iterator insert(iterator position, const value_type &val) {
@@ -83,6 +87,10 @@ class map {
     }
 
     void erase(iterator position) { _tree.erase(position.base()); }
+
+    size_type erase(const key_type &k) { return _tree.erase(k); }
+
+    void erase(iterator first, iterator last) { _tree.erase(first, last); }
 
     void clear() { _tree.clear(); }
 

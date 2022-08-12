@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/12 11:16:54 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/12 15:05:36 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ class red_black_tree {
     typedef typename allocator_type_node::reference        node_reference;
     typedef ft::tree_iterator<node_pointer, value_type>    iterator;
     typedef ft::tree_iterator<node_pointer, value_type>    const_iterator;
-    typedef typename allocator_type_value::difference_type difference_type;
-    typedef typename allocator_type_value::size_type       size_type;
+    typedef typename allocator_type_node::difference_type  difference_type;
+    typedef typename allocator_type_node::size_type        size_type;
 
     red_black_tree(const key_compare &comp, const allocator_type_value &alloc_value)
         : _root(NULL), _alloc_value(alloc_value), _comp(comp), _size(0) {
@@ -56,9 +56,11 @@ class red_black_tree {
 
     red_black_tree(const red_black_tree &other) : _size(other.size()) {
         _create_null();
+        _create_past_end();
         _root = _null;
         _left_most = _root;
         _right_most = _root;
+        _right_most->right = _past_end;
         _clone_tree(other);
     }
 
@@ -105,18 +107,32 @@ class red_black_tree {
 
     const_iterator begin() const { return (_left_most); }
 
-    iterator end() { return (_past_end); }
+    iterator end() { return _null != _root ? _past_end : _root; }
 
-    const_iterator end() const { return (_past_end); }
+    const_iterator end() const { return _null != _root ? _past_end : _root; }
 
-    bool empty() const { return (_root == _null ? true : false); }
+    bool empty() const { return _size == 0 ? true : false; }
 
     size_type size() const { return (_size); }
 
-    size_type max_size() const { return (std::numeric_limits<difference_type>::max()); }
+    size_type max_size() const { return _alloc_node.max_size(); }
 
-    node_pointer search(node_pointer n, value_type key) {
-        if (n == _null || _is_equal(*n->key, key))
+    mapped_type &at(const key_type &k) {
+        node_pointer needle = iterative_search(_root, k);
+        if (_null == _root || (needle == _root && _is_unequal(k, (*_root->key).first)))
+            throw(std::out_of_range("map"));
+        return (*needle->key).second;
+    }
+
+    const mapped_type &at(const key_type &k) const {
+        node_pointer needle = iterative_search(_root, k);
+        if (_null == _root || (needle == _root && _is_unequal(k, (*_root->key).first)))
+            throw(std::out_of_range("map"));
+        return (*needle->key).second;
+    }
+
+    node_pointer search(node_pointer n, const value_type &key) const {
+        if (n->is_leaf || _is_equal(*n->key, key))
             return (n);
         if (_is_less(key, *n->key))
             return (search(n->left, key));
@@ -124,13 +140,27 @@ class red_black_tree {
             return (search(n->right, key));
     }
 
-    node_pointer iterative_search(node_pointer n, value_type key) {
+    node_pointer iterative_search(node_pointer n, const value_type &key) const {
         while (!n->is_leaf && _is_unequal(key, *n->key)) {
             if (_is_less(key, *n->key))
                 n = n->left;
             else
                 n = n->right;
         }
+        if (n->is_leaf)
+            return (_root);
+        return (n);
+    }
+
+    node_pointer iterative_search(node_pointer n, const key_type &key) const {
+        while (!n->is_leaf && _is_unequal(key, (*n->key).first)) {
+            if (_is_less(key, (*n->key).first))
+                n = n->left;
+            else
+                n = n->right;
+        }
+        if (n->is_leaf)
+            return (_root);
         return (n);
     }
 
@@ -243,10 +273,10 @@ class red_black_tree {
         node_pointer y = input;
         node_pointer x;
         color        y_original_color = y->color;
-        if (input->left == _null) {
+        if (input->left->is_leaf) {
             x = input->right;
             transplant(input, input->right);
-        } else if (input->right == _null) {
+        } else if (input->right->is_leaf) {
             x = input->left;
             transplant(input, input->left);
         } else {
@@ -275,6 +305,32 @@ class red_black_tree {
         if (y_original_color == BLACK)
             _erase_fixup(x);
         _erase_node(input);
+    }
+
+    size_type erase(const key_type &k) {
+        if (_null == _root)
+            return (0);
+        size_type    i = 0;
+        node_pointer n = NULL;
+        while ((n = iterative_search(_root, k))) {
+            if (n == _root) {
+                if (_is_equal((*_root->key).first, k)) {
+                    erase(n);
+                    ++i;
+                } else
+                    return i;
+            } else {
+                erase(n);
+                ++i;
+            }
+        }
+
+        return i;
+    }
+
+    void erase(iterator first, iterator last) {
+        for (; first != last; ++first)
+            erase(first.base());
     }
 
     void clear() {
@@ -370,21 +426,30 @@ class red_black_tree {
     }
 
     void _clone_tree(const red_black_tree &other) {
-        for (iterator it = other.begin(); it != other.end(); ++it)
-            insert(*it);
+        insert(other.begin(), iterator(other._right_most));
     }
 
-    bool _is_equal(const value_type &val1, const value_type &val2) {
+    bool _is_equal(const value_type &val1, const value_type &val2) const {
         return (!_comp(val1.first, val2.first) && !_comp(val2.first, val1.first));
     }
 
-    bool _is_unequal(const value_type &val1, const value_type &val2) {
+    bool _is_equal(const key_type &val1, const key_type &val2) const {
+        return (!_comp(val1, val2) && !_comp(val2, val1));
+    }
+
+    bool _is_unequal(const value_type &val1, const value_type &val2) const {
         return !(_is_equal(val1, val2));
     }
 
-    bool _is_less(const value_type &val1, const value_type &val2) {
+    bool _is_unequal(const key_type &val1, const key_type &val2) const {
+        return !(_is_equal(val1, val2));
+    }
+
+    bool _is_less(const value_type &val1, const value_type &val2) const {
         return (_comp(val1.first, val2.first));
     }
+
+    bool _is_less(const key_type &val1, const key_type &val2) const { return (_comp(val1, val2)); }
 
     void _erase_fixup(node_pointer x) {
         while (x != _root && x->color == BLACK) {

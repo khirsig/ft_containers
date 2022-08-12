@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/12 10:49:39 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/12 14:41:40 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,26 @@ int main() {
     }
 
     // map1.print();
-    std::cout << "Before Swapping:\n\n";
-    compare_two_maps(map1, map2);
-    map1.swap(map2);
-    map2.erase(map2.begin());
-    map2.erase(map2.begin());
-    std::cout << "\nAfter Swapping:\n\n";
-    compare_two_maps(map1, map2);
+    // std::cout << "Before Swapping:\n\n";
+    // compare_two_maps(map1, map2);
+    // map1.swap(map2);
+    // map2.erase(map2.begin());
+    // map2.erase(map2.begin());
+    // std::cout << "\nAfter Swapping:\n\n";
+    // compare_two_maps(map1, map2);
+    ft::map<std::string, std::string> m;
+
+    ft::map<std::string, std::string>::size_type size = m.erase("");
+    m.insert(ft::make_pair("", ""));
+    m.insert(ft::make_pair("123", "kjhgfdsdffghsfghdfgh"));
+    m.insert(ft::make_pair("1234", "gfdsadgg"));
+    m.insert(ft::make_pair("123456789123456789123456789", "49857459898674568464"));
+    m.insert(ft::make_pair("0", "2345456456456456"));
+    m.insert(ft::make_pair("", ""));
+    m.insert(ft::make_pair("", "9459845984598498"));
+    m.insert(ft::make_pair("000000000000000000000000", "1111111111111111111111111111"));
+
+    size = m.erase("1");
 
     std::cout << "ENDE\n";
     return (0);
