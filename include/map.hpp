@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:11:24 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/12 10:57:16 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/12 11:15:43 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,18 @@ class map {
 
     void erase(iterator position) { _tree.erase(position.base()); }
 
+    void clear() { _tree.clear(); }
+
     void swap(map &x) { _tree.swap(x._tree); }
 
    private:
     ft::red_black_tree<key_type, mapped_type, key_compare, allocator_type> _tree;
 };
+
+template <class Key, class T, class Compare, class Alloc>
+void swap(ft::map<Key, T, Compare, Alloc> &lhs, ft::map<Key, T, Compare, Alloc> &rhs) {
+    lhs.swap(rhs);
+}
 }  // namespace ft
 
 #endif
