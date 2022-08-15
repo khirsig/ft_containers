@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/15 12:08:42 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/15 15:44:32 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ class red_black_tree {
         _left_most = _root;
         _right_most = _root;
         _right_most->right = _past_end;
+        _left_most->left = _past_end;
     }
 
     red_black_tree(const red_black_tree &other) {
@@ -128,9 +129,9 @@ class red_black_tree {
         }
     }
 
-    iterator begin() { return (_left_most); }
+    iterator begin() { return _left_most != _null ? _left_most : _past_end; }
 
-    const_iterator begin() const { return (_left_most); }
+    const_iterator begin() const { return _left_most != _null ? _left_most : _past_end; }
 
     iterator end() { return _null != _root ? _past_end : _root; }
 
@@ -142,7 +143,9 @@ class red_black_tree {
 
     size_type max_size() const { return _alloc_node.max_size(); }
 
-    mapped_type &operator[](const key_type &k) { return at(k); }
+    mapped_type &operator[](const key_type &k) {
+        return (*((insert(ft::make_pair(k, mapped_type()))).first)).second;
+    }
 
     mapped_type &at(const key_type &k) {
         node_pointer needle = iterative_search(_root, k);
@@ -300,6 +303,7 @@ class red_black_tree {
         node_pointer y = input;
         node_pointer x;
         color        y_original_color = y->color;
+
         if (input->left->is_leaf) {
             x = input->right;
             transplant(input, input->right);
@@ -307,7 +311,7 @@ class red_black_tree {
             x = input->left;
             transplant(input, input->left);
         } else {
-            y = _left_most;
+            y = tree_min(input->right);
             y_original_color = y->color;
             x = y->right;
             if (y->parent == input)
@@ -322,42 +326,22 @@ class red_black_tree {
             y->left->parent = y;
             y->color = input->color;
         }
-        if (input == _left_most)
-            _left_most = tree_min(input->parent);
-        if (input == _right_most) {
-            _right_most = tree_max(input->parent);
+        if (input == _left_most) {
+            if (input->right->is_leaf)
+                _left_most = _left_most->parent;
+            else
+                _left_most = tree_min(_left_most->right);
+        } else if (input == _right_most) {
+            if (input->left->is_leaf)
+                _right_most = _right_most->parent;
+            else
+                _right_most = tree_max(_right_most->left);
             _right_most->right = _past_end;
             _past_end->parent = _right_most;
         }
         if (y_original_color == BLACK)
             _erase_fixup(x);
         _erase_node(input);
-    }
-
-    size_type erase(const key_type &k) {
-        if (_null == _root)
-            return (0);
-        size_type    i = 0;
-        node_pointer n = NULL;
-        while ((n = iterative_search(_root, k))) {
-            if (n == _root) {
-                if (_is_equal((*_root->key).first, k)) {
-                    erase(n);
-                    ++i;
-                } else
-                    return i;
-            } else {
-                erase(n);
-                ++i;
-            }
-        }
-        return i;
-    }
-
-    void erase(iterator first, iterator last) {
-        for (; first != last; ++first) {
-            erase(first.base());
-        }
     }
 
     void clear() {
@@ -478,6 +462,8 @@ class red_black_tree {
     ft::pair<const_iterator, const_iterator> equal_range(const key_type &key) const {
         return ft::make_pair(lower_bound(key), upper_bound(key));
     }
+
+    allocator_type_value get_allocator() const { return _alloc_value; }
 
    private:
     node_pointer         _root;

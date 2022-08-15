@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/08 14:45:43 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/15 13:28:22 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ class vector {
         _content = NULL;
         if (n > 0) {
             _content = _allocator.allocate(n);
-            for (size_t i = 0; i < n; i++) _allocator.construct(_content + i, val);
+            for (size_t i = 0; i < n; i++)
+                _allocator.construct(_content + i, val);
         }
         _size = n;
         _capacity = n;
@@ -78,7 +79,8 @@ class vector {
         size_type n = other.size();
         if (n > 0) {
             _vallocate(n);
-            for (size_type i = 0; i < n; ++i) push_back(other[i]);
+            for (size_type i = 0; i < n; ++i)
+                push_back(other[i]);
             _size = n;
         }
     }
@@ -131,10 +133,13 @@ class vector {
 
     void resize(size_type n, value_type val = value_type()) {
         if (_size < n) {
-            if (n > _capacity) reserve(_recommend_size(n));
-            for (; _size < n; ++_size) _allocator.construct(_content + _size, val);
+            if (n > _capacity)
+                reserve(_recommend_size(n));
+            for (; _size < n; ++_size)
+                _allocator.construct(_content + _size, val);
         } else if (_size > n) {
-            for (; _size > n; --_size) _allocator.destroy(_content + (_size - 1));
+            for (; _size > n; --_size)
+                _allocator.destroy(_content + (_size - 1));
         }
     }
 
@@ -153,12 +158,14 @@ class vector {
 
     // Element Access
     reference at(size_type n) {
-        if (n >= _size) throw std::out_of_range("vector");
+        if (n >= _size)
+            throw std::out_of_range("vector");
         return (*(_content + n));
     }
 
     const_reference at(size_type n) const {
-        if (n >= _size) throw std::out_of_range("vector");
+        if (n >= _size)
+            throw std::out_of_range("vector");
         return (*(_content + n));
     }
 
@@ -178,18 +185,22 @@ class vector {
     }
 
     void assign(size_type n, const value_type &val) {
-        for (size_type i = 0; i < _size; ++i) _allocator.destroy(_content + i);
+        for (size_type i = 0; i < _size; ++i)
+            _allocator.destroy(_content + i);
         if (n > _capacity) {
-            if (_capacity > 0) _allocator.deallocate(_content, _capacity);
+            if (_capacity > 0)
+                _allocator.deallocate(_content, _capacity);
             _content = _allocator.allocate(n);
             _capacity = n;
         }
-        for (size_type i = 0; i < n; ++i) _allocator.construct(_content + i, val);
+        for (size_type i = 0; i < n; ++i)
+            _allocator.construct(_content + i, val);
         _size = n;
     }
 
     void push_back(const T &value) {
-        if (_size + 1 > _capacity) reserve(_recommend_size(_size + 1));
+        if (_size + 1 > _capacity)
+            reserve(_recommend_size(_size + 1));
         _construct_from_end(1, value);
     }
 
@@ -208,7 +219,8 @@ class vector {
         if (n > 0) {
             const difference_type offset = position - begin();
             const size_type       old_size = _size;
-            if (old_size + n > _capacity) reserve(_recommend_size(old_size + n));
+            if (old_size + n > _capacity)
+                reserve(_recommend_size(old_size + n));
             resize(old_size + n);
             std::copy_backward(begin() + offset, begin() + old_size, begin() + old_size + n);
             std::fill_n(_content + offset, n, val);
@@ -225,7 +237,8 @@ class vector {
         size_type savedPos = position - begin();
         for (size_type i = savedPos; i < _size; ++i) {
             _allocator.destroy(_content + i);
-            if (i != _size - 1) _allocator.construct(_content + i, *(_content + i + 1));
+            if (i != _size - 1)
+                _allocator.construct(_content + i, *(_content + i + 1));
         }
         --_size;
         return (_content + savedPos);
@@ -234,7 +247,8 @@ class vector {
     iterator erase(iterator first, iterator last) {
         if (first != last) {
             iterator ptr = std::copy(last, end(), first);
-            while (end() != ptr) pop_back();
+            while (end() != ptr)
+                pop_back();
         }
         return (first);
     }
@@ -256,7 +270,8 @@ class vector {
     }
 
     void clear() {
-        for (size_type i = 0; i < size(); ++i) _allocator.destroy(_content + i);
+        for (size_type i = 0; i < size(); ++i)
+            _allocator.destroy(_content + i);
         _size = 0;
     }
 
@@ -271,17 +286,21 @@ class vector {
     inline void _construct(pointer ptr, const_reference val) { _allocator.construct(ptr, val); }
 
     inline void _construct_from_end(size_type n, const_reference val = value_type()) {
-        for (size_type i = 0; i < n; ++i, ++_size) _construct(_content + _size, val);
+        for (size_type i = 0; i < n; ++i, ++_size)
+            _construct(_content + _size, val);
     }
 
     template <typename ForwardIterator>
     inline void _construct_from_end(ForwardIterator first, ForwardIterator last,
                                     ft::forward_iterator_tag) {
-        for (; first != last; ++first, ++_size) _construct(_content + _size, *first);
+        for (; first != last; ++first, ++_size)
+            _construct(_content + _size, *first);
     }
 
     inline void _vallocate(size_type n) {
-        if (n > max_size()) throw std::length_error("vector");
+        if (n > max_size())
+            throw std::length_error("vector");
+
         _content = _allocator.allocate(n);
         _capacity = n;
     }
@@ -297,7 +316,8 @@ class vector {
     template <typename InputIterator>
     inline void _assign_range(InputIterator first, InputIterator last, std::input_iterator_tag) {
         clear();
-        for (; first != last; ++first) push_back(*first);
+        for (; first != last; ++first)
+            push_back(*first);
     }
 
     template <typename ForwardIterator>
@@ -320,7 +340,8 @@ class vector {
     void _insert_range(iterator position, InputIterator first, InputIterator last,
                        std::input_iterator_tag) {
         if (position == end()) {
-            for (; first != last; ++first) push_back(*first);
+            for (; first != last; ++first)
+                push_back(*first);
         } else if (first != last) {
             vector tmp(first, last);
             insert(position, tmp.begin(), tmp.end());
@@ -334,7 +355,8 @@ class vector {
         if (n > 0) {
             const difference_type offset = position - begin();
             const size_type       old_size = size();
-            if (old_size + n > _capacity) reserve(_recommend_size(old_size + n));
+            if (old_size + n > _capacity)
+                reserve(_recommend_size(old_size + n));
             resize(old_size + n);
             std::copy_backward(_content + offset, _content + old_size, _content + old_size + n);
             std::copy(first, last, _content + offset);
@@ -343,8 +365,10 @@ class vector {
 
     size_type _recommend_size(size_type new_size) const {
         const size_type ms = max_size();
-        if (new_size > ms) throw std::length_error("vector");
-        if (_capacity >= ms / 2) return (ms);
+        if (new_size > ms)
+            throw std::length_error("vector");
+        if (_capacity >= ms / 2)
+            return (ms);
         return (std::max(_capacity * 2, new_size));
     }
 };
