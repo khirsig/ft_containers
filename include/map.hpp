@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:11:24 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/15 08:34:20 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/15 09:28:26 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,20 +104,17 @@ class map {
 
     key_compare key_comp() const { return key_compare(); }
 
-    value_compare value_comp() const {
-        return value_compare<key_type, value_type, key_compare, allocator_type>();
-    }
+    size_type count(const key_type &k) const { return find(k) != end() ? 1 : 0; }
 
-   private:
-    ft::red_black_tree<key_type, mapped_type, key_compare, allocator_type> _tree;
-};
+    iterator lower_bound(const key_type &k) { return _tree.lower_bound(k); }
 
-template <class Key, class T, class Compare, class Alloc>
-void swap(ft::map<Key, T, Compare, Alloc> &lhs, ft::map<Key, T, Compare, Alloc> &rhs) {
-    lhs.swap(rhs);
+    const_iterator lower_bound(const key_type &k) const { return _tree.lower_bound(k); }
 
-    template <class Key, class T, class Compare, class Alloc>
-    class map<Key, T, Compare, Alloc>::value_compare {
+    iterator upper_bound(const key_type &k) { return _tree.upper_bound(k); }
+
+    const_iterator upper_bound(const key_type &k) const { return _tree.upper_bound(k); }
+
+    class value_compare : public std::binary_function<value_type, value_type, bool> {
         friend class map;
 
        public:
@@ -132,8 +129,19 @@ void swap(ft::map<Key, T, Compare, Alloc> &lhs, ft::map<Key, T, Compare, Alloc> 
        protected:
         value_compare(Compare c) : comp(c) {}
         Compare comp;
-    }
+    };
+
+    value_compare value_comp() const { return value_compare(); }
+
+   private:
+    ft::red_black_tree<key_type, mapped_type, key_compare, allocator_type> _tree;
+};
+
+template <class Key, class T, class Compare, class Alloc>
+void swap(ft::map<Key, T, Compare, Alloc> &lhs, ft::map<Key, T, Compare, Alloc> &rhs) {
+    lhs.swap(rhs);
 }
+
 }  // namespace ft
 
 #endif

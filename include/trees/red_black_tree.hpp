@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/15 08:31:48 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/15 09:03:03 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -393,6 +393,42 @@ class red_black_tree {
         else
             return const_iterator(n);
     }
+
+    iterator lower_bound(const key_type &k) {
+        iterator it(_left_most);
+
+        for (; _is_less((*it->key).first, k) || _is_equal((*it->key).first, k); ++it)
+            continue;
+        return (it);
+    }
+
+    const_iterator lower_bound(const key_type &k) const {
+        const_iterator it(_left_most);
+
+        for (; _is_less((*it->key).first, k) || _is_equal((*it->key).first, k); ++it)
+            continue;
+        return (it);
+    }
+
+    iterator upper_bound(const key_type &k) {
+        iterator it(_right_most);
+
+        for (; !key_compare(k, (*it->key).first); ++it)
+            continue;
+        return (it);
+    }
+
+    const_iterator upper_bound(const key_type &k) const {
+        const_iterator it(_right_most);
+
+        for (; !key_compare(k, (*it->key).first); ++it)
+            continue;
+        return (it);
+    }
+
+    // pair<iterator, iterator> equal_range(const key_type &k) {
+
+    // }
 
    private:
     node_pointer         _root;
