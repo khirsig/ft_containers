@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:11:24 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/15 09:28:26 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/15 09:36:22 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,40 @@ class map {
 template <class Key, class T, class Compare, class Alloc>
 void swap(ft::map<Key, T, Compare, Alloc> &lhs, ft::map<Key, T, Compare, Alloc> &rhs) {
     lhs.swap(rhs);
+}
+
+template <class Key, class T, class Compare, class Alloc>
+inline bool operator==(const map<Key, T, Compare, Alloc> &lhs,
+                       const map<Key, T, Compare, Alloc> &rhs) {
+    return lhs.size() == rhs.size() && std::equal(lhs.begin(), lhs.end(), rhs.begin());
+}
+
+template <class Key, class T, class Compare, class Alloc>
+inline bool operator!=(const map<Key, T, Compare, Alloc> &lhs,
+                       const map<Key, T, Compare, Alloc> &rhs) {
+    return !(lhs == rhs);
+}
+
+template <class Key, class T, class Compare, class Alloc>
+inline bool operator<(const map<Key, T, Compare, Alloc> &lhs,
+                      const map<Key, T, Compare, Alloc> &rhs) {
+    return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+}
+
+template <class Key, class T, class Compare, class Alloc>
+inline bool operator>(const map<Key, T, Compare, Alloc> &lhs,
+                      const map<Key, T, Compare, Alloc> &rhs) {
+    return rhs < lhs;
+}
+template <class Key, class T, class Compare, class Alloc>
+inline bool operator<=(const map<Key, T, Compare, Alloc> &lhs,
+                       const map<Key, T, Compare, Alloc> &rhs) {
+    return !(rhs < lhs);
+}
+template <class Key, class T, class Compare, class Alloc>
+inline bool operator>=(const map<Key, T, Compare, Alloc> &lhs,
+                       const map<Key, T, Compare, Alloc> &rhs) {
+    return !(lhs < rhs);
 }
 
 }  // namespace ft
