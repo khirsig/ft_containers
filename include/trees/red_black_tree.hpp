@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/15 11:16:24 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/15 12:08:42 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -420,40 +420,64 @@ class red_black_tree {
     }
 
     iterator lower_bound(const key_type &k) {
-        iterator it(_left_most);
-
-        for (; _is_less((*it->key).first, k) || _is_equal((*it->key).first, k); ++it)
-            continue;
-        return (it);
+        node_pointer result = end().base();
+        node_pointer n = _root;
+        while (!n->is_leaf) {
+            if (!_is_less((*n->key).first, k)) {
+                result = n;
+                n = n->left;
+            } else
+                n = n->right;
+        }
+        return iterator(result);
     }
 
     const_iterator lower_bound(const key_type &k) const {
-        const_iterator it(_left_most);
-
-        for (; _is_less((*it->key).first, k) || _is_equal((*it->key).first, k); ++it)
-            continue;
-        return (it);
+        node_pointer result = end().base();
+        node_pointer n = _root;
+        while (!n->is_leaf) {
+            if (!_is_less((*n->key).first, k)) {
+                result = n;
+                n = n->left;
+            } else
+                n = n->right;
+        }
+        return const_iterator(result);
     }
 
     iterator upper_bound(const key_type &k) {
-        iterator it(_right_most);
-
-        for (; !key_compare(k, (*it->key).first); ++it)
-            continue;
-        return (it);
+        node_pointer result = end().base();
+        node_pointer n = _root;
+        while (!n->is_leaf) {
+            if (_is_less(k, (*n->key).first)) {
+                result = n;
+                n = n->left;
+            } else
+                n = n->right;
+        }
+        return iterator(result);
     }
 
     const_iterator upper_bound(const key_type &k) const {
-        const_iterator it(_right_most);
-
-        for (; !key_compare(k, (*it->key).first); ++it)
-            continue;
-        return (it);
+        node_pointer result = end().base();
+        node_pointer n = _root;
+        while (!n->is_leaf) {
+            if (_is_less(k, (*n->key).first)) {
+                result = n;
+                n = n->left;
+            } else
+                n = n->right;
+        }
+        return const_iterator(result);
     }
 
-    // pair<iterator, iterator> equal_range(const key_type &k) {
+    ft::pair<iterator, iterator> equal_range(const key_type &key) {
+        return ft::make_pair(lower_bound(key), upper_bound(key));
+    }
 
-    // }
+    ft::pair<const_iterator, const_iterator> equal_range(const key_type &key) const {
+        return ft::make_pair(lower_bound(key), upper_bound(key));
+    }
 
    private:
     node_pointer         _root;

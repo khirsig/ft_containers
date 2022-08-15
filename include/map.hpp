@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:11:24 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/15 10:51:38 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/15 11:26:28 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,12 @@ class map {
     iterator upper_bound(const key_type &k) { return _tree.upper_bound(k); }
 
     const_iterator upper_bound(const key_type &k) const { return _tree.upper_bound(k); }
+
+    ft::pair<iterator, iterator> equal_range(const key_type &key) { return _tree.equal_range(key); }
+
+    ft::pair<const_iterator, const_iterator> equal_range(const key_type &key) const {
+        return _tree.equal_range(key);
+    }
 
     class value_compare : public std::binary_function<value_type, value_type, bool> {
         friend class map;
