@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/15 15:08:25 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/15 19:54:49 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,34 +50,54 @@ int main() {
     for (int i = 15; i < 30; ++i) {
         map2.insert(ft::make_pair<const int, int>(i, i));
     }
-
-    // map1.print();
-    // std::cout << "Before Swapping:\n\n";
-    // compare_two_maps(map1, map2);
-    // map1.swap(map2);
-    // map2.erase(map2.begin());
-    // map2.erase(map2.begin());
-    // std::cout << "\nAfter Swapping:\n\n";
-    // compare_two_maps(map1, map2);
     ft::map<int, std::string> m;
 
-    // ft::map<std::string, std::string>::size_type size = m.erase("");
-    m.insert(ft::make_pair(23, ""));
-    m.insert(ft::make_pair(123, "kjhgfdsdffghsfghdfgh"));
-    m.insert(ft::make_pair(1234, "gfdsadgg"));
-    m.insert(ft::make_pair(12345678912345678, "49857459898674568464"));
-    m.insert(ft::make_pair(5, "49857459898674568464"));
-    m.insert(ft::make_pair(2, "49857459898674568464"));
-    // m.insert(ft::make_pair("0", "2345456456456456"));
-    // m.insert(ft::make_pair("", ""));
-    // m.insert(ft::make_pair("", "9459845984598498"));
-    // m.insert(ft::make_pair("000000000000000000000000", "1111111111111111111111111111"));
+    m.insert(ft::make_pair(23, "23n"));
+    m.insert(ft::make_pair(25, "asdasdfsdfsafdsf"));
+    m.insert(ft::make_pair(1, "asdssdfdfdffffff"));
+    m.insert(ft::make_pair(2, "dsfdffffdfdfdsdfdffa"));
+    m.insert(ft::make_pair(3, "sssdfs"));
+    m.insert(ft::make_pair(75, "dfse"));
+    m.insert(ft::make_pair(30, "sefsadfasdfasdfsadfasdfsf"));
+    m.insert(ft::make_pair(-22, "dfhkihgbnfbcx5reterjhd"));
+    m.insert(ft::make_pair(-23, "sdffgdfgrefet34thfgheewt"));
+    m.insert(ft::make_pair(0, "98y4rtuohwidsjusdossefsse"));
 
-    // size = m.erase("1");
     for (ft::map<int, std::string>::iterator it = m.begin(); it != m.end(); it = m.begin()) {
-        std::cout << it->first << "\n";
         m.erase(it);
     }
+
+    m.insert(ft::make_pair(23, "23n"));
+    m.insert(ft::make_pair(25, "asdasdfsdfsafdsf"));
+    m.insert(ft::make_pair(1, "asdssdfdfdffffff"));
+    m.insert(ft::make_pair(2, "dsfdffffdfdfdsdfdffa"));
+    m.insert(ft::make_pair(3, "sssdfs"));
+    m.insert(ft::make_pair(75, "dfse"));
+    m.insert(ft::make_pair(30, "sefsadfasdfasdfsadfasdfsf"));
+    m.insert(ft::make_pair(-22, "dfhkihgbnfbcx5reterjhd"));
+    m.insert(ft::make_pair(-23, "sdffgdfgrefet34thfgheewt"));
+    m.insert(ft::make_pair(0, "98y4rtuohwidsjusdossefsse"));
+
+    m.erase(64);
+    m.erase(0);
+    m.erase(75);
+    m.erase(1);
+    m.erase(2);
+    m.erase(3);
+    m.erase(23);
+    m.erase(23);
+    m.erase(30);
+    m.erase(-22);
+    m.erase(-23);
+    m.erase(-23);
+    // m.erase(25);
+    m.erase(-23);
+
+    // ft::map<int, std::string>::iterator iter = m.begin();
+    // for (int i = 0; i < 6; ++i, iter = m.begin())
+    //     m.erase(iter);
+    std::cout << "erased all\n";
+    m.insert(ft::make_pair(5, "49857459898674568464"));
 
     std::cout << "ENDE\n";
     return (0);

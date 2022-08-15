@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/15 15:44:32 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/15 19:50:52 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -341,6 +341,13 @@ class red_black_tree {
         }
         if (y_original_color == BLACK)
             _erase_fixup(x);
+        if (_size == 1) {
+            _root = _null;
+            _left_most = _root;
+            _right_most = _root;
+            _right_most->right = _past_end;
+            _left_most->left = _past_end;
+        }
         _erase_node(input);
     }
 

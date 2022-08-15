@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:11:24 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/15 15:48:05 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/15 19:31:06 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,9 +114,9 @@ class map {
     }
 
     void erase(iterator first, iterator last) {
-        for (; first != last; ++first) {
-            std::cout << "111\n";
-            erase(first);
+        for (iterator tmp = first; tmp != last; tmp = first) {
+            first++;
+            erase(tmp);
         }
     }
 
