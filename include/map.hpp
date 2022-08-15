@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:11:24 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/12 15:47:07 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/15 08:34:20 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,12 @@ class map {
 
     const_iterator find(const key_type &k) const { return _tree.find(k); }
 
+    key_compare key_comp() const { return key_compare(); }
+
+    value_compare value_comp() const {
+        return value_compare<key_type, value_type, key_compare, allocator_type>();
+    }
+
    private:
     ft::red_black_tree<key_type, mapped_type, key_compare, allocator_type> _tree;
 };
@@ -109,6 +115,24 @@ class map {
 template <class Key, class T, class Compare, class Alloc>
 void swap(ft::map<Key, T, Compare, Alloc> &lhs, ft::map<Key, T, Compare, Alloc> &rhs) {
     lhs.swap(rhs);
+
+    template <class Key, class T, class Compare, class Alloc>
+    class map<Key, T, Compare, Alloc>::value_compare {
+        friend class map;
+
+       public:
+        typedef bool       result_type;
+        typedef value_type first_argument_type;
+        typedef value_type second_argument_type;
+
+        bool operator()(const value_type &x, const value_type &y) const {
+            return comp(x.first, y.first);
+        }
+
+       protected:
+        value_compare(Compare c) : comp(c) {}
+        Compare comp;
+    }
 }
 }  // namespace ft
 
