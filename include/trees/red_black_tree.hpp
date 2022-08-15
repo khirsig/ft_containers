@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/15 10:54:20 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/15 11:16:24 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,19 @@ class red_black_tree {
         _right_most->right = _past_end;
     }
 
-    red_black_tree(const red_black_tree &other) : _size(other.size()) {
+    red_black_tree(const red_black_tree &other) {
         _create_null();
         _root = _clone(other._root, _null);
-        _left_most = tree_min(_root);
-        _right_most = tree_max(_root);
+        if (_root != _null) {
+            _left_most = tree_min(_root);
+            _right_most = tree_max(_root);
+        } else {
+            _left_most = _null;
+            _right_most = _null;
+        }
         _create_past_end();
         _right_most->right = _past_end;
+        _left_most->left = _past_end;
         _size = other._size;
     }
 
@@ -75,9 +81,15 @@ class red_black_tree {
             if (size() > 0 && _root != _null)
                 clear();
             _root = _clone(other._root, _null);
-            _left_most = tree_min(_root);
-            _right_most = tree_max(_root);
+            if (_root != _null) {
+                _left_most = tree_min(_root);
+                _right_most = tree_max(_root);
+            } else {
+                _left_most = _null;
+                _right_most = _null;
+            }
             _right_most->right = _past_end;
+            _left_most->left = _past_end;
             _size = other._size;
         }
         return (*this);
