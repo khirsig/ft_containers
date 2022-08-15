@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:11:24 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/15 09:36:22 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/15 10:51:38 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 
 #include <algorithm>
 
+#include "iterators/reverse_iterator.hpp"
 #include "trees/red_black_tree.hpp"
+#include "utils/lexicographical_compare.hpp"
 
 namespace ft {
 
@@ -37,6 +39,8 @@ class map {
     typedef node                                       &node_reference;
     typedef ft::tree_iterator<node_pointer, value_type> iterator;
     typedef ft::tree_iterator<node_pointer, value_type> const_iterator;
+    typedef ft::reverse_iterator<iterator>              reverse_iterator;
+    typedef ft::reverse_iterator<const_iterator>        const_reverse_iterator;
     typedef typename allocator_type::difference_type    difference_type;
     typedef typename allocator_type::size_type          size_type;
 
@@ -55,21 +59,30 @@ class map {
 
     ~map() {}
 
+    map &operator=(const map &x) {
+        _tree = x._tree;
+        return (*this);
+    }
+
     void print() { _tree.print(); }
 
-    iterator begin() { return (_tree.begin()); }
+    iterator begin() { return _tree.begin(); }
 
-    const_iterator begin() const { return (_tree.begin()); }
+    const_iterator begin() const { return _tree.begin(); }
 
-    iterator end() { return (_tree.end()); }
+    iterator end() { return _tree.end(); }
 
-    const_iterator end() const { return (_tree.end()); }
+    const_iterator end() const { return _tree.end(); }
 
-    bool empty() const { return (_tree.empty()); }
+    reverse_iterator rbegin() { return _tree._right_most; }
 
-    size_type size() const { return (_tree.size()); }
+    const_reverse_iterator rbegin() const { return _tree._right_most; }
 
-    size_type max_size() const { return (_tree.max_size()); }
+    bool empty() const { return _tree.empty(); }
+
+    size_type size() const { return _tree.size(); }
+
+    size_type max_size() const { return _tree.max_size(); }
 
     mapped_type &operator[](const key_type &k) { return _tree[k]; }
 

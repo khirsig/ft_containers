@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/15 09:03:03 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/15 10:54:20 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,18 +56,31 @@ class red_black_tree {
 
     red_black_tree(const red_black_tree &other) : _size(other.size()) {
         _create_null();
+        _root = _clone(other._root, _null);
+        _left_most = tree_min(_root);
+        _right_most = tree_max(_root);
         _create_past_end();
-        _root = _null;
-        _left_most = _root;
-        _right_most = _root;
         _right_most->right = _past_end;
-        _clone_tree(other);
+        _size = other._size;
     }
 
     ~red_black_tree() {
         clear();
         _erase_node(_null);
         _erase_node(_past_end);
+    }
+
+    red_black_tree &operator=(const red_black_tree &other) {
+        if (this != &other) {
+            if (size() > 0 && _root != _null)
+                clear();
+            _root = _clone(other._root, _null);
+            _left_most = tree_min(_root);
+            _right_most = tree_max(_root);
+            _right_most->right = _past_end;
+            _size = other._size;
+        }
+        return (*this);
     }
 
     void print() { print(_root); }
@@ -460,7 +473,8 @@ class red_black_tree {
 
     void _create_past_end() {
         _past_end = _alloc_node.allocate(1);
-        _alloc_node.construct(_past_end, node(NULL, _right_most, _null, _null, BLACK, true, true));
+        _alloc_node.construct(_past_end,
+                              node(NULL, _right_most, _null, _left_most, BLACK, true, true));
     }
 
     void _erase_node(node_pointer n) {
@@ -483,8 +497,15 @@ class red_black_tree {
         }
     }
 
-    void _clone_tree(const red_black_tree &other) {
-        insert(other.begin(), iterator(other._right_most));
+    node_pointer _clone(const node_pointer n, const node_pointer parent) {
+        node_pointer cpy = _null;
+        if (!n->is_leaf && !n->is_end) {
+            cpy = _create_node(*(n->key));
+            cpy->parent = parent;
+            cpy->left = _clone(n->left, cpy);
+            cpy->right = _clone(n->right, cpy);
+        }
+        return (cpy);
     }
 
     bool _is_equal(const value_type &val1, const value_type &val2) const {
