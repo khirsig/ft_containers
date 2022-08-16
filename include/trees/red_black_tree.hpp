@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/16 15:49:15 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/16 16:17:11 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <iostream>
 
 #include "../iterators/tree_iterator.hpp"
+#include "../iterators/tree_iterator_const.hpp"
 #include "../utils/pair.hpp"
 #include "./node.hpp"
 
@@ -26,25 +27,25 @@ namespace ft {
 template <class Key, class T, class Compare, class Alloc>
 class red_black_tree {
    public:
-    typedef Key                                            key_type;
-    typedef T                                              mapped_type;
-    typedef ft::pair<const key_type, mapped_type>          value_type;
-    typedef Compare                                        key_compare;
-    typedef Alloc                                          allocator_type_value;
-    typedef typename allocator_type_value::reference       reference;
-    typedef typename allocator_type_value::const_reference const_reference;
-    typedef typename allocator_type_value::pointer         pointer;
-    typedef typename allocator_type_value::const_pointer   const_pointer;
-    typedef ft::node<value_type>                           node;
-    typedef std::allocator<node>                           allocator_type_node;
-    typedef typename allocator_type_node::pointer          node_pointer;
-    typedef typename allocator_type_node::reference        node_reference;
-    typedef ft::tree_iterator<node_pointer, value_type>    iterator;
-    typedef ft::tree_iterator<node_pointer, value_type>    const_iterator;
-    typedef ft::reverse_iterator<iterator>                 reverse_iterator;
-    typedef ft::reverse_iterator<const_iterator>           const_reverse_iterator;
-    typedef typename allocator_type_value::difference_type difference_type;
-    typedef typename allocator_type_value::size_type       size_type;
+    typedef Key                                               key_type;
+    typedef T                                                 mapped_type;
+    typedef ft::pair<const key_type, mapped_type>             value_type;
+    typedef Compare                                           key_compare;
+    typedef Alloc                                             allocator_type_value;
+    typedef typename allocator_type_value::reference          reference;
+    typedef typename allocator_type_value::const_reference    const_reference;
+    typedef typename allocator_type_value::pointer            pointer;
+    typedef typename allocator_type_value::const_pointer      const_pointer;
+    typedef ft::node<value_type>                              node;
+    typedef std::allocator<node>                              allocator_type_node;
+    typedef typename allocator_type_node::pointer             node_pointer;
+    typedef typename allocator_type_node::reference           node_reference;
+    typedef ft::tree_iterator<node_pointer, value_type>       iterator;
+    typedef ft::const_tree_iterator<node_pointer, value_type> const_iterator;
+    typedef ft::reverse_iterator<iterator>                    reverse_iterator;
+    typedef ft::reverse_iterator<const_iterator>              const_reverse_iterator;
+    typedef typename allocator_type_value::difference_type    difference_type;
+    typedef typename allocator_type_value::size_type          size_type;
 
     red_black_tree(const key_compare &comp, const allocator_type_value &alloc_value)
         : _root(NULL), _alloc_value(alloc_value), _comp(comp), _size(0) {

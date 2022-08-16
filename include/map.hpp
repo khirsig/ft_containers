@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:11:24 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/16 15:29:12 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/16 16:16:02 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,12 @@ class map {
     typedef node                                    *node_pointer;
     typedef node                                    &node_reference;
     // typedef const node *                                const_node_pointer;
-    typedef ft::tree_iterator<node_pointer, value_type> iterator;
-    typedef ft::tree_iterator<node_pointer, value_type> const_iterator;
-    typedef ft::reverse_iterator<iterator>              reverse_iterator;
-    typedef ft::reverse_iterator<const_iterator>        const_reverse_iterator;
-    typedef typename allocator_type::difference_type    difference_type;
-    typedef typename allocator_type::size_type          size_type;
+    typedef ft::tree_iterator<node_pointer, value_type>       iterator;
+    typedef ft::const_tree_iterator<node_pointer, value_type> const_iterator;
+    typedef ft::reverse_iterator<iterator>                    reverse_iterator;
+    typedef ft::reverse_iterator<const_iterator>              const_reverse_iterator;
+    typedef typename allocator_type::difference_type          difference_type;
+    typedef typename allocator_type::size_type                size_type;
 
     explicit map(const key_compare    &comp = key_compare(),
                  const allocator_type &alloc = allocator_type())
