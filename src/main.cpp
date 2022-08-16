@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 21:06:19 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/16 15:08:41 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/16 20:03:23 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,11 +110,15 @@ int main() {
     m.insert(ft::make_pair(-23, "sdffgdfgrefet34thfgheewt"));
     m.insert(ft::make_pair(0, "98y4rtuohwidsjusdossefsse"));
 
-    for (ft::map<int, std::string>::iterator it = m.begin(); it != m.end(); it = m.begin()) {
-        std::cout << m.size() << "  " << it->first << "\n";
-        // std::cout << &(*m.begin()) << "  " << &(*m.end()) << "  " << &(*it) << "\n";
-        m.erase(it);
-    }
+    ft::map<int, std::string>::const_iterator it = m.begin();
+    std::cout << it->first << "\n";
+
+    std::cout << "Count: " << m.count(1) << "\n";
+    // for (ft::map<int, std::string>::iterator it = m.begin(); it != m.end(); it = m.begin()) {
+    //     std::cout << m.size() << "  " << it->first << "\n";
+    //     // std::cout << &(*m.begin()) << "  " << &(*m.end()) << "  " << &(*it) << "\n";
+    //     m.erase(it);
+    // }
     // ft::map<int, std::string>::iterator iter = m.begin();
     // for (int i = 0; i < 6; ++i, iter = m.begin())
     //     m.erase(iter);

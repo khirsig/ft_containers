@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:11:24 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/16 16:16:02 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/16 20:14:30 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,25 +25,24 @@ template <class Key, class T, class Compare = std::less<const Key>,
           class Alloc = std::allocator<ft::pair<const Key, T> > >
 class map {
    public:
-    typedef Key                                      key_type;
-    typedef T                                        mapped_type;
-    typedef ft::pair<const key_type, mapped_type>    value_type;
-    typedef Compare                                  key_compare;
-    typedef Alloc                                    allocator_type;
-    typedef typename allocator_type::reference       reference;
-    typedef typename allocator_type::const_reference const_reference;
-    typedef typename allocator_type::pointer         pointer;
-    typedef typename allocator_type::const_pointer   const_pointer;
-    typedef ft::node<value_type>                     node;
-    typedef node                                    *node_pointer;
-    typedef node                                    &node_reference;
-    // typedef const node *                                const_node_pointer;
-    typedef ft::tree_iterator<node_pointer, value_type>       iterator;
-    typedef ft::const_tree_iterator<node_pointer, value_type> const_iterator;
-    typedef ft::reverse_iterator<iterator>                    reverse_iterator;
-    typedef ft::reverse_iterator<const_iterator>              const_reverse_iterator;
-    typedef typename allocator_type::difference_type          difference_type;
-    typedef typename allocator_type::size_type                size_type;
+    typedef Key                                                     key_type;
+    typedef T                                                       mapped_type;
+    typedef ft::pair<const key_type, mapped_type>                   value_type;
+    typedef Compare                                                 key_compare;
+    typedef Alloc                                                   allocator_type;
+    typedef typename allocator_type::reference                      reference;
+    typedef typename allocator_type::const_reference                const_reference;
+    typedef typename allocator_type::pointer                        pointer;
+    typedef typename allocator_type::const_pointer                  const_pointer;
+    typedef ft::node<value_type>                                    node;
+    typedef typename ft::node<value_type>::node_pointer             node_pointer;
+    typedef typename ft::node<value_type>::const_node_pointer       const_node_pointer;
+    typedef ft::tree_iterator<node_pointer, value_type>             iterator;
+    typedef ft::const_tree_iterator<const_node_pointer, value_type> const_iterator;
+    typedef ft::reverse_iterator<iterator>                          reverse_iterator;
+    typedef ft::reverse_iterator<const_iterator>                    const_reverse_iterator;
+    typedef typename allocator_type::difference_type                difference_type;
+    typedef typename allocator_type::size_type                      size_type;
 
     explicit map(const key_compare    &comp = key_compare(),
                  const allocator_type &alloc = allocator_type())

@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 08:56:34 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/12 12:59:57 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/16 19:42:56 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,10 @@ typedef bool color;
 
 template <class T>
 struct node {
-    typedef T           value_type;
-    typedef value_type *pointer;
-    typedef node       *node_pointer;
+    typedef T                       value_type;
+    typedef value_type             *pointer;
+    typedef node<value_type>       *node_pointer;
+    typedef const node<value_type> *const_node_pointer;
 
     node(pointer _key, node *_parent = NULL, node *_left = NULL, node *_right = NULL,
          color _col = BLACK, bool _is_leaf = false, bool _is_end = false)
