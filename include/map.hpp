@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:11:24 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/15 19:31:06 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/16 12:12:30 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ class map {
     typedef ft::node<value_type>                        node;
     typedef node                                       *node_pointer;
     typedef node                                       &node_reference;
+    // typedef const node *                                const_node_pointer;
     typedef ft::tree_iterator<node_pointer, value_type> iterator;
     typedef ft::tree_iterator<node_pointer, value_type> const_iterator;
     typedef ft::reverse_iterator<iterator>              reverse_iterator;
@@ -74,9 +75,13 @@ class map {
 
     const_iterator end() const { return _tree.end(); }
 
-    reverse_iterator rbegin() { return _tree._right_most; }
+    reverse_iterator rbegin() { return _tree.rbegin(); }
 
-    const_reverse_iterator rbegin() const { return _tree._right_most; }
+    const_reverse_iterator rbegin() const { return _tree.rbegin(); }
+
+    reverse_iterator rend() { return _tree.rend(); }
+
+    const_reverse_iterator rend() const { return _tree.rend(); }
 
     bool empty() const { return _tree.empty(); }
 
