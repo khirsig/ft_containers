@@ -6,7 +6,7 @@
 #    By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/08 11:34:34 by khirsig           #+#    #+#              #
-#    Updated: 2022/08/12 08:56:48 by khirsig          ###   ########.fr        #
+#    Updated: 2022/08/16 12:48:36 by khirsig          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,3 +66,7 @@ test:$(ODIR) $(OBJS)
 	@make clean
 	@$(CC) $(CFLAGS) -o std_test $(SDIR)/$(SRCS)
 re: fclean all
+
+run: re
+	clear
+	./ft_containers

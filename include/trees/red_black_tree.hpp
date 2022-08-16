@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/16 12:35:26 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/16 15:49:15 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ class red_black_tree {
     typedef typename allocator_type_node::reference        node_reference;
     typedef ft::tree_iterator<node_pointer, value_type>    iterator;
     typedef ft::tree_iterator<node_pointer, value_type>    const_iterator;
-    typedef ft::reverse_iterator<iterator>              reverse_iterator;
-    typedef ft::reverse_iterator<const_iterator>        const_reverse_iterator;
-    typedef typename allocator_type_node::difference_type  difference_type;
-    typedef typename allocator_type_node::size_type        size_type;
+    typedef ft::reverse_iterator<iterator>                 reverse_iterator;
+    typedef ft::reverse_iterator<const_iterator>           const_reverse_iterator;
+    typedef typename allocator_type_value::difference_type difference_type;
+    typedef typename allocator_type_value::size_type       size_type;
 
     red_black_tree(const key_compare &comp, const allocator_type_value &alloc_value)
         : _root(NULL), _alloc_value(alloc_value), _comp(comp), _size(0) {
@@ -93,7 +93,7 @@ class red_black_tree {
                 _right_most = _null;
             }
             _right_most->right = _past_end;
-             _left_most->left = _past_begin;
+            _left_most->left = _past_begin;
             _size = other._size;
         }
         return (*this);
@@ -132,27 +132,31 @@ class red_black_tree {
         }
     }
 
-    iterator begin() { return _left_most != _null ? _left_most : _root; }
+    iterator begin() { return _root != _null ? _left_most : _null; }
 
-    const_iterator begin() const { return _left_most != _null ? _left_most : _root; }
+    const_iterator begin() const { return _root != _null ? _left_most : _null; }
 
-    iterator end() { return _null != _root ? _past_end : _root; }
+    iterator end() { return _root != _null ? _past_end : _null; }
 
-    const_iterator end() const { return _null != _root ? _past_end : _root; }
+    const_iterator end() const { return _root != _null ? _past_end : _null; }
 
-    reverse_iterator rbegin() { return _right_most != _null ? reverse_iterator(_right_most) : reverse_iterator(_root); }
+    reverse_iterator rbegin() { return reverse_iterator(end()); }
 
-    const_reverse_iterator rbegin() const { return _right_most != _null ? const_reverse_iterator(_right_most) : const_reverse_iterator(_root); }
+    const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
 
-    reverse_iterator rend() { return _null != _root ? reverse_iterator(_past_begin) : reverse_iterator(_root); }
+    reverse_iterator rend() { return reverse_iterator(begin()); }
 
-    const_reverse_iterator rend() const { return _null != _root ? const_reverse_iterator(_past_begin) : const_reverse_iterator(_root); }
+    const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
 
     bool empty() const { return _size == 0 ? true : false; }
 
     size_type size() const { return (_size); }
 
-    size_type max_size() const { return _alloc_node.max_size(); }
+    size_type max_size() const {
+        size_type alloc_max = this->_alloc_node.max_size();
+        size_type numeric_max = std::numeric_limits<difference_type>::max() / 2;
+        return ((alloc_max < numeric_max) ? alloc_max : numeric_max);
+    }
 
     mapped_type &operator[](const key_type &k) {
         return (*((insert(ft::make_pair(k, mapped_type()))).first)).second;
@@ -248,7 +252,7 @@ class red_black_tree {
     }
 
     ft::pair<iterator, bool> insert(const value_type &val) {
-        if (_is_equal(*_root->key, val))
+        if (!_root->is_leaf && _is_equal(*_root->key, val))
             return (ft::make_pair<iterator, bool>(iterator(_root), false));
         node_pointer needle = iterative_search(_root, val);
         if (needle != _root && !needle->is_leaf)
@@ -274,6 +278,7 @@ class red_black_tree {
         input->left = _null;
         input->right = _null;
         input->color = RED;
+        _insert_fixup(input);
         if (_left_most->left == input || _size == 1) {
             _left_most = input;
             _left_most->left = _past_begin;
@@ -284,7 +289,6 @@ class red_black_tree {
             _right_most->right = _past_end;
             _past_end->parent = _right_most;
         }
-        _insert_fixup(input);
         return (ft::make_pair<iterator, bool>(iterator(input), true));
     }
 
@@ -345,19 +349,21 @@ class red_black_tree {
                 _left_most = _left_most->parent;
             else
                 _left_most = tree_min(_left_most->right);
-            _left_most->left = _past_begin;
-            _past_begin->parent = _left_most;
         } else if (input == _right_most) {
             if (input->left->is_leaf)
                 _right_most = _right_most->parent;
             else
                 _right_most = tree_max(_right_most->left);
-            _right_most->right = _past_end;
-            _past_end->parent = _right_most;
         }
         if (y_original_color == BLACK)
             _erase_fixup(x);
         _erase_node(input);
+        if (_size != 0) {
+            _left_most->left = _past_begin;
+            _past_begin->parent = _left_most;
+            _right_most->right = _past_end;
+            _past_end->parent = _right_most;
+        }
         if (_size == 0) {
             _root = _null;
             _left_most = _root;
@@ -383,6 +389,7 @@ class red_black_tree {
             node_pointer         tmp_left_most = other._left_most;
             node_pointer         tmp_right_most = other._right_most;
             node_pointer         tmp_past_end = other._past_end;
+            node_pointer         tmp_past_begin = other._past_begin;
             allocator_type_value tmp_alloc_value = other._alloc_value;
             allocator_type_node  tmp_alloc_node = other._alloc_node;
             size_type            tmp_size = other._size;
@@ -392,6 +399,7 @@ class red_black_tree {
             other._left_most = _left_most;
             other._right_most = _right_most;
             other._past_end = _past_end;
+            other._past_begin = _past_begin;
             other._alloc_value = _alloc_value;
             other._alloc_node = _alloc_node;
             other._size = _size;
@@ -400,6 +408,7 @@ class red_black_tree {
             _left_most = tmp_left_most;
             _right_most = tmp_right_most;
             _past_end = tmp_past_end;
+            _past_begin = tmp_past_begin;
             _alloc_value = tmp_alloc_value;
             _alloc_node = tmp_alloc_node;
             _size = tmp_size;
@@ -519,11 +528,9 @@ class red_black_tree {
 
     void _create_ends() {
         _past_end = _alloc_node.allocate(1);
-        _alloc_node.construct(_past_end,
-                              node(NULL, _right_most, _null, _null, BLACK, true, true));
+        _alloc_node.construct(_past_end, node(NULL, _right_most, _null, _null, BLACK, true, true));
         _past_begin = _alloc_node.allocate(1);
-        _alloc_node.construct(_past_begin,
-                              node(NULL, _left_most, _null, _null, BLACK, true, true));
+        _alloc_node.construct(_past_begin, node(NULL, _left_most, _null, _null, BLACK, true, true));
     }
 
     void _erase_node(node_pointer n) {

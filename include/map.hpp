@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:11:24 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/16 12:12:30 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/16 15:29:12 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,18 @@ template <class Key, class T, class Compare = std::less<const Key>,
           class Alloc = std::allocator<ft::pair<const Key, T> > >
 class map {
    public:
-    typedef Key                                         key_type;
-    typedef T                                           mapped_type;
-    typedef ft::pair<const key_type, mapped_type>       value_type;
-    typedef Compare                                     key_compare;
-    typedef Alloc                                       allocator_type;
-    typedef typename allocator_type::reference          reference;
-    typedef typename allocator_type::const_reference    const_reference;
-    typedef typename allocator_type::pointer            pointer;
-    typedef typename allocator_type::const_pointer      const_pointer;
-    typedef ft::node<value_type>                        node;
-    typedef node                                       *node_pointer;
-    typedef node                                       &node_reference;
+    typedef Key                                      key_type;
+    typedef T                                        mapped_type;
+    typedef ft::pair<const key_type, mapped_type>    value_type;
+    typedef Compare                                  key_compare;
+    typedef Alloc                                    allocator_type;
+    typedef typename allocator_type::reference       reference;
+    typedef typename allocator_type::const_reference const_reference;
+    typedef typename allocator_type::pointer         pointer;
+    typedef typename allocator_type::const_pointer   const_pointer;
+    typedef ft::node<value_type>                     node;
+    typedef node                                    *node_pointer;
+    typedef node                                    &node_reference;
     // typedef const node *                                const_node_pointer;
     typedef ft::tree_iterator<node_pointer, value_type> iterator;
     typedef ft::tree_iterator<node_pointer, value_type> const_iterator;
@@ -64,8 +64,6 @@ class map {
         _tree = x._tree;
         return (*this);
     }
-
-    void print() { _tree.print(); }
 
     iterator begin() { return _tree.begin(); }
 
@@ -153,7 +151,7 @@ class map {
 
     allocator_type get_allocator() const { return _tree.get_allocator(); }
 
-    class value_compare : public std::binary_function<value_type, value_type, bool> {
+    class value_compare {
         friend class map;
 
        public:
@@ -170,7 +168,7 @@ class map {
         Compare comp;
     };
 
-    value_compare value_comp() const { return value_compare(); }
+    value_compare value_comp() const { return value_compare(key_compare()); }
 
    private:
     ft::red_black_tree<key_type, mapped_type, key_compare, allocator_type> _tree;
