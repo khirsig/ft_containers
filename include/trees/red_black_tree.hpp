@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/16 20:14:22 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/17 14:44:20 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -451,8 +451,8 @@ class red_black_tree {
     }
 
     const_iterator lower_bound(const key_type &k) const {
-        node_pointer result = end().base();
-        node_pointer n = _root;
+        const_node_pointer result = end().base();
+        node_pointer       n = _root;
         while (!n->is_leaf) {
             if (!_is_less((*n->key).first, k)) {
                 result = n;
@@ -477,8 +477,8 @@ class red_black_tree {
     }
 
     const_iterator upper_bound(const key_type &k) const {
-        node_pointer result = end().base();
-        node_pointer n = _root;
+        const_node_pointer result = end().base();
+        node_pointer       n = _root;
         while (!n->is_leaf) {
             if (_is_less(k, (*n->key).first)) {
                 result = n;

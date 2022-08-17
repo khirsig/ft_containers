@@ -121,32 +121,36 @@ class const_tree_iterator {
 };
 
 template <class T, class Val>
-bool operator==(const_tree_iterator<T, Val>& x, const_tree_iterator<T, Val>& y) {
+bool operator==(const const_tree_iterator<T, Val>& x, const const_tree_iterator<T, Val>& y) {
     return (x.base() == y.base());
 }
 
 template <class T, class Val>
-bool operator!=(const_tree_iterator<T, Val>& x, const_tree_iterator<T, Val>& y) {
+bool operator!=(const const_tree_iterator<T, Val>& x, const const_tree_iterator<T, Val>& y) {
     return !(x.base() == y.base());
 }
 
 template <class node_ptr, class const_node_ptr, class Val>
-bool operator==(tree_iterator<node_ptr, Val>& x, const_tree_iterator<const_node_ptr, Val>& y) {
+bool operator==(const tree_iterator<node_ptr, Val>&             x,
+                const const_tree_iterator<const_node_ptr, Val>& y) {
     return (x.base() == y.base());
 }
 
 template <class node_ptr, class const_node_ptr, class Val>
-bool operator!=(tree_iterator<node_ptr, Val>& x, const_tree_iterator<const_node_ptr, Val>& y) {
+bool operator!=(const tree_iterator<node_ptr, Val>&             x,
+                const const_tree_iterator<const_node_ptr, Val>& y) {
     return (x.base() != y.base());
 }
 
 template <class node_ptr, class const_node_ptr, class Val>
-bool operator==(const_tree_iterator<const_node_ptr, Val>& x, tree_iterator<node_ptr, Val>& y) {
+bool operator==(const const_tree_iterator<const_node_ptr, Val>& x,
+                const tree_iterator<node_ptr, Val>&             y) {
     return (x.base() == y.base());
 }
 
 template <class node_ptr, class const_node_ptr, class Val>
-bool operator!=(const_tree_iterator<const_node_ptr, Val>& x, tree_iterator<node_ptr, Val>& y) {
+bool operator!=(const const_tree_iterator<const_node_ptr, Val>& x,
+                const tree_iterator<node_ptr, Val>&             y) {
     return (x.base() != y.base());
 }
 }  // namespace ft
