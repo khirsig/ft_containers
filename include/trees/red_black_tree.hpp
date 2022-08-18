@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/18 08:33:47 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/18 09:45:33 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,13 @@
 
 namespace ft {
 
-template <class Key, class T, class Compare, class Alloc>
+template <class Pair, class Key, class T, class Compare, class Alloc>
 class red_black_tree {
    public:
-    typedef Key                                                     key_type;
-    typedef T                                                       mapped_type;
-    typedef ft::pair<const key_type, mapped_type>                   value_type;
+    typedef Key key_type;
+    typedef T   mapped_type;
+    // typedef ft::pair<const key_type, mapped_type>                   value_type;
+    typedef Pair                                                    value_type;
     typedef Compare                                                 key_compare;
     typedef Alloc                                                   allocator_type_value;
     typedef typename allocator_type_value::reference                reference;
@@ -156,9 +157,7 @@ class red_black_tree {
 
     size_type size() const { return (_size); }
 
-    size_type max_size() const {
-        return _alloc_node.max_size();
-    }
+    size_type max_size() const { return _alloc_node.max_size(); }
 
     mapped_type &operator[](const key_type &k) {
         return (*((insert(ft::make_pair(k, mapped_type()))).first)).second;

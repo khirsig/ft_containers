@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:11:24 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/16 20:14:30 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/18 09:52:53 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ class map {
 
     map &operator=(const map &x) {
         _tree = x._tree;
-        return (*this);
+        return *this;
     }
 
     iterator begin() { return _tree.begin(); }
@@ -170,7 +170,7 @@ class map {
     value_compare value_comp() const { return value_compare(key_compare()); }
 
    private:
-    ft::red_black_tree<key_type, mapped_type, key_compare, allocator_type> _tree;
+    ft::red_black_tree<value_type, key_type, mapped_type, key_compare, allocator_type> _tree;
 };
 
 template <class Key, class T, class Compare, class Alloc>
