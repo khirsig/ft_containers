@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/18 14:36:25 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/18 15:07:05 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ class red_black_tree {
           _size(0) {
         _create_null();
         _create_ends();
-        _root = _clone(other._root, NULL);
+        _root = _clone(other._root, _null);
         if (_root != _null) {
             _left_most = tree_min(_root);
             _right_most = tree_max(_root);
