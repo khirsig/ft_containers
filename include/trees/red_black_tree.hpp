@@ -6,12 +6,12 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/18 08:24:58 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/18 08:33:47 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RED_BLACK_TREE_HPP
-#define RED_BLACK_TREE_HPP
+#ifndef red_black_TREE_HPP
+#define red_black_TREE_HPP
 
 #include <algorithm>
 #include <functional>
@@ -118,7 +118,7 @@ class red_black_tree {
                 std::cout << "\033[32m";
             else if (n == _right_most)
                 std::cout << "\033[33m";
-            else if (n->color == RED)
+            else if (n->color == red)
                 std::cout << "\033[31m";
             else
                 std::cout << "\033[30m";
@@ -157,9 +157,6 @@ class red_black_tree {
     size_type size() const { return (_size); }
 
     size_type max_size() const {
-        // size_type alloc_max = this->_alloc_node.max_size();
-        // size_type numeric_max = std::numeric_limits<difference_type>::max() / 2;
-        // return ((alloc_max < numeric_max) ? alloc_max : numeric_max);
         return _alloc_node.max_size();
     }
 
@@ -282,7 +279,7 @@ class red_black_tree {
             n->right = input;
         input->left = _null;
         input->right = _null;
-        input->color = RED;
+        input->color = red;
         _insert_fixup(input);
         if (_left_most->left == input || _size == 1) {
             _left_most = input;
@@ -360,7 +357,7 @@ class red_black_tree {
             else
                 _right_most = tree_max(_right_most->left);
         }
-        if (y_original_color == BLACK)
+        if (y_original_color == black)
             _erase_fixup(x);
         _erase_node(input);
         if (_size != 0) {
@@ -527,14 +524,14 @@ class red_black_tree {
         pointer null_val = _alloc_value.allocate(1);
         _alloc_value.construct(null_val, value_type(key_type(), mapped_type()));
         _null = _alloc_node.allocate(1);
-        _alloc_node.construct(_null, node(null_val, NULL, NULL, NULL, BLACK, true));
+        _alloc_node.construct(_null, node(null_val, NULL, NULL, NULL, black, true));
     }
 
     void _create_ends() {
         _past_end = _alloc_node.allocate(1);
-        _alloc_node.construct(_past_end, node(NULL, _right_most, _null, _null, BLACK, true, true));
+        _alloc_node.construct(_past_end, node(NULL, _right_most, _null, _null, black, true, true));
         _past_begin = _alloc_node.allocate(1);
-        _alloc_node.construct(_past_begin, node(NULL, _left_most, _null, _null, BLACK, true, true));
+        _alloc_node.construct(_past_begin, node(NULL, _left_most, _null, _null, black, true, true));
     }
 
     void _erase_node(node_pointer n) {
@@ -591,97 +588,97 @@ class red_black_tree {
     bool _is_less(const key_type &val1, const key_type &val2) const { return (_comp(val1, val2)); }
 
     void _erase_fixup(node_pointer x) {
-        while (x != _root && x->color == BLACK) {
+        while (x != _root && x->color == black) {
             if (x == x->parent->left) {
                 node_pointer w = x->parent->right;
-                if (w->color == RED) {
-                    w->color = BLACK;
-                    x->parent->color = RED;
+                if (w->color == red) {
+                    w->color = black;
+                    x->parent->color = red;
                     left_rotate(x->parent);
                     w = x->parent->right;
                 }
-                if (w->left->color == BLACK && w->right->color == BLACK) {
-                    w->color = RED;
+                if (w->left->color == black && w->right->color == black) {
+                    w->color = red;
                     x = x->parent;
                 } else {
-                    if (w->right->color == BLACK) {
-                        w->left->color = BLACK;
-                        w->color = RED;
+                    if (w->right->color == black) {
+                        w->left->color = black;
+                        w->color = red;
                         right_rotate(w);
                         w = x->parent->right;
                     }
                     w->color = x->parent->color;
-                    x->parent->color = BLACK;
-                    w->right->color = BLACK;
+                    x->parent->color = black;
+                    w->right->color = black;
                     left_rotate(x->parent);
                     x = _root;
                 }
             } else {
                 node_pointer w = x->parent->left;
-                if (w->color == RED) {
-                    w->color = BLACK;
-                    x->parent->color = RED;
+                if (w->color == red) {
+                    w->color = black;
+                    x->parent->color = red;
                     right_rotate(x->parent);
                     w = x->parent->left;
                 }
-                if (w->right->color == BLACK && w->left->color == BLACK) {
-                    w->color = RED;
+                if (w->right->color == black && w->left->color == black) {
+                    w->color = red;
                     x = x->parent;
                 } else {
-                    if (w->left->color == BLACK) {
-                        w->right->color = BLACK;
-                        w->color = RED;
+                    if (w->left->color == black) {
+                        w->right->color = black;
+                        w->color = red;
                         left_rotate(w);
                         w = x->parent->left;
                     }
                     w->color = x->parent->color;
-                    x->parent->color = BLACK;
-                    w->left->color = BLACK;
+                    x->parent->color = black;
+                    w->left->color = black;
                     right_rotate(x->parent);
                     x = _root;
                 }
             }
         }
-        x->color = BLACK;
+        x->color = black;
     }
 
     void _insert_fixup(node_pointer input) {
-        while (input->parent->color == RED) {
+        while (input->parent->color == red) {
             if (input->parent == input->parent->parent->left) {
                 node_pointer n = input->parent->parent->right;
-                if (n->color == RED) {
-                    input->parent->color = BLACK;
-                    n->color = BLACK;
-                    input->parent->parent->color = RED;
+                if (n->color == red) {
+                    input->parent->color = black;
+                    n->color = black;
+                    input->parent->parent->color = red;
                     input = input->parent->parent;
                 } else {
                     if (input == input->parent->right) {
                         input = input->parent;
                         left_rotate(input);
                     }
-                    input->parent->color = BLACK;
-                    input->parent->parent->color = RED;
+                    input->parent->color = black;
+                    input->parent->parent->color = red;
                     right_rotate(input->parent->parent);
                 }
             } else {
                 node_pointer n = input->parent->parent->left;
-                if (n->color == RED) {
-                    input->parent->color = BLACK;
-                    n->color = BLACK;
-                    input->parent->parent->color = RED;
+                if (n->color == red) {
+                    input->parent->color = black;
+                    n->color = black;
+                    input->parent->parent->color = red;
                     input = input->parent->parent;
                 } else {
                     if (input == input->parent->left) {
                         input = input->parent;
                         right_rotate(input);
                     }
-                    input->parent->color = BLACK;
-                    input->parent->parent->color = RED;
+                    input->parent->color = black;
+                    input->parent->parent->color = red;
                     left_rotate(input->parent->parent);
                 }
             }
         }
-        _root->color = BLACK;
+        _root->color = black;
     }
 };
 

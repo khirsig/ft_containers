@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 08:56:34 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/16 19:42:56 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/18 08:33:22 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 #define NODE_HPP_
 
 namespace ft {
-typedef bool color;
 
-#define BLACK false
-#define RED true
+enum color { black = false, red = true };
 
 template <class T>
 struct node {
@@ -27,7 +25,7 @@ struct node {
     typedef const node<value_type> *const_node_pointer;
 
     node(pointer _key, node *_parent = NULL, node *_left = NULL, node *_right = NULL,
-         color _col = BLACK, bool _is_leaf = false, bool _is_end = false)
+         color _col = black, bool _is_leaf = false, bool _is_end = false)
         : key(_key),
           parent(_parent),
           left(_left),
