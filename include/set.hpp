@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 08:45:24 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/18 09:49:21 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/18 11:11:40 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ namespace ft {
 template <class Key, class Compare = std::less<Key>, class Allocator = std::allocator<Key> >
 class set {
    public:
-    typedef Key                                      key_type;
-    typedef Key                                      value_type;
-    typedef Allocator                                allocator_type;
-    typedef typename allocator_type::size_type       size_type;
-    typedef typename allocator_type::difference_type difference_type;
-    typedef Compare                                  key_compare;
-    // typedef Compare                                                 value_compare;
+    typedef Key                                                     key_type;
+    typedef Key                                                     value_type;
+    typedef Allocator                                               allocator_type;
+    typedef typename allocator_type::size_type                      size_type;
+    typedef typename allocator_type::difference_type                difference_type;
+    typedef Compare                                                 key_compare;
+    typedef Compare                                                 value_compare;
     typedef value_type&                                             reference;
     typedef const value_type&                                       const_reference;
     typedef typename allocator_type::pointer                        pointer;
@@ -97,7 +97,7 @@ class set {
         _tree.insert(first, last);
     }
 
-    void erase(iterator position) { _tree.erase(position.base()); }
+    void erase(iterator position) { _tree.erase(const_cast<node_pointer>(position.base())); }
 
     size_type erase(const value_type& val) {
         size_type cnt = 0;
@@ -122,24 +122,7 @@ class set {
 
     key_compare key_comp() const { return key_compare(); }
 
-    class value_compare {
-        friend class set;
-
-       public:
-        typedef bool       result_type;
-        typedef value_type first_argument_type;
-        typedef value_type second_argument_type;
-
-        bool operator()(const value_type& x, const value_type& y) const {
-            return comp(x.first, y.first);
-        }
-
-       protected:
-        value_compare(Compare c) : comp(c) {}
-        Compare comp;
-    };
-
-    value_compare value_comp() const { return value_compare(key_compare()); }
+    value_compare value_comp() const { return value_compare(); }
 
     iterator find(const value_type& val) const { return _tree.find(val); }
 

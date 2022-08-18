@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:11:24 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/18 09:52:53 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/18 10:33:30 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,21 @@
 
 namespace ft {
 
+template <class value_type, class key_type, class Compare>
+class value_compare_map {
+   public:
+    bool operator()(const value_type &x, const value_type &y) const {
+        return comp(x.first, y.first);
+    }
+
+    bool operator()(const key_type &x, const value_type &y) const { return comp(x, y.first); }
+
+    bool operator()(const value_type &x, const key_type &y) const { return comp(x.first, y); }
+
+    value_compare_map(Compare c = Compare()) : comp(c) {}
+    Compare comp;
+};
+
 template <class Key, class T, class Compare = std::less<const Key>,
           class Alloc = std::allocator<ft::pair<const Key, T> > >
 class map {
@@ -29,6 +44,7 @@ class map {
     typedef T                                                       mapped_type;
     typedef ft::pair<const key_type, mapped_type>                   value_type;
     typedef Compare                                                 key_compare;
+    typedef value_compare_map<value_type, key_type, key_compare>    map_compare;
     typedef Alloc                                                   allocator_type;
     typedef typename allocator_type::reference                      reference;
     typedef typename allocator_type::const_reference                const_reference;
@@ -46,12 +62,12 @@ class map {
 
     explicit map(const key_compare    &comp = key_compare(),
                  const allocator_type &alloc = allocator_type())
-        : _tree(comp, alloc) {}
+        : _tree(map_compare(comp), alloc) {}
 
     template <class InputIterator>
     map(InputIterator first, InputIterator last, const key_compare &comp = key_compare(),
         const allocator_type &alloc = allocator_type())
-        : _tree(comp, alloc) {
+        : _tree(map_compare(comp), alloc) {
         _tree.insert(first, last);
     }
 
@@ -170,7 +186,7 @@ class map {
     value_compare value_comp() const { return value_compare(key_compare()); }
 
    private:
-    ft::red_black_tree<value_type, key_type, mapped_type, key_compare, allocator_type> _tree;
+    ft::red_black_tree<value_type, key_type, mapped_type, map_compare, allocator_type> _tree;
 };
 
 template <class Key, class T, class Compare, class Alloc>

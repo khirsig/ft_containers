@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/18 09:45:33 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/18 11:19:02 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,27 +27,26 @@ namespace ft {
 template <class Pair, class Key, class T, class Compare, class Alloc>
 class red_black_tree {
    public:
-    typedef Key key_type;
-    typedef T   mapped_type;
-    // typedef ft::pair<const key_type, mapped_type>                   value_type;
-    typedef Pair                                                    value_type;
-    typedef Compare                                                 key_compare;
-    typedef Alloc                                                   allocator_type_value;
-    typedef typename allocator_type_value::reference                reference;
-    typedef typename allocator_type_value::const_reference          const_reference;
-    typedef typename allocator_type_value::pointer                  pointer;
-    typedef typename allocator_type_value::const_pointer            const_pointer;
-    typedef ft::node<value_type>                                    node;
-    typedef std::allocator<node>                                    allocator_type_node;
-    typedef typename ft::node<value_type>::node_pointer             node_pointer;
-    typedef typename ft::node<value_type>::const_node_pointer       const_node_pointer;
-    typedef typename allocator_type_node::reference                 node_reference;
-    typedef ft::tree_iterator<node_pointer, value_type>             iterator;
-    typedef ft::const_tree_iterator<const_node_pointer, value_type> const_iterator;
-    typedef ft::reverse_iterator<iterator>                          reverse_iterator;
-    typedef ft::reverse_iterator<const_iterator>                    const_reverse_iterator;
-    typedef typename allocator_type_value::difference_type          difference_type;
-    typedef typename allocator_type_value::size_type                size_type;
+    typedef Key                                                         key_type;
+    typedef T                                                           mapped_type;
+    typedef Pair                                                        value_type;
+    typedef Compare                                                     key_compare;
+    typedef Alloc                                                       allocator_type_value;
+    typedef typename allocator_type_value::reference                    reference;
+    typedef typename allocator_type_value::const_reference              const_reference;
+    typedef typename allocator_type_value::pointer                      pointer;
+    typedef typename allocator_type_value::const_pointer                const_pointer;
+    typedef ft::node<value_type>                                        node;
+    typedef typename allocator_type_value::template rebind<node>::other allocator_type_node;
+    typedef typename ft::node<value_type>::node_pointer                 node_pointer;
+    typedef typename ft::node<value_type>::const_node_pointer           const_node_pointer;
+    typedef typename allocator_type_node::reference                     node_reference;
+    typedef ft::tree_iterator<node_pointer, value_type>                 iterator;
+    typedef ft::const_tree_iterator<const_node_pointer, value_type>     const_iterator;
+    typedef ft::reverse_iterator<iterator>                              reverse_iterator;
+    typedef ft::reverse_iterator<const_iterator>                        const_reverse_iterator;
+    typedef typename allocator_type_value::difference_type              difference_type;
+    typedef typename allocator_type_value::size_type                    size_type;
 
     red_black_tree(const key_compare &comp, const allocator_type_value &alloc_value)
         : _root(NULL), _alloc_value(alloc_value), _comp(comp), _size(0) {
@@ -104,39 +103,6 @@ class red_black_tree {
         return (*this);
     }
 
-    void print() { print(_root); }
-
-    void print(const node_pointer n) { print(n, "", false); }
-
-    void print(const node_pointer n, const std::string &prefix, bool isLeft) {
-        if (n != NULL) {
-            std::cout << prefix;
-            if (isLeft)
-                std::cout << "├──";
-            else
-                std::cout << "└──";
-            if (n == _left_most)
-                std::cout << "\033[32m";
-            else if (n == _right_most)
-                std::cout << "\033[33m";
-            else if (n->color == red)
-                std::cout << "\033[31m";
-            else
-                std::cout << "\033[30m";
-            if (n != _null && n != _past_end)
-                std::cout << n->key->second << "\033[37m\n";
-            else
-                std::cout << "null\033[37m\n";
-            if (isLeft) {
-                print(n->left, prefix + "│   ", true);
-                print(n->right, prefix + "│   ", false);
-            } else {
-                print(n->left, prefix + "    ", true);
-                print(n->right, prefix + "    ", false);
-            }
-        }
-    }
-
     iterator begin() { return _left_most; }
 
     const_iterator begin() const { return _left_most; }
@@ -157,7 +123,11 @@ class red_black_tree {
 
     size_type size() const { return (_size); }
 
-    size_type max_size() const { return _alloc_node.max_size(); }
+    size_type max_size() const {
+        size_type alloc_max = this->_alloc_node.max_size();
+        size_type numeric_max = std::numeric_limits<difference_type>::max() / 2;
+        return ((alloc_max < numeric_max) ? alloc_max : numeric_max);
+    }
 
     mapped_type &operator[](const key_type &k) {
         return (*((insert(ft::make_pair(k, mapped_type()))).first)).second;
@@ -165,14 +135,14 @@ class red_black_tree {
 
     mapped_type &at(const key_type &k) {
         node_pointer needle = iterative_search(_root, k);
-        if (_root == _past_end || (needle == _root && _is_unequal(k, (*_root->key).first)))
+        if (_root == _past_end || (needle == _root && _is_unequal(k, *_root->key)))
             throw(std::out_of_range("map"));
         return (*needle->key).second;
     }
 
     const mapped_type &at(const key_type &k) const {
         node_pointer needle = iterative_search(_root, k);
-        if (_root == _past_end || (needle == _root && _is_unequal(k, (*_root->key).first)))
+        if (_root == _past_end || (needle == _root && _is_unequal(k, *_root->key)))
             throw(std::out_of_range("map"));
         return (*needle->key).second;
     }
@@ -186,21 +156,10 @@ class red_black_tree {
             return (search(n->right, key));
     }
 
-    node_pointer iterative_search(node_pointer n, const value_type &key) const {
+    template <class T1>
+    node_pointer iterative_search(node_pointer n, const T1 &key) const {
         while (!n->is_leaf && _is_unequal(key, *n->key)) {
             if (_is_less(key, *n->key))
-                n = n->left;
-            else
-                n = n->right;
-        }
-        if (n->is_leaf)
-            return (_root);
-        return (n);
-    }
-
-    node_pointer iterative_search(node_pointer n, const key_type &key) const {
-        while (!n->is_leaf && _is_unequal(key, (*n->key).first)) {
-            if (_is_less(key, (*n->key).first))
                 n = n->left;
             else
                 n = n->right;
@@ -293,7 +252,7 @@ class red_black_tree {
         return (ft::make_pair<iterator, bool>(iterator(input), true));
     }
 
-    iterator insert(iterator position, const value_type &val) {
+    iterator insert(const_iterator position, const value_type &val) {
         // if (_is_less(*position, val) && _is_less(successor(*position))) {
         //     transplant(*position, _create_node(val));
         // } else {
@@ -308,7 +267,8 @@ class red_black_tree {
             insert(*first);
     }
 
-    void transplant(node_pointer target, node_pointer input) {
+    template <class T1, class T2>
+    void transplant(T1 target, T2 input) {
         if (target->parent->is_leaf)
             _root = input;
         else if (target == target->parent->left)
@@ -417,7 +377,7 @@ class red_black_tree {
 
     iterator find(const key_type &k) {
         node_pointer n = iterative_search(_root, k);
-        if (n == _root && _root != _past_end && _is_equal((*_root->key).first, k))
+        if (n == _root && _root != _past_end && _is_equal(*_root->key, k))
             return iterator(_root);
         else if (n == _root)
             return end();
@@ -427,7 +387,7 @@ class red_black_tree {
 
     const_iterator find(const key_type &k) const {
         node_pointer n = iterative_search(_root, k);
-        if (n == _root && _root != _past_end && _is_equal((*_root->key).first, k))
+        if (n == _root && _root != _past_end && _is_equal(*_root->key, k))
             return const_iterator(_root);
         else if (n == _root)
             return const_iterator(end());
@@ -439,7 +399,7 @@ class red_black_tree {
         node_pointer result = end().base();
         node_pointer n = _root;
         while (!n->is_leaf) {
-            if (!_is_less((*n->key).first, k)) {
+            if (!_is_less(*n->key, k)) {
                 result = n;
                 n = n->left;
             } else
@@ -452,7 +412,7 @@ class red_black_tree {
         const_node_pointer result = end().base();
         node_pointer       n = _root;
         while (!n->is_leaf) {
-            if (!_is_less((*n->key).first, k)) {
+            if (!_is_less(*n->key, k)) {
                 result = n;
                 n = n->left;
             } else
@@ -465,7 +425,7 @@ class red_black_tree {
         node_pointer result = end().base();
         node_pointer n = _root;
         while (!n->is_leaf) {
-            if (_is_less(k, (*n->key).first)) {
+            if (_is_less(k, *n->key)) {
                 result = n;
                 n = n->left;
             } else
@@ -478,7 +438,7 @@ class red_black_tree {
         const_node_pointer result = end().base();
         node_pointer       n = _root;
         while (!n->is_leaf) {
-            if (_is_less(k, (*n->key).first)) {
+            if (_is_less(k, *n->key)) {
                 result = n;
                 n = n->left;
             } else
@@ -521,7 +481,7 @@ class red_black_tree {
 
     void _create_null() {
         pointer null_val = _alloc_value.allocate(1);
-        _alloc_value.construct(null_val, value_type(key_type(), mapped_type()));
+        _alloc_value.construct(null_val, value_type());
         _null = _alloc_node.allocate(1);
         _alloc_node.construct(_null, node(null_val, NULL, NULL, NULL, black, true));
     }
@@ -564,27 +524,20 @@ class red_black_tree {
         return (cpy);
     }
 
-    bool _is_equal(const value_type &val1, const value_type &val2) const {
-        return (!_comp(val1.first, val2.first) && !_comp(val2.first, val1.first));
-    }
-
-    bool _is_equal(const key_type &val1, const key_type &val2) const {
+    template <class T1, class T2>
+    bool _is_equal(const T1 &val1, const T2 &val2) const {
         return (!_comp(val1, val2) && !_comp(val2, val1));
     }
 
-    bool _is_unequal(const value_type &val1, const value_type &val2) const {
+    template <class T1, class T2>
+    bool _is_unequal(const T1 &val1, const T2 &val2) const {
         return !(_is_equal(val1, val2));
     }
 
-    bool _is_unequal(const key_type &val1, const key_type &val2) const {
-        return !(_is_equal(val1, val2));
+    template <class T1, class T2>
+    bool _is_less(const T1 &val1, const T2 &val2) const {
+        return (_comp(val1, val2));
     }
-
-    bool _is_less(const value_type &val1, const value_type &val2) const {
-        return (_comp(val1.first, val2.first));
-    }
-
-    bool _is_less(const key_type &val1, const key_type &val2) const { return (_comp(val1, val2)); }
 
     void _erase_fixup(node_pointer x) {
         while (x != _root && x->color == black) {
