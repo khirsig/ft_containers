@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 14:24:57 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/16 12:51:18 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/18 08:13:49 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,8 @@ class tree_iterator {
     node_ptr _tree_prev_iter(node_ptr x) {
         if (!x->left->is_leaf)
             return (tree_max(x->left));
-        if (x->left->is_end)
-            return (x->left);
+        // if (x->left->is_end)
+        //     return (x->left);
         node_ptr xx = static_cast<node_ptr>(x);
         while (_tree_is_left_child(xx))
             xx = xx->parent;
