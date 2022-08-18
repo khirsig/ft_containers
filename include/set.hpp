@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 08:45:24 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/18 11:11:40 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/18 12:33:38 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,30 +146,36 @@ void swap(ft::set<Key, Compare, Alloc>& lhs, ft::set<Key, Compare, Alloc>& rhs) 
 }
 
 template <class Key, class Compare, class Alloc>
-inline bool operator==(const set<Key, Compare, Alloc>& lhs, const set<Key, Compare, Alloc>& rhs) {
+inline bool operator==(const ft::set<Key, Compare, Alloc>& lhs,
+                       const ft::set<Key, Compare, Alloc>& rhs) {
     return lhs.size() == rhs.size() && std::equal(lhs.begin(), lhs.end(), rhs.begin());
 }
 
 template <class Key, class Compare, class Alloc>
-inline bool operator!=(const set<Key, Compare, Alloc>& lhs, const set<Key, Compare, Alloc>& rhs) {
+inline bool operator!=(const ft::set<Key, Compare, Alloc>& lhs,
+                       const ft::set<Key, Compare, Alloc>& rhs) {
     return !(lhs == rhs);
 }
 
 template <class Key, class Compare, class Alloc>
-inline bool operator<(const set<Key, Compare, Alloc>& lhs, const set<Key, Compare, Alloc>& rhs) {
+inline bool operator<(const ft::set<Key, Compare, Alloc>& lhs,
+                      const ft::set<Key, Compare, Alloc>& rhs) {
     return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 }
 
 template <class Key, class Compare, class Alloc>
-inline bool operator>(const set<Key, Compare, Alloc>& lhs, const set<Key, Compare, Alloc>& rhs) {
+inline bool operator>(const ft::set<Key, Compare, Alloc>& lhs,
+                      const ft::set<Key, Compare, Alloc>& rhs) {
     return rhs < lhs;
 }
 template <class Key, class Compare, class Alloc>
-inline bool operator<=(const set<Key, Compare, Alloc>& lhs, const set<Key, Compare, Alloc>& rhs) {
+inline bool operator<=(const ft::set<Key, Compare, Alloc>& lhs,
+                       const ft::set<Key, Compare, Alloc>& rhs) {
     return !(rhs < lhs);
 }
 template <class Key, class Compare, class Alloc>
-inline bool operator>=(const set<Key, Compare, Alloc>& lhs, const set<Key, Compare, Alloc>& rhs) {
+inline bool operator>=(const ft::set<Key, Compare, Alloc>& lhs,
+                       const ft::set<Key, Compare, Alloc>& rhs) {
     return !(lhs < rhs);
 }
 

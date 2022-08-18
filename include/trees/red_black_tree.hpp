@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/18 11:19:02 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/18 12:26:29 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ class red_black_tree {
     typedef typename allocator_type_value::size_type                    size_type;
 
     red_black_tree(const key_compare &comp, const allocator_type_value &alloc_value)
-        : _root(NULL), _alloc_value(alloc_value), _comp(comp), _size(0) {
+        : _root(NULL), _alloc_value(alloc_value), _alloc_node(alloc_value), _comp(comp), _size(0) {
         _create_null();
         _create_ends();
         _root = _past_end;
@@ -59,7 +59,8 @@ class red_black_tree {
         _left_most->left = _past_begin;
     }
 
-    red_black_tree(const red_black_tree &other) {
+    red_black_tree(const red_black_tree &other)
+        : _alloc_value(other._alloc_value), _alloc_node(other._alloc_node) {
         _create_null();
         _root = _clone(other._root, _null);
         if (_root != _null) {
@@ -170,7 +171,7 @@ class red_black_tree {
     }
 
     node_pointer successor(node_pointer n) {
-        if (/*n->right != _null &&*/ n->right != _past_end)
+        if (n->right != _past_end)
             return (min(n->right));
         node_pointer *p = n->parent;
         while (p != NULL && n == p->right) {

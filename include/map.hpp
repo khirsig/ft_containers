@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:11:24 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/18 10:33:30 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/18 12:33:03 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,36 +195,36 @@ void swap(ft::map<Key, T, Compare, Alloc> &lhs, ft::map<Key, T, Compare, Alloc> 
 }
 
 template <class Key, class T, class Compare, class Alloc>
-inline bool operator==(const map<Key, T, Compare, Alloc> &lhs,
-                       const map<Key, T, Compare, Alloc> &rhs) {
+inline bool operator==(const ft::map<Key, T, Compare, Alloc> &lhs,
+                       const ft::map<Key, T, Compare, Alloc> &rhs) {
     return lhs.size() == rhs.size() && std::equal(lhs.begin(), lhs.end(), rhs.begin());
 }
 
 template <class Key, class T, class Compare, class Alloc>
-inline bool operator!=(const map<Key, T, Compare, Alloc> &lhs,
-                       const map<Key, T, Compare, Alloc> &rhs) {
+inline bool operator!=(const ft::map<Key, T, Compare, Alloc> &lhs,
+                       const ft::map<Key, T, Compare, Alloc> &rhs) {
     return !(lhs == rhs);
 }
 
 template <class Key, class T, class Compare, class Alloc>
-inline bool operator<(const map<Key, T, Compare, Alloc> &lhs,
-                      const map<Key, T, Compare, Alloc> &rhs) {
+inline bool operator<(const ft::map<Key, T, Compare, Alloc> &lhs,
+                      const ft::map<Key, T, Compare, Alloc> &rhs) {
     return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 }
 
 template <class Key, class T, class Compare, class Alloc>
-inline bool operator>(const map<Key, T, Compare, Alloc> &lhs,
-                      const map<Key, T, Compare, Alloc> &rhs) {
+inline bool operator>(const ft::map<Key, T, Compare, Alloc> &lhs,
+                      const ft::map<Key, T, Compare, Alloc> &rhs) {
     return rhs < lhs;
 }
 template <class Key, class T, class Compare, class Alloc>
-inline bool operator<=(const map<Key, T, Compare, Alloc> &lhs,
-                       const map<Key, T, Compare, Alloc> &rhs) {
+inline bool operator<=(const ft::map<Key, T, Compare, Alloc> &lhs,
+                       const ft::map<Key, T, Compare, Alloc> &rhs) {
     return !(rhs < lhs);
 }
 template <class Key, class T, class Compare, class Alloc>
-inline bool operator>=(const map<Key, T, Compare, Alloc> &lhs,
-                       const map<Key, T, Compare, Alloc> &rhs) {
+inline bool operator>=(const ft::map<Key, T, Compare, Alloc> &lhs,
+                       const ft::map<Key, T, Compare, Alloc> &rhs) {
     return !(lhs < rhs);
 }
 
