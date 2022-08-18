@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 08:14:46 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/09 08:07:59 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/18 12:42:31 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,22 +87,12 @@ class random_access_iterator {
 
 template <class U, class V>
 bool operator==(const random_access_iterator<U> &pre, const random_access_iterator<V> &post) {
-    return (pre.base() == post.base());
+    return pre.base() == post.base();
 }
 
 template <class U, class V>
 bool operator!=(const random_access_iterator<U> &pre, const random_access_iterator<V> &post) {
-    return !(pre.base() == post.base());
-}
-
-template <class U, class V>
-bool operator<=(const random_access_iterator<U> &pre, const random_access_iterator<V> &post) {
-    return (pre.base() <= post.base());
-}
-
-template <class U, class V>
-bool operator>=(const random_access_iterator<U> &pre, const random_access_iterator<V> &post) {
-    return (pre.base() >= post.base());
+    return !(pre == post);
 }
 
 template <class U, class V>
@@ -111,8 +101,18 @@ bool operator<(const random_access_iterator<U> &pre, const random_access_iterato
 }
 
 template <class U, class V>
+bool operator<=(const random_access_iterator<U> &pre, const random_access_iterator<V> &post) {
+    return !(pre > post);
+}
+
+template <class U, class V>
 bool operator>(const random_access_iterator<U> &pre, const random_access_iterator<V> &post) {
-    return (pre.base() > post.base());
+    return post < pre;
+}
+
+template <class U, class V>
+bool operator>=(const random_access_iterator<U> &pre, const random_access_iterator<V> &post) {
+    return !(pre < post);
 }
 
 template <class U>
@@ -136,7 +136,8 @@ typename random_access_iterator<U>::difference_type operator-(
 template <class InputIt>
 typename random_access_iterator<InputIt>::difference_type distance(InputIt first, InputIt last) {
     typename random_access_iterator<InputIt>::difference_type dist = 0;
-    while (first != last) ++first, ++dist;
+    while (first != last)
+        ++first, ++dist;
     return dist;
 }
 }  // namespace ft

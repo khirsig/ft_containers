@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/18 12:26:29 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/18 14:36:25 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include <algorithm>
 #include <functional>
-#include <iostream>
+#include <limits>
 
 #include "../iterators/tree_iterator.hpp"
 #include "../iterators/tree_iterator_const.hpp"
@@ -27,28 +27,28 @@ namespace ft {
 template <class Pair, class Key, class T, class Compare, class Alloc>
 class red_black_tree {
    public:
-    typedef Key                                                         key_type;
-    typedef T                                                           mapped_type;
-    typedef Pair                                                        value_type;
-    typedef Compare                                                     key_compare;
-    typedef Alloc                                                       allocator_type_value;
-    typedef typename allocator_type_value::reference                    reference;
-    typedef typename allocator_type_value::const_reference              const_reference;
-    typedef typename allocator_type_value::pointer                      pointer;
-    typedef typename allocator_type_value::const_pointer                const_pointer;
-    typedef ft::node<value_type>                                        node;
-    typedef typename allocator_type_value::template rebind<node>::other allocator_type_node;
-    typedef typename ft::node<value_type>::node_pointer                 node_pointer;
-    typedef typename ft::node<value_type>::const_node_pointer           const_node_pointer;
-    typedef typename allocator_type_node::reference                     node_reference;
-    typedef ft::tree_iterator<node_pointer, value_type>                 iterator;
-    typedef ft::const_tree_iterator<const_node_pointer, value_type>     const_iterator;
-    typedef ft::reverse_iterator<iterator>                              reverse_iterator;
-    typedef ft::reverse_iterator<const_iterator>                        const_reverse_iterator;
-    typedef typename allocator_type_value::difference_type              difference_type;
-    typedef typename allocator_type_value::size_type                    size_type;
+    typedef Key                                                     key_type;
+    typedef T                                                       mapped_type;
+    typedef Pair                                                    value_type;
+    typedef Compare                                                 key_compare;
+    typedef Alloc                                                   allocator_type;
+    typedef typename allocator_type::reference                      reference;
+    typedef typename allocator_type::const_reference                const_reference;
+    typedef typename allocator_type::pointer                        pointer;
+    typedef typename allocator_type::const_pointer                  const_pointer;
+    typedef ft::node<value_type>                                    node;
+    typedef typename allocator_type::template rebind<node>::other   allocator_type_node;
+    typedef typename ft::node<value_type>::node_pointer             node_pointer;
+    typedef typename ft::node<value_type>::const_node_pointer       const_node_pointer;
+    typedef typename allocator_type_node::reference                 node_reference;
+    typedef ft::tree_iterator<node_pointer, value_type>             iterator;
+    typedef ft::const_tree_iterator<const_node_pointer, value_type> const_iterator;
+    typedef ft::reverse_iterator<iterator>                          reverse_iterator;
+    typedef ft::reverse_iterator<const_iterator>                    const_reverse_iterator;
+    typedef typename allocator_type::difference_type                difference_type;
+    typedef typename allocator_type::size_type                      size_type;
 
-    red_black_tree(const key_compare &comp, const allocator_type_value &alloc_value)
+    red_black_tree(const key_compare &comp, const allocator_type &alloc_value)
         : _root(NULL), _alloc_value(alloc_value), _alloc_node(alloc_value), _comp(comp), _size(0) {
         _create_null();
         _create_ends();
@@ -60,21 +60,26 @@ class red_black_tree {
     }
 
     red_black_tree(const red_black_tree &other)
-        : _alloc_value(other._alloc_value), _alloc_node(other._alloc_node) {
+        : _root(NULL),
+          _alloc_value(other._alloc_value),
+          _alloc_node(other._alloc_node),
+          _comp(other._comp),
+          _size(0) {
         _create_null();
-        _root = _clone(other._root, _null);
+        _create_ends();
+        _root = _clone(other._root, NULL);
         if (_root != _null) {
             _left_most = tree_min(_root);
             _right_most = tree_max(_root);
         } else {
             _root = _past_end;
-            _left_most = _past_end;
-            _right_most = _past_end;
+            _left_most = _root;
+            _right_most = _root;
         }
-        _create_ends();
         _right_most->right = _past_end;
+        _past_end->parent = _right_most;
         _left_most->left = _past_begin;
-        _size = other._size;
+        _past_begin->parent = _left_most;
     }
 
     ~red_black_tree() {
@@ -126,8 +131,8 @@ class red_black_tree {
 
     size_type max_size() const {
         size_type alloc_max = this->_alloc_node.max_size();
-        size_type numeric_max = std::numeric_limits<difference_type>::max() / 2;
-        return ((alloc_max < numeric_max) ? alloc_max : numeric_max);
+        size_type numeric_max = std::numeric_limits<difference_type>::max();
+        return alloc_max < numeric_max ? alloc_max : numeric_max;
     }
 
     mapped_type &operator[](const key_type &k) {
@@ -320,7 +325,7 @@ class red_black_tree {
         if (y_original_color == black)
             _erase_fixup(x);
         _erase_node(input);
-        if (_size != 0) {
+        if (_size > 0) {
             _left_most->left = _past_begin;
             _past_begin->parent = _left_most;
             _right_most->right = _past_end;
@@ -345,15 +350,15 @@ class red_black_tree {
 
     void swap(red_black_tree &other) {
         if (this != &other) {
-            node_pointer         tmp_root = other._root;
-            node_pointer         tmp_null = other._null;
-            node_pointer         tmp_left_most = other._left_most;
-            node_pointer         tmp_right_most = other._right_most;
-            node_pointer         tmp_past_end = other._past_end;
-            node_pointer         tmp_past_begin = other._past_begin;
-            allocator_type_value tmp_alloc_value = other._alloc_value;
-            allocator_type_node  tmp_alloc_node = other._alloc_node;
-            size_type            tmp_size = other._size;
+            node_pointer        tmp_root = other._root;
+            node_pointer        tmp_null = other._null;
+            node_pointer        tmp_left_most = other._left_most;
+            node_pointer        tmp_right_most = other._right_most;
+            node_pointer        tmp_past_end = other._past_end;
+            node_pointer        tmp_past_begin = other._past_begin;
+            allocator_type      tmp_alloc_value = other._alloc_value;
+            allocator_type_node tmp_alloc_node = other._alloc_node;
+            size_type           tmp_size = other._size;
 
             other._root = _root;
             other._null = _null;
@@ -456,25 +461,35 @@ class red_black_tree {
         return ft::make_pair(lower_bound(key), upper_bound(key));
     }
 
-    allocator_type_value get_allocator() const { return _alloc_value; }
+    allocator_type get_allocator() const { return _alloc_value; }
 
    private:
-    node_pointer         _root;
-    node_pointer         _null;
-    node_pointer         _left_most;
-    node_pointer         _right_most;
-    node_pointer         _past_end;
-    node_pointer         _past_begin;
-    allocator_type_value _alloc_value;
-    allocator_type_node  _alloc_node;
-    key_compare          _comp;
-    size_type            _size;
+    node_pointer        _root;
+    node_pointer        _null;
+    node_pointer        _left_most;
+    node_pointer        _right_most;
+    node_pointer        _past_end;
+    node_pointer        _past_begin;
+    allocator_type      _alloc_value;
+    allocator_type_node _alloc_node;
+    key_compare         _comp;
+    size_type           _size;
 
     node_pointer _create_node(const value_type &val) {
         pointer cpy = _alloc_value.allocate(1);
         _alloc_value.construct(cpy, value_type(val));
         node_pointer n = _alloc_node.allocate(1);
         _alloc_node.construct(n, node(cpy, NULL, NULL, NULL));
+        _size++;
+
+        return (n);
+    }
+
+    node_pointer _copy_node(const value_type &val, color &col) {
+        pointer cpy = _alloc_value.allocate(1);
+        _alloc_value.construct(cpy, value_type(val));
+        node_pointer n = _alloc_node.allocate(1);
+        _alloc_node.construct(n, node(cpy, NULL, NULL, NULL, col));
         _size++;
 
         return (n);
@@ -489,9 +504,9 @@ class red_black_tree {
 
     void _create_ends() {
         _past_end = _alloc_node.allocate(1);
-        _alloc_node.construct(_past_end, node(NULL, _right_most, _null, _null, black, true, true));
+        _alloc_node.construct(_past_end, node(NULL, _null, _null, _null, black, true, true));
         _past_begin = _alloc_node.allocate(1);
-        _alloc_node.construct(_past_begin, node(NULL, _left_most, _null, _null, black, true, true));
+        _alloc_node.construct(_past_begin, node(NULL, _null, _null, _null, black, true, true));
     }
 
     void _erase_node(node_pointer n) {
@@ -517,7 +532,7 @@ class red_black_tree {
     node_pointer _clone(const node_pointer n, const node_pointer parent) {
         node_pointer cpy = _null;
         if (!n->is_leaf && !n->is_end) {
-            cpy = _create_node(*(n->key));
+            cpy = _copy_node(*(n->key), n->color);
             cpy->parent = parent;
             cpy->left = _clone(n->left, cpy);
             cpy->right = _clone(n->right, cpy);

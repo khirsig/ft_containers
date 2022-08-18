@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 14:24:57 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/18 08:13:49 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/18 13:13:45 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,6 @@ class tree_iterator {
 
     reference operator*() const { return (*_ptr->key); }
 
-    template <class U, class V>
-    friend bool operator==(const tree_iterator<U, V>& x, const tree_iterator<U, V>& y);
-
-    template <class U, class V>
-    friend bool operator!=(const tree_iterator<U, V>& x, const tree_iterator<U, V>& y);
-
    private:
     node_ptr _ptr;
 
@@ -101,8 +95,6 @@ class tree_iterator {
     node_ptr _tree_prev_iter(node_ptr x) {
         if (!x->left->is_leaf)
             return (tree_max(x->left));
-        // if (x->left->is_end)
-        //     return (x->left);
         node_ptr xx = static_cast<node_ptr>(x);
         while (_tree_is_left_child(xx))
             xx = xx->parent;
@@ -113,12 +105,12 @@ class tree_iterator {
 
 template <class T, class Val>
 bool operator==(const tree_iterator<T, Val>& x, const tree_iterator<T, Val>& y) {
-    return (x._ptr == y._ptr);
+    return x.base() == y.base();
 }
 
 template <class T, class Val>
 bool operator!=(const tree_iterator<T, Val>& x, const tree_iterator<T, Val>& y) {
-    return !(x._ptr == y._ptr);
+    return !(x == y);
 }
 }  // namespace ft
 

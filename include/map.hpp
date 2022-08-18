@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:11:24 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/18 12:33:03 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/18 15:02:38 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,10 @@ class map {
         _tree.insert(first, last);
     }
 
-    void erase(iterator position) { _tree.erase(position.base()); }
+    void erase(iterator position) {
+        if (position.base() && position.base()->key)
+            _tree.erase(position.base());
+    }
 
     size_type erase(const key_type &k) {
         size_type cnt = 0;
