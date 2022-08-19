@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 09:54:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/19 11:13:08 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/19 12:24:49 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,20 @@
 
 #include <cstdlib>
 #include <ctime>
-
 #include <iostream>
 #include <vector>
 
 #include "../../include/vector.hpp"
 
-typedef NAMESPACE::vector<int> intvec;
+typedef NAMESPACE::vector<int>         intvec;
 typedef NAMESPACE::vector<std::string> strvec;
 
-void 	vector_tests();
+void vector_tests();
 
-void    debug_padding(std::string title, std::size_t width, char c);
+void debug_padding(std::string title, std::size_t width, char c);
 
 template <class T>
-void    print_content(T vec) {
+void print_content(T vec) {
     std::cout << "Content: ";
     for (typename T::iterator it = vec.begin(); it != vec.end(); ++it) {
         std::cout << *it << " ";
@@ -44,7 +43,7 @@ void    print_content(T vec) {
 }
 
 template <class T>
-void    print_size(T vec) {
+void print_size(T vec) {
     std::cout << "Size: " << vec.size() << "\n";
     std::cout << "Capacity: " << vec.capacity() << "\n";
 }

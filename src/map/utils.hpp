@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 09:54:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/19 11:51:57 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/19 12:25:21 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,20 @@
 
 #include <cstdlib>
 #include <ctime>
-
 #include <iostream>
 #include <map>
 
 #include "../../include/map.hpp"
 
-typedef NAMESPACE::map<int, int> intmap;
+typedef NAMESPACE::map<int, int>  intmap;
 typedef NAMESPACE::pair<int, int> intpair;
 
-void 	map_tests();
+void map_tests();
 
-void    debug_padding(std::string title, std::size_t width, char c);
+void debug_padding(std::string title, std::size_t width, char c);
 
 template <class T>
-void    print_content(T vec) {
+void print_content(T vec) {
     std::cout << "Content: ";
     for (typename T::iterator it = vec.begin(); it != vec.end(); ++it) {
         std::cout << "Key[" << it->first << "] Value[" << it->second << "] ";
@@ -44,7 +43,7 @@ void    print_content(T vec) {
 }
 
 template <class T>
-void    print_size(T vec) {
+void print_size(T vec) {
     std::cout << "Size: " << vec.size() << "\n";
 }
 

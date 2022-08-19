@@ -6,14 +6,13 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 09:54:13 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/19 11:50:28 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/19 12:40:00 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.hpp"
 
 void map_tests() {
-
     debug_padding("MAP TESTING", 50, '-');
 
     debug_padding("Constructors", 40, '=');
@@ -32,6 +31,25 @@ void map_tests() {
     }
     debug_padding("", 40, '=');
 
-    debug_padding("", 50, '-');
+    debug_padding("Iterators", 40, '=');
+    {
+        intmap m1;
+        for (int i = 0; i < 4; ++i) {
+            m1.insert(NAMESPACE::make_pair(i, i));
+        }
+        print_all(m1, "m1");
 
+        // intmap::iterator it = m1.begin();
+        // ++it;
+        // ++it;
+        // std::cout << "\n" << it->first << "\n";
+
+        for (intmap::iterator it = m1.begin(); it != m1.end(); ++it) {
+            m1.erase(it);
+        }
+        print_all(m1, "m1");
+    }
+    debug_padding("", 40, '=');
+
+    debug_padding("", 50, '-');
 }
