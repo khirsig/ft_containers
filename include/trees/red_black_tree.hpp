@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/18 15:07:05 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/19 15:39:18 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,11 @@ class red_black_tree {
     red_black_tree(const key_compare &comp, const allocator_type &alloc_value)
         : _root(NULL), _alloc_value(alloc_value), _alloc_node(alloc_value), _comp(comp), _size(0) {
         _create_null();
-        _create_ends();
-        _root = _past_end;
-        _left_most = _root;
-        _right_most = _root;
-        _right_most->right = _past_end;
-        _left_most->left = _past_begin;
+        _create_head();
+        _root = _null;
+        _left_most = _head;
+        _root->parent = _head;
+        _head->left = _root;
     }
 
     red_black_tree(const red_black_tree &other)
@@ -66,44 +65,33 @@ class red_black_tree {
           _comp(other._comp),
           _size(0) {
         _create_null();
-        _create_ends();
-        _root = _clone(other._root, _null);
+        _create_head();
+        _root = _clone(other._root, _head);
         if (_root != _null) {
             _left_most = tree_min(_root);
-            _right_most = tree_max(_root);
         } else {
-            _root = _past_end;
-            _left_most = _root;
-            _right_most = _root;
+            _left_most = _head;
         }
-        _right_most->right = _past_end;
-        _past_end->parent = _right_most;
-        _left_most->left = _past_begin;
-        _past_begin->parent = _left_most;
+        _head->left = _root;
     }
 
     ~red_black_tree() {
         clear();
         _erase_node(_null);
-        _erase_node(_past_end);
-        _erase_node(_past_begin);
+        _erase_node(_head);
     }
 
     red_black_tree &operator=(const red_black_tree &other) {
         if (this != &other) {
             if (size() > 0 && _root != _null)
                 clear();
-            _root = _clone(other._root, _null);
+            _root = _clone(other._root, _head);
             if (_root != _null) {
                 _left_most = tree_min(_root);
-                _right_most = tree_max(_root);
             } else {
-                _root = _past_end;
-                _left_most = _past_end;
-                _right_most = _past_end;
+                _left_most = _head;
             }
-            _right_most->right = _past_end;
-            _left_most->left = _past_begin;
+            _head->left = _root;
             _size = other._size;
         }
         return (*this);
@@ -113,9 +101,9 @@ class red_black_tree {
 
     const_iterator begin() const { return _left_most; }
 
-    iterator end() { return _past_end; }
+    iterator end() { return _head; }
 
-    const_iterator end() const { return _past_end; }
+    const_iterator end() const { return _head; }
 
     reverse_iterator rbegin() { return reverse_iterator(end()); }
 
@@ -141,20 +129,20 @@ class red_black_tree {
 
     mapped_type &at(const key_type &k) {
         node_pointer needle = iterative_search(_root, k);
-        if (_root == _past_end || (needle == _root && _is_unequal(k, *_root->key)))
+        if (_root == _null || (needle == _root && _is_unequal(k, *_root->key)))
             throw(std::out_of_range("map"));
         return (*needle->key).second;
     }
 
     const mapped_type &at(const key_type &k) const {
         node_pointer needle = iterative_search(_root, k);
-        if (_root == _past_end || (needle == _root && _is_unequal(k, *_root->key)))
+        if (_root == _null || (needle == _root && _is_unequal(k, *_root->key)))
             throw(std::out_of_range("map"));
         return (*needle->key).second;
     }
 
     node_pointer search(node_pointer n, const value_type &key) const {
-        if (n->is_leaf || _is_equal(*n->key, key))
+        if (n == _null || _is_equal(*n->key, key))
             return (n);
         if (_is_less(key, *n->key))
             return (search(n->left, key));
@@ -164,19 +152,19 @@ class red_black_tree {
 
     template <class T1>
     node_pointer iterative_search(node_pointer n, const T1 &key) const {
-        while (!n->is_leaf && _is_unequal(key, *n->key)) {
+        while (n != _null && _is_unequal(key, *n->key)) {
             if (_is_less(key, *n->key))
                 n = n->left;
             else
                 n = n->right;
         }
-        if (n->is_leaf)
+        if (n == _null)
             return (_root);
         return (n);
     }
 
     node_pointer successor(node_pointer n) {
-        if (n->right != _past_end)
+        if (n->right != _null)
             return (min(n->right));
         node_pointer *p = n->parent;
         while (p != NULL && n == p->right) {
@@ -188,7 +176,7 @@ class red_black_tree {
     void left_rotate(node_pointer x) {
         node_pointer y = x->right;
         x->right = y->left;
-        if (!y->left->is_leaf)
+        if (y->left != _null)
             y->left->parent = x;
         y->parent = x->parent;
         if (x->parent == _null)
@@ -204,7 +192,7 @@ class red_black_tree {
     void right_rotate(node_pointer x) {
         node_pointer y = x->left;
         x->left = y->right;
-        if (!y->right->is_leaf)
+        if (y->right != _null)
             y->right->parent = x;
         y->parent = x->parent;
         if (x->parent == _null)
@@ -218,44 +206,41 @@ class red_black_tree {
     }
 
     ft::pair<iterator, bool> insert(const value_type &val) {
-        if (!_root->is_leaf && _is_equal(*_root->key, val))
+        if (_root != _null && _is_equal(*_root->key, val))
             return (ft::make_pair<iterator, bool>(iterator(_root), false));
         node_pointer needle = iterative_search(_root, val);
-        if (needle != _root && !needle->is_leaf)
+        if (needle != _root && needle != _null)
             return (ft::make_pair<iterator, bool>(iterator(needle), false));
 
-        node_pointer input = _create_node(val);
-        node_pointer n = _null;
-        node_pointer r = _root;
-        while (!r->is_leaf) {
-            n = r;
-            if (_is_less(*input->key, *r->key))
-                r = r->left;
+        node_pointer z = _create_node(val);
+        node_pointer y = _head;
+        node_pointer x = _root;
+        while (x != _null) {
+            y = x;
+            if (_is_less(*z->key, *x->key))
+                x = x->left;
             else
-                r = r->right;
+                x = x->right;
         }
-        input->parent = n;
-        if (n->is_leaf)
-            _root = input;
-        else if (_is_less(*input->key, *n->key))
-            n->left = input;
-        else
-            n->right = input;
-        input->left = _null;
-        input->right = _null;
-        input->color = red;
-        _insert_fixup(input);
-        if (_left_most->left == input || _size == 1) {
-            _left_most = input;
-            _left_most->left = _past_begin;
-            _past_begin->parent = _left_most;
-        }
-        if (_right_most->right == input || _size == 1) {
-            _right_most = input;
-            _right_most->right = _past_end;
-            _past_end->parent = _right_most;
-        }
-        return (ft::make_pair<iterator, bool>(iterator(input), true));
+        z->parent = y;
+        if (y == _head) {
+            _root = z;
+            _root->parent = _head;
+            _head->left = _root;
+            _left_most = z;
+        } else if (_is_less(*z->key, *y->key)) {
+            y->left = z;
+            if (_left_most == y)
+                _left_most = z;
+        } else
+            y->right = z;
+        z->left = _null;
+        z->right = _null;
+        z->color = red;
+        _insert_fixup(z);
+        // _left_most = tree_min(_root);
+        // _root->parent = _head;
+        return (ft::make_pair<iterator, bool>(iterator(z), true));
     }
 
     iterator insert(const_iterator position, const value_type &val) {
@@ -269,112 +254,85 @@ class red_black_tree {
 
     template <class InputIterator>
     void insert(InputIterator first, InputIterator last) {
-        for (; first != last; ++first)
+        for (; first != last; ++first) {
             insert(*first);
+        }
     }
 
     template <class T1, class T2>
-    void transplant(T1 target, T2 input) {
-        if (target->parent->is_leaf)
-            _root = input;
-        else if (target == target->parent->left)
-            target->parent->left = input;
+    void transplant(T1 u, T2 v) {
+        if (u->parent == _null)
+            _root = v;
+        else if (u == u->parent->left)
+            u->parent->left = v;
         else
-            target->parent->right = input;
-        input->parent = target->parent;
+            u->parent->right = v;
+        v->parent = u->parent;
     }
 
-    void erase(node_pointer input) {
-        node_pointer y = input;
+    void erase(node_pointer z) {
+        node_pointer y = z;
         node_pointer x;
         color        y_original_color = y->color;
-
-        if (input->left->is_leaf) {
-            x = input->right;
-            transplant(input, input->right);
-        } else if (input->right->is_leaf) {
-            x = input->left;
-            transplant(input, input->left);
+        if (z->left == _null) {
+            x = z->right;
+            transplant(z, z->right);
+        } else if (z->right == _null) {
+            x = z->left;
+            transplant(z, z->left);
         } else {
-            y = tree_min(input->right);
+            y = tree_min(z->right);
             y_original_color = y->color;
             x = y->right;
-            if (y->parent == input)
+            if (y->parent == z)
                 x->parent = y;
             else {
                 transplant(y, y->right);
-                y->right = input->right;
+                y->right = z->right;
                 y->right->parent = y;
             }
-            transplant(input, y);
-            y->left = input->left;
+            transplant(z, y);
+            y->left = z->left;
             y->left->parent = y;
-            y->color = input->color;
+            y->color = z->color;
         }
-        if (input == _left_most) {
-            if (input->right->is_leaf)
+        if (z == _left_most) {
+            if (z->right == _null)
                 _left_most = _left_most->parent;
             else
                 _left_most = tree_min(_left_most->right);
-        } else if (input == _right_most) {
-            if (input->left->is_leaf)
-                _right_most = _right_most->parent;
-            else
-                _right_most = tree_max(_right_most->left);
         }
         if (y_original_color == black)
             _erase_fixup(x);
-        _erase_node(input);
-        if (_size > 0) {
-            _left_most->left = _past_begin;
-            _past_begin->parent = _left_most;
-            _right_most->right = _past_end;
-            _past_end->parent = _right_most;
-        }
-        if (_size == 0) {
-            _root = _past_end;
-            _left_most = _root;
-            _right_most = _root;
-            _right_most->right = _past_end;
-            _left_most->left = _past_begin;
-        }
+        _erase_node(z);
+        // _left_most = tree_min(_root);
     }
 
     void clear() {
         _clear(_root);
-        _root = _past_end;
-        _left_most = _root;
-        _right_most = _root;
-        _root->right = _past_end;
+        _root = _null;
+        _root->parent = _head;
+        _left_most = _head;
     };
 
     void swap(red_black_tree &other) {
         if (this != &other) {
             node_pointer        tmp_root = other._root;
             node_pointer        tmp_null = other._null;
-            node_pointer        tmp_left_most = other._left_most;
-            node_pointer        tmp_right_most = other._right_most;
-            node_pointer        tmp_past_end = other._past_end;
-            node_pointer        tmp_past_begin = other._past_begin;
+            node_pointer        tmp_head = other._head;
             allocator_type      tmp_alloc_value = other._alloc_value;
             allocator_type_node tmp_alloc_node = other._alloc_node;
             size_type           tmp_size = other._size;
 
             other._root = _root;
             other._null = _null;
-            other._left_most = _left_most;
-            other._right_most = _right_most;
-            other._past_end = _past_end;
-            other._past_begin = _past_begin;
+            other._head = _head;
             other._alloc_value = _alloc_value;
             other._alloc_node = _alloc_node;
             other._size = _size;
             _root = tmp_root;
             _null = tmp_null;
-            _left_most = tmp_left_most;
-            _right_most = tmp_right_most;
-            _past_end = tmp_past_end;
-            _past_begin = tmp_past_begin;
+            _head = tmp_head;
             _alloc_value = tmp_alloc_value;
             _alloc_node = tmp_alloc_node;
             _size = tmp_size;
@@ -383,17 +341,17 @@ class red_black_tree {
 
     iterator find(const key_type &k) {
         node_pointer n = iterative_search(_root, k);
-        if (n == _root && _root != _past_end && _is_equal(*_root->key, k))
+        if (n == _root && _root != _null && _is_equal(*_root->key, k))
             return iterator(_root);
-        else if (n == _root)
+        else if (n == _root) {
             return end();
-        else
+        } else
             return iterator(n);
     }
 
     const_iterator find(const key_type &k) const {
         node_pointer n = iterative_search(_root, k);
-        if (n == _root && _root != _past_end && _is_equal(*_root->key, k))
+        if (n == _root && _root != _null && _is_equal(*_root->key, k))
             return const_iterator(_root);
         else if (n == _root)
             return const_iterator(end());
@@ -404,7 +362,7 @@ class red_black_tree {
     iterator lower_bound(const key_type &k) {
         node_pointer result = end().base();
         node_pointer n = _root;
-        while (!n->is_leaf) {
+        while (n != _null) {
             if (!_is_less(*n->key, k)) {
                 result = n;
                 n = n->left;
@@ -417,7 +375,7 @@ class red_black_tree {
     const_iterator lower_bound(const key_type &k) const {
         const_node_pointer result = end().base();
         node_pointer       n = _root;
-        while (!n->is_leaf) {
+        while (n != _null) {
             if (!_is_less(*n->key, k)) {
                 result = n;
                 n = n->left;
@@ -430,7 +388,7 @@ class red_black_tree {
     iterator upper_bound(const key_type &k) {
         node_pointer result = end().base();
         node_pointer n = _root;
-        while (!n->is_leaf) {
+        while (n != _null) {
             if (_is_less(k, *n->key)) {
                 result = n;
                 n = n->left;
@@ -443,7 +401,7 @@ class red_black_tree {
     const_iterator upper_bound(const key_type &k) const {
         const_node_pointer result = end().base();
         node_pointer       n = _root;
-        while (!n->is_leaf) {
+        while (n != _null) {
             if (_is_less(k, *n->key)) {
                 result = n;
                 n = n->left;
@@ -467,9 +425,7 @@ class red_black_tree {
     node_pointer        _root;
     node_pointer        _null;
     node_pointer        _left_most;
-    node_pointer        _right_most;
-    node_pointer        _past_end;
-    node_pointer        _past_begin;
+    node_pointer        _head;
     allocator_type      _alloc_value;
     allocator_type_node _alloc_node;
     key_compare         _comp;
@@ -502,11 +458,9 @@ class red_black_tree {
         _alloc_node.construct(_null, node(null_val, NULL, NULL, NULL, black, true));
     }
 
-    void _create_ends() {
-        _past_end = _alloc_node.allocate(1);
-        _alloc_node.construct(_past_end, node(NULL, _null, _null, _null, black, true, true));
-        _past_begin = _alloc_node.allocate(1);
-        _alloc_node.construct(_past_begin, node(NULL, _null, _null, _null, black, true, true));
+    void _create_head() {
+        _head = _alloc_node.allocate(1);
+        _alloc_node.construct(_head, node(NULL, _root, _null, _null, black, false));
     }
 
     void _erase_node(node_pointer n) {
@@ -522,7 +476,7 @@ class red_black_tree {
     }
 
     void _clear(node_pointer n) {
-        if (!n->is_leaf) {
+        if (n != _null) {
             _clear(n->left);
             _clear(n->right);
             _erase_node(n);
@@ -531,7 +485,7 @@ class red_black_tree {
 
     node_pointer _clone(const node_pointer n, const node_pointer parent) {
         node_pointer cpy = _null;
-        if (!n->is_leaf && !n->is_end) {
+        if (!n->is_leaf) {
             cpy = _copy_node(*(n->key), n->color);
             cpy->parent = parent;
             cpy->left = _clone(n->left, cpy);

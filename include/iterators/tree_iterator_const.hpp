@@ -99,8 +99,6 @@ class const_tree_iterator {
     const_node_ptr _tree_next_iter(const_node_ptr x) {
         if (!x->right->is_leaf)
             return (tree_min(x->right));
-        if (x->right->is_end)
-            return (x->right);
         while (!_tree_is_left_child(x))
             x = x->parent;
 
@@ -110,8 +108,6 @@ class const_tree_iterator {
     const_node_ptr _tree_prev_iter(const_node_ptr x) {
         if (!x->left->is_leaf)
             return (tree_max(x->left));
-        // if (x->left->is_end)
-        //     return (x->left);
         const_node_ptr xx = static_cast<const_node_ptr>(x);
         while (_tree_is_left_child(xx))
             xx = xx->parent;
