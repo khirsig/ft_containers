@@ -34,7 +34,7 @@ ft_containers
 
 # Folders
 obj/
-test/
+tests/
 containers_test/
 ft_containers-terminator/
 ft_containers-42Heilbronn/

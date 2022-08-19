@@ -1,6 +1,11 @@
-make test
-mkdir -p test
-./ft_test  > test/ft_test.txt
-./std_test > test/std_test.txt
-diff test/ft_test.txt test/std_test.txt > test/diff.txt
+mkdir -p tests
+mkdir -p tests/diff
+mkdir -p tests/output
+make
+./ft_vector  > tests/output/ft_vector.txt
+./std_vector > tests/output/std_vector.txt
+diff -u tests/output/ft_vector.txt tests/output/std_vector.txt > tests/diff/vector.diff
+./ft_map  > tests/output/ft_map.txt
+./std_map > tests/output/std_map.txt
+diff -u tests/output/ft_map.txt tests/output/std_map.txt > tests/diff/map.diff
 make fclean
