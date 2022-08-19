@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 14:27:15 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/18 15:47:59 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/19 08:47:26 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ bool operator!=(const reverse_iterator<Iterator1> &lhs, const reverse_iterator<I
 
 template <class Iterator1, class Iterator2>
 bool operator<(const reverse_iterator<Iterator1> &lhs, const reverse_iterator<Iterator2> &rhs) {
-    return (lhs.base() < rhs.base());
+    return rhs.base() < lhs.base();
 }
 
 template <class Iterator1, class Iterator2>
