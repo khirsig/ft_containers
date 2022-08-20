@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/20 17:20:09 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/20 17:35:45 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,9 +262,10 @@ class red_black_tree {
 
     template <class T1, class T2>
     void transplant(T1 u, T2 v) {
-        if (u->parent == _null)
+        if (u->parent == _head) {
             _root = v;
-        else if (u == u->parent->left)
+            _head->left = _root;
+        } else if (u == u->parent->left)
             u->parent->left = v;
         else
             u->parent->right = v;
@@ -306,8 +307,8 @@ class red_black_tree {
         if (y_original_color == black)
             _erase_fixup(x);
         _erase_node(z);
-        _root = _head->left;
-        _root->parent = _head;
+        // _root = _head->left;
+        // _root->parent = _head;
     }
 
     void clear() {
@@ -322,6 +323,7 @@ class red_black_tree {
             node_pointer        tmp_root = other._root;
             node_pointer        tmp_null = other._null;
             node_pointer        tmp_head = other._head;
+            node_pointer        tmp_left_most = other._left_most;
             allocator_type      tmp_alloc_value = other._alloc_value;
             allocator_type_node tmp_alloc_node = other._alloc_node;
             size_type           tmp_size = other._size;
@@ -329,12 +331,14 @@ class red_black_tree {
             other._root = _root;
             other._null = _null;
             other._head = _head;
+            other._left_most = _left_most;
             other._alloc_value = _alloc_value;
             other._alloc_node = _alloc_node;
             other._size = _size;
             _root = tmp_root;
             _null = tmp_null;
             _head = tmp_head;
+            _left_most = tmp_left_most;
             _alloc_value = tmp_alloc_value;
             _alloc_node = tmp_alloc_node;
             _size = tmp_size;
