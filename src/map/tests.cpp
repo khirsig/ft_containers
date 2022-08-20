@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 09:54:13 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/20 16:19:18 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/20 18:21:06 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,66 +18,35 @@ void map_tests() {
     debug_padding("Constructors", 40, '=');
     {
         intmap m1;
+        intmap m2(m1);
 
         m1.insert(NAMESPACE::make_pair(4, 4));
         m1.insert(NAMESPACE::make_pair(12, 14));
         m1.insert(NAMESPACE::make_pair(3, 4));
-
-        std::cout << "Hallo\n";
-        intmap m2(m1);
         print_all(m1, "m1");
         print_all(m2, "m2");
 
         intmap m3(m1.begin(), m1.end());
         print_all(m3, "m3");
+    }
+    debug_padding("", 40, '=');
 
-        m1.erase(4);
-        m1.erase(3);
-        std::cout << "3 deleted\n";
-        m1.erase(m1.begin());
-        std::cout << "begin deleted\n";
+    debug_padding("Iterators", 40, '=');
+    {
+        intmap m1;
+        for (int i = 0; i < 4; ++i) {
+            m1.insert(NAMESPACE::make_pair(i, i));
+        }
+        print_all(m1, "m1");
+
+        intmap::iterator it = m1.begin();
+        ++it;
+        ++it;
+        std::cout << "\n" << it->first << "\n";
 
         print_all(m1, "m1");
     }
     debug_padding("", 40, '=');
-
-    // debug_padding("Constructors", 40, '=');
-    // {
-    //     intmap m1;
-    //     intmap m2(m1);
-
-    //     std::cout << "1\n";
-    //     m1.insert(NAMESPACE::make_pair(4, 4));
-    //     m1.insert(NAMESPACE::make_pair(12, 14));
-    //     m1.insert(NAMESPACE::make_pair(3, 4));
-    //     print_all(m1, "m1");
-    //     // print_all(m2, "m2");
-
-    //     intmap m3(m1.begin(), m1.end());
-    //     print_all(m3, "m3");
-    // }
-    // debug_padding("", 40, '=');
-
-    // debug_padding("Iterators", 40, '=');
-    // {
-    //     intmap m1;
-    //     for (int i = 0; i < 4; ++i) {
-    //         m1.insert(NAMESPACE::make_pair(i, i));
-    //     }
-    //     print_all(m1, "m1");
-
-    //     // intmap::iterator it = m1.begin();
-    //     // ++it;
-    //     // ++it;
-    //     // std::cout << "\n" << it->first << "\n";
-
-    //     for (intmap::iterator it = m1.begin(); it != m1.end(); ++it) {
-    //         std::cout << "Hallo\n";
-    //         m1.erase(it);
-    //     }
-    //     print_all(m1, "m1");
-    // }
-    // debug_padding("", 40, '=');
 
     debug_padding("", 50, '-');
 }
