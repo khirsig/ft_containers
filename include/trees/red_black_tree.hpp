@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/20 17:35:45 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/20 17:46:32 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -307,8 +307,6 @@ class red_black_tree {
         if (y_original_color == black)
             _erase_fixup(x);
         _erase_node(z);
-        // _root = _head->left;
-        // _root->parent = _head;
     }
 
     void clear() {
