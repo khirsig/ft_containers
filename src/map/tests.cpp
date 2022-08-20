@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 09:54:13 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/19 12:40:00 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/20 18:21:06 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,11 @@ void map_tests() {
         }
         print_all(m1, "m1");
 
-        // intmap::iterator it = m1.begin();
-        // ++it;
-        // ++it;
-        // std::cout << "\n" << it->first << "\n";
+        intmap::iterator it = m1.begin();
+        ++it;
+        ++it;
+        std::cout << "\n" << it->first << "\n";
 
-        for (intmap::iterator it = m1.begin(); it != m1.end(); ++it) {
-            m1.erase(it);
-        }
         print_all(m1, "m1");
     }
     debug_padding("", 40, '=');
