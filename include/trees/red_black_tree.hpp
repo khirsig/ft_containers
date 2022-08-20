@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/19 15:39:18 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/20 17:20:09 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <algorithm>
 #include <functional>
+#include <iostream>
 #include <limits>
 
 #include "../iterators/tree_iterator.hpp"
@@ -179,9 +180,10 @@ class red_black_tree {
         if (y->left != _null)
             y->left->parent = x;
         y->parent = x->parent;
-        if (x->parent == _null)
+        if (x->parent == _head) {
             _root = y;
-        else if (x == x->parent->left)
+            _head->left = _root;
+        } else if (x == x->parent->left)
             x->parent->left = y;
         else
             x->parent->right = y;
@@ -195,9 +197,10 @@ class red_black_tree {
         if (y->right != _null)
             y->right->parent = x;
         y->parent = x->parent;
-        if (x->parent == _null)
+        if (x->parent == _head) {
             _root = y;
-        else if (x == x->parent->right)
+            _head->left = _root;
+        } else if (x == x->parent->right)
             x->parent->right = y;
         else
             x->parent->left = y;
@@ -238,8 +241,6 @@ class red_black_tree {
         z->right = _null;
         z->color = red;
         _insert_fixup(z);
-        // _left_most = tree_min(_root);
-        // _root->parent = _head;
         return (ft::make_pair<iterator, bool>(iterator(z), true));
     }
 
@@ -305,7 +306,8 @@ class red_black_tree {
         if (y_original_color == black)
             _erase_fixup(x);
         _erase_node(z);
-        // _left_most = tree_min(_root);
+        _root = _head->left;
+        _root->parent = _head;
     }
 
     void clear() {

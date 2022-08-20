@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 09:54:13 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/19 15:38:39 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/20 16:19:18 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,11 @@ void map_tests() {
         intmap m3(m1.begin(), m1.end());
         print_all(m3, "m3");
 
+        m1.erase(4);
         m1.erase(3);
+        std::cout << "3 deleted\n";
+        m1.erase(m1.begin());
+        std::cout << "begin deleted\n";
 
         print_all(m1, "m1");
     }
