@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 09:54:13 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/21 15:43:57 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/21 16:57:28 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,34 @@ void map_tests() {
         print_size(m3);
 
         m2.clear();
+    }
+    debug_padding("", 40, '=');
+
+    debug_padding("at & operator[]", 40, '=');
+    {
+        intmap m1;
+
+        for (std::size_t i = 0; i < 30; ++i)
+            m1.insert(NAMESPACE::make_pair(i * 2, i * 5));
+
+        for (intmap::size_type i = 0; i < 10; ++i)
+            std::cout << "V: " << m1[i] << " | ";
+        std::cout << "\n";
+
+        for (intmap::size_type i = 0; i < 10; ++i)
+            std::cout << "V: " << m1.at(i) << " | ";
+        std::cout << "\n";
+
+        try {
+            m1[200] = 22;
+        } catch (std::exception &e) {
+            std::cout << "Exception: " << e.what() << "\n";
+        }
+
+        for (intmap::size_type i = 0; i < 10; ++i) {
+            m1[i] = 42;
+        }
+        print_all(m1, "m1");
     }
     debug_padding("", 40, '=');
 
