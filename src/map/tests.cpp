@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 09:54:13 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/21 15:05:22 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/21 15:07:53 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ void map_tests() {
         print_one(cit);
     }
     debug_padding("", 40, '=');
+
+    debug_padding("Assignment Operator", 40, '=');
 
     debug_padding("", 50, '-');
 }
