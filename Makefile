@@ -6,7 +6,7 @@
 #    By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/08 11:34:34 by khirsig           #+#    #+#              #
-#    Updated: 2022/08/19 12:08:31 by khirsig          ###   ########.fr        #
+#    Updated: 2022/08/19 13:42:58 by khirsig          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@
 NAME			:= ft_containers
 
 CC				:= g++
-CFLAGS			:= -std=c++98 -Wall -Werror -Wextra
+CFLAGS			:= -std=c++98 -Wall -Werror -Wextra -g -fsanitize=address
 
 VEC				:= main.cpp									\
 				vector/tests.cpp 							\
