@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 09:54:13 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/21 15:10:49 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/21 15:43:57 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,31 @@ void map_tests() {
     }
     debug_padding("", 40, '=');
 
-    debug_padding("Assignment Operator", 40, '=');
+    debug_padding("empty, size, clear", 40, '=');
+    {
+        intmap m1;
+
+        for (std::size_t i = 0; i < 30; ++i) {
+            m1.insert(NAMESPACE::make_pair(i * 2, i * 5));
+        }
+        print_all(m1, "m1");
+        if (m1.empty()) {
+            std::cout << "\nm1 is empty\n";
+        }
+        m1.clear();
+        print_all(m1, "m1");
+        if (m1.empty()) {
+            std::cout << "\nm1 is empty\n";
+        }
+        intmap m2 = m1;
+        intmap m3(m1);
+
+        print_size(m2);
+        print_size(m3);
+
+        m2.clear();
+    }
+    debug_padding("", 40, '=');
 
     debug_padding("", 50, '-');
 }
