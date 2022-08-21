@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 09:54:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/19 12:25:21 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/21 15:02:42 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@
 
 #include "../../include/map.hpp"
 
-typedef NAMESPACE::map<int, int>  intmap;
-typedef NAMESPACE::pair<int, int> intpair;
+typedef NAMESPACE::map<int, int>                 intmap;
+typedef NAMESPACE::map<std::string, std::string> strmap;
+// typedef NAMESPACE::pair<int, int> intpair;
 
 void map_tests();
 
@@ -37,9 +38,25 @@ template <class T>
 void print_content(T vec) {
     std::cout << "Content: ";
     for (typename T::iterator it = vec.begin(); it != vec.end(); ++it) {
-        std::cout << "Key[" << it->first << "] Value[" << it->second << "] ";
+        std::cout << "K: " << it->first << " V: " << it->second << " | ";
     }
     std::cout << "\n";
+}
+
+template <class T>
+void print_content_reverse(T vec) {
+    std::cout << "Content: ";
+    for (typename T::reverse_iterator it = vec.rbegin(); it != vec.rend(); ++it) {
+        std::cout << "K: " << it->first << " V: " << it->second << " | ";
+    }
+    std::cout << "\n";
+}
+
+template <class T>
+void print_one(T it) {
+    std::cout << "\n"
+              << "Element: "
+              << "K: " << it->first << " V: " << it->second << "\n";
 }
 
 template <class T>
@@ -52,6 +69,15 @@ void print_all(T vec, std::string name) {
     debug_padding(name, 30, '_');
     std::cout << "\n";
     print_content(vec);
+    print_size(vec);
+    debug_padding("", 30, '_');
+}
+
+template <class T>
+void print_all_reverse(T vec, std::string name) {
+    debug_padding(name, 30, '_');
+    std::cout << "\n";
+    print_content_reverse(vec);
     print_size(vec);
     debug_padding("", 30, '_');
 }
