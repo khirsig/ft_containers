@@ -26,10 +26,10 @@ fi
 diff -u tester_results/output/ft_stack.txt tester_results/output/std_stack.txt > tester_results/diff/stack.diff
 
 if [ $? == 0 ]; then
-	echo "Set:    \033[32;1mOK\033[0m"
+	echo "Stack:  \033[32;1mOK\033[0m"
 
 else
-	echo "Set:    \033[31;1mKO\033[0m"
+	echo "Stack:  \033[31;1mKO\033[0m"
 fi
 
 ./ft_set  > tester_results/output/ft_set.txt

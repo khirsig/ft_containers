@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 10:05:10 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/22 09:47:29 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/22 10:19:17 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@
 
 #ifdef SET
 #include "set/utils.hpp"
+#endif
+
+#ifdef STACK
+#include "stack/utils.hpp"
 #endif
 
 #endif
