@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 09:54:13 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/21 16:57:28 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/22 08:55:12 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,42 @@ void map_tests() {
             m1[i] = 42;
         }
         print_all(m1, "m1");
+    }
+    debug_padding("", 40, '=');
+
+    debug_padding("insert, erase & swap", 40, '=');
+    {
+        intmap m1;
+        for (std::size_t i = 0; i < 30; ++i)
+            m1.insert(NAMESPACE::make_pair(i * 2, i * 5));
+
+        intmap m2;
+        m2.insert(m1.begin(), m1.end());
+
+        intmap m3(m2);
+        m3.insert(m3.begin(), NAMESPACE::make_pair(23, 23));
+
+        print_all(m1, "m1");
+        print_all(m2, "m2");
+        print_all(m3, "m3");
+
+        m3.erase(23);
+        for (intmap::size_type i = 0; i < 15; ++i) {
+            m2.erase(m2.begin());
+        }
+        m1.erase(m1.begin(), m1.end());
+
+        print_all(m1, "m1");
+        print_all(m2, "m2");
+        print_all(m3, "m3");
+
+        m1.swap(m2);
+        m2.swap(m3);
+        m3.swap(m1);
+
+        print_all(m1, "m1");
+        print_all(m2, "m2");
+        print_all(m3, "m3");
     }
     debug_padding("", 40, '=');
 

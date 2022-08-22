@@ -6,7 +6,7 @@
 #    By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/08 11:34:34 by khirsig           #+#    #+#              #
-#    Updated: 2022/08/19 13:42:58 by khirsig          ###   ########.fr        #
+#    Updated: 2022/08/22 08:57:08 by khirsig          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,11 +48,11 @@ OBJS			:= $(addprefix $(ODIR)/, $(SRCS:.cpp=.o))
 all: vector map
 
 clean:
-	$(RM) -r $(ODIR)
+	@$(RM) -r $(ODIR)
 
 fclean: clean
-	$(RM) -r *.dSYM $(SDIR)/*.dSYM
-	$(RM) $(NAME) ft_vector std_vector ft_map std_map
+	@$(RM) -r *.dSYM $(SDIR)/*.dSYM
+	@$(RM) $(NAME) ft_vector std_vector ft_map std_map
 
 vector:
 	@$(CC) $(CFLAGS) -D TEST=1 -D VECTOR=1 -o ft_vector $(addprefix $(SDIR)/, $(VEC))
