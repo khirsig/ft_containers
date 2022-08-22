@@ -42,8 +42,9 @@ std_set
 
 # Folders
 obj/
-tests/
+tester_results/
 containers_test/
 ft_containers-terminator/
 ft_containers-42Heilbronn/
 ft_containers-unit-test/
+.vscode/

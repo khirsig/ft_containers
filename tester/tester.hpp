@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   tester.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/19 10:02:30 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/22 09:04:23 by khirsig          ###   ########.fr       */
+/*   Created: 2022/08/19 10:05:10 by khirsig           #+#    #+#             */
+/*   Updated: 2022/08/22 09:47:29 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tester.hpp"
+#ifndef TESTER_HPP_
+#define TESTER_HPP_
 
-int main() {
-    // #ifdef TEST
-    //     std::cout << "This is the ft container.\n";
-    // #else
-    //     std::cout << "This is the std container.\n";
-    // #endif
-
-#ifdef MAP
-    map_tests();
-#endif
+#include <iostream>
 
 #ifdef VECTOR
-    vector_tests();
+#include "vector/utils.hpp"
 #endif
-    return (0);
-}
+
+#ifdef MAP
+#include "map/utils.hpp"
+#endif
+
+#ifdef SET
+#include "set/utils.hpp"
+#endif
+
+#endif

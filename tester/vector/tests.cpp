@@ -6,13 +6,13 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 09:54:13 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/19 11:41:57 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/22 09:47:42 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.hpp"
 
-void vector_tests() {
+void tests() {
 
     debug_padding("VECTOR TESTING", 50, '-');
 

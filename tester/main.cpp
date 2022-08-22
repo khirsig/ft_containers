@@ -1,26 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tester.hpp                                         :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/19 10:05:10 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/19 12:22:40 by khirsig          ###   ########.fr       */
+/*   Created: 2022/08/19 10:02:30 by khirsig           #+#    #+#             */
+/*   Updated: 2022/08/22 09:49:05 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TESTER_HPP_
-#define TESTER_HPP_
+#include "tester.hpp"
 
-#include <iostream>
+void tests();
 
-#ifdef VECTOR
-#include "vector/utils.hpp"
-#endif
-
-#ifdef MAP
-#include "map/utils.hpp"
-#endif
-
-#endif
+int main() {
+    tests();
+    return (0);
+}

@@ -6,14 +6,14 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 09:54:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/19 12:24:49 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/22 09:49:27 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILS_HPP_
 #define UTILS_HPP_
 
-#ifdef TEST
+#ifdef FT
 #define NAMESPACE ft
 #else
 #define NAMESPACE std
