@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 09:54:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/22 09:49:21 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/22 09:59:12 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 typedef NAMESPACE::set<int>         intset;
 typedef NAMESPACE::set<std::string> strset;
 
-void map_tests();
+void tests();
 
 void debug_padding(std::string title, std::size_t width, char c);
 
