@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:11:24 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/19 15:39:21 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/22 10:26:29 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,6 @@ inline bool operator>=(const ft::map<Key, T, Compare, Alloc> &lhs,
                        const ft::map<Key, T, Compare, Alloc> &rhs) {
     return !(lhs < rhs);
 }
-
 }  // namespace ft
 
 #endif

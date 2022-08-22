@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 08:22:39 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/17 15:09:33 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/22 10:27:34 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -374,32 +374,32 @@ class vector {
 };
 
 template <typename T, typename Allocator>
-bool operator==(const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs) {
+bool operator==(const ft::vector<T, Allocator> &lhs, const ft::vector<T, Allocator> &rhs) {
     return (lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 }
 
 template <typename T, typename Allocator>
-bool operator!=(const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs) {
+bool operator!=(const ft::vector<T, Allocator> &lhs, const ft::vector<T, Allocator> &rhs) {
     return !(lhs == rhs);
 }
 
 template <typename T, typename Allocator>
-bool operator<=(const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs) {
+bool operator<=(const ft::vector<T, Allocator> &lhs, const ft::vector<T, Allocator> &rhs) {
     return !(lhs > rhs);
 }
 
 template <typename T, typename Allocator>
-bool operator>=(const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs) {
+bool operator>=(const ft::vector<T, Allocator> &lhs, const ft::vector<T, Allocator> &rhs) {
     return !(lhs < rhs);
 }
 
 template <typename T, typename Allocator>
-bool operator<(const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs) {
+bool operator<(const ft::vector<T, Allocator> &lhs, const ft::vector<T, Allocator> &rhs) {
     return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 }
 
 template <typename T, typename Allocator>
-bool operator>(const vector<T, Allocator> &lhs, const vector<T, Allocator> &rhs) {
+bool operator>(const ft::vector<T, Allocator> &lhs, const ft::vector<T, Allocator> &rhs) {
     return (rhs < lhs);
 }
 

@@ -6,7 +6,7 @@
 /*   By: khirsig <khirsig@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 13:35:32 by khirsig           #+#    #+#             */
-/*   Updated: 2022/08/20 17:46:32 by khirsig          ###   ########.fr       */
+/*   Updated: 2022/08/22 10:25:55 by khirsig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,12 +245,8 @@ class red_black_tree {
     }
 
     iterator insert(const_iterator position, const value_type &val) {
-        // if (_is_less(*position, val) && _is_less(successor(*position))) {
-        //     transplant(*position, _create_node(val));
-        // } else {
         (void)position;
         return (insert(val)).first;
-        // }
     }
 
     template <class InputIterator>
@@ -621,7 +617,6 @@ node<T> *tree_max(node<T> *x) {
         x = x->right;
     return (x);
 }
-
 }  // namespace ft
 
 #endif
